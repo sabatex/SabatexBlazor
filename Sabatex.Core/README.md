@@ -1,0 +1,1 @@
+﻿## Sabatex base common definitions for all libraries
