@@ -9,11 +9,11 @@ namespace Sabatex.Core;
 /// Object have index by Name  
 /// </summary>
 
-public interface INamedObject
+public interface IEntityFieldDescription
 {
     /// <summary>
     /// Field name (person,item...)
     /// </summary>
-    string Name { get; set; }
+    string Description { get; set; }
 }
 
