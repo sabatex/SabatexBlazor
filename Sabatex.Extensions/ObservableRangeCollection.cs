@@ -11,7 +11,7 @@ using System.ComponentModel;
 
 namespace sabatex.Extensions
 {
-#if NETSTANDARD2_0_OR_GREATER
+#if NET6_0
     /// <summary> 
     /// Represents a dynamic data collection that provides notifications when items get added, removed, or when the whole list is refreshed. 
     /// </summary> 

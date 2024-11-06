@@ -4,7 +4,7 @@
 // Copyrigth (c) Serhiy Lakas 2020
 namespace sabatex.Extensions
 {
-#if NETSTANDARD2_0_OR_GREATER
+#if NET6_0_OR_GREATER
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace sabatex.Extensions.DateTimeExtensions
 {
-#if NETSTANDARD2_0_OR_GREATER
+#if NET6_0_OR_GREATER
     [DisplayEnum(Name ="Select period")]
     public enum PeriodType
     {

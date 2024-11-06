@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace sabatex.Extensions.ComponentModel.DataAnnotations
 {
-#if NETSTANDARD2_0_OR_GREATER
+#if NET6_0_OR_GREATER
     /// <summary>
     ///     A helper class for providing a localizable string property.
     ///     This class is currently compiled in both System.Web.dll and System.ComponentModel.DataAnnotations.dll.
