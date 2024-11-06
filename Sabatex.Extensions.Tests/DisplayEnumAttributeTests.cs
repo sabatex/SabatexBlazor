@@ -8,11 +8,6 @@ namespace tests
     public class DisplayEnumAttributeTests
     {
 
-        enum t
-        {
-            [DisplayEnum(Name =" ")]
-            y
-        }
 
         [Fact]
         public void Ctor()
