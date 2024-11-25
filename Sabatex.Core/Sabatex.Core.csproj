@@ -33,12 +33,5 @@
   <ItemGroup>
 	<None Include="../README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Update="SabatexSettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
 
 </Project>
