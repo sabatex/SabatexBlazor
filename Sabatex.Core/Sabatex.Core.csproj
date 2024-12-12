@@ -4,13 +4,11 @@
     <TargetFrameworks>net9.0</TargetFrameworks>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
-	<LangVersion>11</LangVersion>
- 
 	<OutputType>Library</OutputType>
 	<IsPackable>true</IsPackable>
 	<PackageId>Sabatex.Core</PackageId>
 	<Product>Sabatex.Core</Product>
-	<Version>9.0.0-rc2</Version>
+	<Version>9.0.0-rc3</Version>
 	<Authors>Serhiy Lakas</Authors>
 	<Copyright>Serhiy Lakas</Copyright>
 	<Description>base definitions for Sabatex</Description>
