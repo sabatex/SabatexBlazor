@@ -7,7 +7,7 @@
     <Company>sabatex on git</Company>
     <Description>Standart class extensions (Char,DateTime,Enum,String) Diagnostic (TraceListenerWithDateTime) Text (Encoding1251,EncodingProvider1251)</Description>
     <Copyright>2019, Serhiy Lakas</Copyright>
-    <Version>9.0.1-rc2</Version>
+    <Version>9.0.1</Version>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageTags>C#</PackageTags>
 	<PackageId>Sabatex.Extensions</PackageId>
