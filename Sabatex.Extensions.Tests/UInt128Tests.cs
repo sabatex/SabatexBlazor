@@ -1,37 +1,35 @@
 using System;
 using Xunit;
-using sabatex.Extensions;
+using Sabatex.Extensions;
 
-namespace sabatex.Extensions.tests
-{
-     public class UInt128Tests
+namespace Sabatex.Extensions.Tests;
+
+ public class UInt128Tests
+ {
+     [Fact]
+     public void InitialUInt128()
      {
-         [Fact]
-         public void InitialUInt128()
-         {
-             UInt128 a = 0;
-             UInt128 b = 10;
-             a = long.MaxValue;
-            
-         }
-        [Fact]
-         public void EqualsUInt128()
-         {
-             UInt128 a = 0;
-             UInt128 b = 0;
-             Assert.Equal(a,b);
-             a = UInt128.MaxValue;
-             b = UInt128.MaxValue;
-             Assert.Equal(a,b);
-             b = UInt128.MinValue;
-             Assert.NotEqual(a,b);
-            
-         }
-
-
-
-
-
+         UInt128 a = 0;
+         UInt128 b = 10;
+         a = long.MaxValue;
+        
      }
- 
-}
+    [Fact]
+     public void EqualsUInt128()
+     {
+         UInt128 a = 0;
+         UInt128 b = 0;
+         Assert.Equal(a,b);
+         a = UInt128.MaxValue;
+         b = UInt128.MaxValue;
+         Assert.Equal(a,b);
+         b = UInt128.MinValue;
+         Assert.NotEqual(a,b);
+        
+     }
+
+
+
+
+
+ }
