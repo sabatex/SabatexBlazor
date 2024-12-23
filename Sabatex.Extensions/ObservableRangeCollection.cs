@@ -9,9 +9,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace sabatex.Extensions
+namespace Sabatex.Extensions
 {
-#if NET6_0
     /// <summary> 
     /// Represents a dynamic data collection that provides notifications when items get added, removed, or when the whole list is refreshed. 
     /// </summary> 
@@ -106,5 +105,4 @@ namespace sabatex.Extensions
             AddRange(collection, NotifyCollectionChangedAction.Reset);
         }
     }
-#endif
 }

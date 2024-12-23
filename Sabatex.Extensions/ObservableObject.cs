@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace sabatex.Extensions
+namespace Sabatex.Extensions
 {
-#if NET6_0_OR_GREATER
     /// <summary>
     /// Observable object with INotifyPropertyChanged implemented
     /// </summary>
@@ -45,5 +44,4 @@ namespace sabatex.Extensions
 
 
     }
-#endif
 }

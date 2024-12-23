@@ -3,9 +3,8 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Text;
 
-namespace sabatex.Extensions.ComponentModel.DataAnnotations
+namespace Sabatex.Extensions.ComponentModel.DataAnnotations
 {
-#if NET6_0_OR_GREATER
     /// <summary>
     ///     DisplayEnumAttribute is a general-purpose attribute to specify user-visible globalizable strings for enum.
     ///     The string properties of this class can be used either as literals or as resource identifiers into a specified
@@ -93,5 +92,4 @@ namespace sabatex.Extensions.ComponentModel.DataAnnotations
         public string GetName() => _name.GetLocalizableValue();
         #endregion
     }
-#endif
 }

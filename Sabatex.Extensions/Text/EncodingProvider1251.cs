@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace sabatex.Extensions.Text
+namespace Sabatex.Extensions.Text
 {
-#if NET6_0_OR_GREATER
     public class EncodingProvider1251 : EncodingProvider
     {
         public override Encoding GetEncoding(int codepage)
@@ -22,5 +21,4 @@ namespace sabatex.Extensions.Text
             throw new NotImplementedException();
         }
     }
-#endif
 }

@@ -1,11 +1,11 @@
 ﻿
-using sabatex.Extensions.ClassExtensions;
+using Sabatex.Extensions.ClassExtensions;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace sabatex.Extensions.DateTimeExtensions
+namespace Sabatex.Extensions.DateTimeExtensions
 {
     [TypeConverter(typeof(PeriodConverter))]
     public struct Period : IEquatable<Period>
