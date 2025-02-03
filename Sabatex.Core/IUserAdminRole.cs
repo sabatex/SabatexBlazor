@@ -9,7 +9,7 @@ namespace Sabatex.Core
     /// <summary>
     /// 
     /// </summary>
-    public abstract class UserRoleAbstraction
+    public interface  IUserAdminRole
     {
         /// <summary>
         /// Administrator role
@@ -19,6 +19,6 @@ namespace Sabatex.Core
         /// Get Avaliable roles
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerable<string> GetAvaliableRoles();
+        abstract static IEnumerable<string> GetAvaliableRoles();
     }
 }
