@@ -15,10 +15,5 @@ namespace Sabatex.Core
         /// Administrator role
         /// </summary>
         public const string Administrator = "Administrator";
-        /// <summary>
-        /// Get Avaliable roles
-        /// </summary>
-        /// <returns></returns>
-        abstract static IEnumerable<string> GetAvaliableRoles();
     }
 }
