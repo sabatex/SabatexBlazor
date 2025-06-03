@@ -13,9 +13,16 @@
         {
             @if (IsInserted)
             {
-                <RadzenButton class="rz-px-xs-1" Icon="add" Click="()=>NavigateToEditPage()" Disabled="IsGridRO" MouseEnter="@(args => tooltipService.Open(args, "Add new node for current client.", null))" />
+                <RadzenButton class="rz-px-xs-1" 
+                              Icon="add" 
+                              Click="()=>NavigateToEditPage()" 
+                              Disabled="IsGridRO" 
+                              MouseEnter="@(args => tooltipService.Open(args, TooltipAddButtonText, null))" />
             }
-            <RadzenButton class="rz-px-xs-1" Icon="edit" Click="()=>NavigateToEditPage(SelectedItems?.First()?.Id?.ToString())" Disabled=@(IsGridRO || !IsItemSelected)  />
+            <RadzenButton class="rz-px-xs-1"
+                          Icon="edit"
+                          Click="()=>NavigateToEditPage(SelectedItems?.First()?.Id?.ToString())"
+                          Disabled=@(IsGridRO || !IsItemSelected)  />
             @if (IsDeleted)
             {
                 <RadzenButton class="rz-px-xs-1" Icon="delete" Click="()=>DeleteButtonClick(CurrentItem)" Disabled=@(IsGridRO || !IsItemSelected)  />
@@ -29,25 +36,25 @@
 
     </RadzenStack>
     <RadzenDataGrid TItem="TItem"
-    Columns="Columns"
-    @ref="grid"
-    Data="@dataCollection.Value"
-    Count="@dataCollection.Count"
-    LoadData="@GridLoadData"
-    IsLoading="@IsGridDataLoading"
-    AllowFiltering="true"
-    AllowSorting="true"
-    SelectionMode="DataGridSelectionMode.Single"
-    @bind-Value=@SelectedItems
-    Density="Density.Compact"
-    AllowVirtualization=true
-    Style=@gridStyle
-    RowDoubleClick="@RowDoubleClick"
-    ContextMenu="ContextMenu"
-    CellRender="@CellRender"
-    EditMode="@(EditMode ?? DataGridEditMode.Single)"
+                    Columns="Columns"
+                    @ref="grid"
+                    Data="@dataCollection.Value"
+                    Count="@dataCollection.Count"
+                    LoadData="@GridLoadData"
+                    IsLoading="@IsGridDataLoading"
+                    AllowFiltering="true"
+                    AllowSorting="true"
+                    SelectionMode="DataGridSelectionMode.Single"
+                    @bind-Value=@SelectedItems
+                    Density="Density.Compact"
+                    AllowVirtualization=true
+                    Style=@gridStyle
+                    RowDoubleClick="@RowDoubleClick"
+                    ContextMenu="ContextMenu"
+                    CellRender="@CellRender"
+                    EditMode="@(EditMode ?? DataGridEditMode.Single)"
+                    FilterMode=@FilterMode
     >
-        >
 
 
     </RadzenDataGrid>
@@ -55,6 +62,11 @@
 </div>
 
 @code {
+    [Parameter]
+    public FilterMode FilterMode { get; set; } = FilterMode.Advanced;
+    [Parameter]
+    public string TooltipAddButtonText { get; set; } = "Add new item";
+
     [Parameter]
     public RenderFragment Columns { get; set; } = default!;
     [Parameter]

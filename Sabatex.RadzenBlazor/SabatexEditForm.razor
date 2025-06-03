@@ -10,8 +10,8 @@ else
 {
     <RadzenTemplateForm Data="@Item" TItem="TItem" Submit="OnSubmit">
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-mt-8 rz-mb-4">
-            <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Small" Icon="save" Text="Save" Disabled="IsReadOnly"/>
-            <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Small" Icon="cancel" Text="Cancel" Click="@Cancel" />
+            <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Small" Icon="save" Text=@TextButtonSave Disabled="IsReadOnly"/>
+            <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Small" Icon="cancel" Text=@TextButtonCancel Click="@Cancel" />
             @if (Buttons != null)
             {
                 @Buttons
@@ -55,6 +55,11 @@ else
     [Parameter]
     public RenderFragment Buttons { get; set; } = default!;
 
+    [Parameter]
+    public string TextButtonSave { get; set; } = "Save";
+
+    [Parameter]
+    public string TextButtonCancel { get; set; } = "Cancel";
 
     protected ValidationSummary? ValidationSummary;
 
@@ -64,7 +69,6 @@ else
             NavigationManager.NavigateTo("/");
         else
         {
-            //var uri = NavigationManager.GetUriWithQueryParameters(ReturnUrl,{});
             NavigationManager.NavigateTo(ReturnUrl);
         }
 
@@ -112,8 +116,6 @@ else
                 return;
             }
             NotificationService?.Notify(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = $"Помилка запису", Detail = "Uknown Error" });
-
-
         }
         catch (Exception ex)
         {
