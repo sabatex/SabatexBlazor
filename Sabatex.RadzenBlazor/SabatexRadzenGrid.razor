@@ -268,10 +268,6 @@
                 NavigateToEditPage(data.Id?.ToString());
         }
     }
-
-
-
-
     async Task DeleteButtonClick(TItem? data)
     {
         if (data == null)
@@ -310,13 +306,11 @@
 
         }
     }
-
     async Task SaveButtonClick(TItem data)
     {
         await OnBeforeSave.InvokeAsync(data);
         await grid.UpdateRow(data);
     }
-
     async Task CancelButtonClick(TItem data)
     {
         grid.CancelEditRow(data);
@@ -324,7 +318,6 @@
         itemToInsert = null;
         itemToUpdate = null;
     }
-
     protected async Task gridRowCreate(TItem item)
     {
         var result = await DataAdapter.PostAsync(item);

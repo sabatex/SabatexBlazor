@@ -1,0 +1,31 @@
+﻿@page "/editFormDemo"
+@using Sabatex.RadzenBlazor
+@using Sabatex.RadzenBlazor.Demo.Models
+<div style="border:2px double black;">
+<SabatexEditForm Item="@person" TItem="Person" TKey="Guid" IsReadOnly=@isReadOnly ReturnUrl="@returnUrl" IsNew="true">
+    <Content Context="item">
+         <RadzenFormField Text="Name">
+                <RadzenTextBox @bind-Value="person.Name" Name="Name" Placeholder="Enter your name" />
+         </RadzenFormField>
+    </Content>
+</SabatexEditForm>
+</div>
+<div>
+    <RadzenCheckBox @bind-Value="isReadOnly" Name="CheckBoxReadOnly" />
+    <RadzenLabel Text="Read Only" Component="CheckBoxReadOnly" class="rz-ms-2" />
+
+</div>
+<RadzenTextBox @bind-Value=@returnUrl ></RadzenTextBox>
+
+
+@code {
+    bool isReadOnly = false;
+    string returnUrl = "/enumDropdownDemo";
+
+    private Person person = new Person
+        {
+            Id = Guid.NewGuid(),
+            Name = "John Doe"
+        };
+
+}
