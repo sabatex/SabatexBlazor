@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Resources;
 using System.Runtime.InteropServices.Marshalling;
 using System.Security.Claims;
@@ -58,6 +59,16 @@ public interface IIdentityAdapter
 
     /// <summary>Провести реєстрацію (або прив’язку) зовнішнього логіну</summary>
     Task<bool> CompleteRegistrationAsync(ExtermnalRegisterDTO model);
+
+    Task<ApplicationUserDto> GetUserInfoAsync();
+
+    Task UpdateUserInfoAsync(ApplicationUserDto userInfo);
+
+    Task<string> GetStatusMessage();
+
+
+
+
 
 
 }
