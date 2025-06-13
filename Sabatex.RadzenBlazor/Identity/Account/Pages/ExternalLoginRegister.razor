@@ -1,0 +1,117 @@
+﻿@page "/Account/ExternalLoginRegister"
+
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@using System.Text
+@using System.Text.Encodings.Web
+
+
+@inject NavigationManager NavigationManager
+@inject ILogger<ExternalLoginRegister> Logger
+@inject IStringLocalizer<ExternalLoginRegister> Localizer
+@inject IIdentityAdapter IdentityAdapter
+
+<PageTitle>@Localizer["Complete external registration"]</PageTitle>
+
+<StatusMessage Message="@errorMessage" />
+<h2>@Localizer["Register"]</h2>
+<hr />
+
+<div  class="alert alert-info">
+    @Localizer["You've successfully authenticated with"] <strong>@Model.Provider</strong>.
+</div>
+
+@if (Model.ExistingUser)
+{
+    <div class="alert alert-info">
+        @Localizer["This email is already registered. Your account on this site will be linked with"] <strong>@Model.Provider</strong>.
+    </div>
+}
+
+<div class="alert alert-info">
+    @Localizer["Please check the email address for this site below and click the \"Register\" button to finish logging in."]
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <EditForm Model="Model" OnValidSubmit="OnValidSubmitAsync" FormName="confirmation" method="post">
+
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Model.Name" class="form-control"  />
+                <label>@Localizer["Name"]</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Model.Email" class="form-control"   readonly />
+                <label for="email" class="form-label">Email</label>
+            </div>
+            <input type="hidden" @bind="Model.ExistingUser" />
+            <button type="submit" class="w-100 btn btn-lg btn-primary">@Localizer["Register"]</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Email { get; set; }
+    
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Name { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Provider { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? ProviderKey { get; set; }
+
+
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public bool ExistingUser { get; set; }
+
+
+    private string? errorMessage;
+
+    
+    private ExtermnalRegisterDTO Model = new();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = new ExtermnalRegisterDTO
+        {
+            Email = Email ?? "",
+            Name = Name ?? "",
+            Provider = Provider ?? "",
+            ReturnUrl = ReturnUrl ?? "/",
+            ExistingUser = ExistingUser,
+            ProviderKey = ProviderKey ?? ""
+        };
+    }
+
+
+    private async Task OnValidSubmitAsync()
+    {
+        // Adapter на беку сам визначить: якщо ExistingUser==true — зробить AddLoginAsync,
+        // інакше — CreateUser + AddLoginAsync
+        var ok = await IdentityAdapter.CompleteRegistrationAsync(Model);
+        if (!ok)
+        {
+            errorMessage = Localizer["Error processing external login."];
+            return;
+        }
+
+        IdentityAdapter.RedirectTo(Model.ReturnUrl!);
+    }
+
+}

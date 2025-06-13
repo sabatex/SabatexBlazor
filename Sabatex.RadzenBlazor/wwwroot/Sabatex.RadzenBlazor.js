@@ -68,6 +68,14 @@
 
         })
 
+    },
+    cleanCookie: function (name) {
+        // знайти значення
+        const matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[]\/+^])/g, '\\$1') + '=([^;]*)'));
+        const value = matches ? decodeURIComponent(matches[1]) : null;
+        // видалити cookie
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
+        return value;
     }
 
 }

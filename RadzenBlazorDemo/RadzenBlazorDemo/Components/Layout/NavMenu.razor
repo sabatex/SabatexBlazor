@@ -1,0 +1,18 @@
+﻿@inject IStringLocalizer<NavMenu> L
+<RadzenPanelMenuItem Text=@L["Home"] Icon="home" Path="/" />
+<RadzenPanelMenuItem Text=@L["Counter"]  Path="/counter" />
+<RadzenPanelMenuItem Text=@L["Weather"]  Path="/weather" />
+<RadzenPanelMenuItem Text=@L["Auth"]  Path="/auth" />
+
+<UserProfileMenuItem /> 
+<AuthorizeView>
+   <Authorized>
+        <RadzenPanelMenuItem Text=@L["Logout"]  Path="Account/Logout"  />
+    </Authorized>
+    <NotAuthorized>
+        <RadzenPanelMenuItem Text=@L["Register"]  Path="Account/Register" />
+        <RadzenPanelMenuItem Text=@L["Login"]  Path="Account/Login" />
+ 
+    </NotAuthorized>
+</AuthorizeView>
+

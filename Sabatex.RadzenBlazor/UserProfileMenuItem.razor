@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using Sabatex.Core.Identity
+<AuthorizeView>
+   <Authorized>
+       @{
+            var userName = context.User.FindFirst(CustomClaimTypes.FullName)?.Value ?? context.User.Identity?.Name ?? "??????";
+       }
+        <RadzenPanelMenuItem Icon="person" Path="Account/Manage" Text="@userName" class="rz-my-auto" />
+    </Authorized>
+    <NotAuthorized>
+    </NotAuthorized>
+</AuthorizeView>
+

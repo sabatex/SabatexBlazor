@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<Version>9.0.5-rc95</Version>
+	<Copyright>Serhiy Lakas</Copyright>
+	<Authors>Serhiy Lakas</Authors>
+	<Title>Sabatex Radzen Blazor Server</Title>
+	<Description>Extend Radzen Blazor Components for Server Side</Description>
+	<PackageTags>#Blazor</PackageTags>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <RepositoryUrl>https://github.com/sabatex/Sabatex.RadzenBlazor</RepositoryUrl>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="9.0.5" />
+		<PackageReference Include="MailKit" Version="4.12.1" />
+		<PackageReference Include="Sabatex.Core" Version="9.0.2-rc9" />
+		<PackageReference Include="Sabatex.RadzenBlazor" Version="9.0.5-rc10" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.6" />
+	</ItemGroup>
+
+</Project>

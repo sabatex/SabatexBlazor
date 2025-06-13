@@ -1,0 +1,42 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<RadzenComponents />
+<RadzenLayout @ref="radzenLayout">
+    <RadzenHeader Style="min-height:auto" @ref="radzenHeader">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.End" JustifyContent="JustifyContent.SpaceBetween" class="rz-ml-2">
+            <RadzenStack Orientation="Orientation.Horizontal" Style="margin-bottom:auto;margin-top:auto">
+                <RadzenSidebarToggle Click="@(() => sideBarExpanded = !sideBarExpanded)" />
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Horizontal" class="rz-my-auto">
+                <SabatexLogin />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenHeader>
+
+    <RadzenSidebar @bind-Expanded="@sideBarExpanded">
+        <RadzenPanelMenu>
+            <NavMenu />
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+
+
+    <RadzenBody>
+        @Body
+    </RadzenBody>
+</RadzenLayout>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+@code {
+    RadzenLayout? radzenLayout;
+    RadzenHeader? radzenHeader;
+    bool sideBarExpanded = true;
+    void LogOut()
+    {
+        Navigation.NavigateTo("Account/logout", true);
+    }
+}

@@ -82,4 +82,10 @@ public class SabatexJsInterop : IAsyncDisposable
             await module.DisposeAsync();
         }
     }
+
+    public async ValueTask<string> CleanCookie(string cookieName)
+    {
+        var module = await moduleTask.Value;
+        return await module.InvokeAsync<string>("sabatex.cleanCookie", cookieName);
+    }
 }

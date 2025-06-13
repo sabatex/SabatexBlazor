@@ -24,6 +24,9 @@ namespace Sabatex.RadzenBlazor
         protected SabatexJsInterop SabatexJS {get;set;}=default!;
         [Inject]
         protected AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+        [Inject] private TooltipService tooltipService { get; set; } = default!;
+        protected void ShowTooltip(ElementReference elementReference, string message, TooltipOptions options = null) => tooltipService.Open(elementReference, message, options);
+
 
         protected async Task<Guid> GetUserIdAsync()
         {

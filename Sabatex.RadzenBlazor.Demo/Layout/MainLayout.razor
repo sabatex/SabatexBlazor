@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject IJSRuntime JS
+@inject NavigationManager Nav
 
 <RadzenComponents />
 <div class="page">
@@ -9,6 +11,8 @@
     <main>
         <div class="top-row px-4">
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <button @onclick=@(() => ChangeCulture("en-US"))>English</button>
+            <button @onclick=@(() => ChangeCulture("uk-UA"))>Українська</button>
         </div>
 
         <article class="content px-4">
@@ -16,3 +20,11 @@
         </article>
     </main>
 </div>
+@code {
+    async Task ChangeCulture(string lang)
+    {
+        await JS.InvokeVoidAsync("cultureCookie.set", lang);
+        Nav.NavigateTo(Nav.Uri, forceLoad: true);
+    }
+}
+

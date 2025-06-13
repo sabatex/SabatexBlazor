@@ -1,0 +1,17 @@
+﻿@inject IStringLocalizer<MicrosoftIdentityButton> Localizer
+<button class="gsi-material-button" type="submit" name="provider" value="Microsoft">
+    <div class="gsi-material-button-state"></div>
+    <div class="gsi-material-button-content-wrapper">
+        <div class="gsi-material-button-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 19" style="display: block;">
+                <title>MS-SymbolLockup</title>
+                <rect x="0" y="0" width="9" height="9" fill="#f25022" />
+                <rect x="0" y="10" width="9" height="9" fill="#00a4ef" />
+                <rect x="10" y="0" width="9" height="9" fill="#7fba00" />
+                <rect x="10" y="10" width="9" height="9" fill="#ffb900" />
+            </svg>
+        </div>
+        <span class="gsi-material-button-contents">@Localizer["Sign in with Microsoft"]</span>
+        <span style="display: none;">@Localizer["Sign in with Microsoft"]</span>
+    </div>
+</button>

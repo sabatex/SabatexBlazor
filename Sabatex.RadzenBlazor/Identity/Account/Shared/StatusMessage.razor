@@ -1,0 +1,26 @@
+﻿@inject SabatexJsInterop SabatexJsInterop
+@inject IIdentityAdapter IdentityAdapter
+
+@if (!string.IsNullOrEmpty(DisplayMessage))
+{
+    var statusMessageClass = DisplayMessage.StartsWith("Error") ? "danger" : "success";
+    <div class="alert alert-@statusMessageClass" role="alert">
+        @DisplayMessage
+    </div>
+}
+
+@code {
+    private string? messageFromCookie;
+
+    [Parameter]
+    public string? Message { get; set; }
+
+    private string? DisplayMessage => Message ?? messageFromCookie;
+
+    protected override async Task OnInitializedAsync()
+    {
+        messageFromCookie = await IdentityAdapter.GetStatusMessage();
+
+        //var result = await SabatexJsInterop.CleanCookie(IdentityAdapter.StatusCookieName);
+    }
+}

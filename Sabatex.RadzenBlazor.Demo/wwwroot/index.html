@@ -33,6 +33,25 @@
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <script>
+        window.cultureCookie = {
+            get: () => {
+                const name = ".AspNetCore.Culture=";
+                const ca = document.cookie.split(";");
+                for (let c of ca) {
+                    c = c.trim();
+                    if (c.startsWith(name)) {
+                        return c.substring(name.length);
+                    }
+                }
+                return "";
+            },
+            set: lang => {
+                // e.g. lang = "uk-UA"
+                document.cookie = `.AspNetCore.Culture=c=${lang}|uic=${lang};path=/;`;
+            }
+        };
+    </script>
 </body>
 
 </html>

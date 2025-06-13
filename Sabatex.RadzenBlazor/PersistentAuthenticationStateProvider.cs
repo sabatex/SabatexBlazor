@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Sabatex.Core.Identity;
 using Sabatex.RadzenBlazor.Models;
 using System.Security.Claims;
 
@@ -22,8 +23,8 @@ public class PersistentAuthenticationStateProvider : AuthenticationStateProvider
 
     IEnumerable<Claim> GetClaims(UserInfo userInfo)
     {
-          yield return new Claim(ClaimTypes.NameIdentifier, userInfo.Id.ToString());
-            yield return new Claim(ClaimTypes.Name, userInfo.Email);
+            yield return new Claim(ClaimTypes.NameIdentifier, userInfo.Id.ToString());
+            yield return new Claim(CustomClaimTypes.FullName, userInfo.Name);
             yield return new Claim(ClaimTypes.Email, userInfo.Email);
             foreach (var role in userInfo.Roles)
             {
