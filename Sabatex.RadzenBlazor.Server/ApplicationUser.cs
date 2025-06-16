@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 namespace Sabatex.RadzenBlazor.Server;
 
 /// <summary>
-/// extend IdentityUser for Name
+/// extend IdentityUser for FullName
 /// </summary>
 public class ApplicationUser: IdentityUser
 {
-    public string? Name { get; set; }
+    /// <summary>
+    /// Gets or sets the full name of the user identity.
+    /// </summary>
+    public string? FullName { get; set; }
 }
