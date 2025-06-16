@@ -8,7 +8,7 @@
 	<IsPackable>true</IsPackable>
 	<PackageId>Sabatex.Core</PackageId>
 	<Product>Sabatex.Core</Product>
-	<Version>9.0.2-rc9</Version>
+	<Version>9.0.3</Version>
 	<Authors>Serhiy Lakas</Authors>
 	<Copyright>Serhiy Lakas</Copyright>
 	<Description>base definitions for Sabatex</Description>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sabatex.Core;
+namespace Sabatex.Core.Identity;
 
 /// <summary>
 /// This API supports the ASP.NET Core Identity infrastructure and is not intended to be used as a general purpose
