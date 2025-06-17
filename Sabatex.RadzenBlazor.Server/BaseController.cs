@@ -11,6 +11,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Sabatex.Core.RadzenBlazor;
+using System.Globalization;
 
 
 
@@ -49,6 +50,8 @@ public abstract class BaseController<TItem> : ControllerBase where TItem : class
     /// <remarks>This field is intended for internal use by the class to facilitate logging operations. It is
     /// initialized by the class and should not be modified directly.</remarks>
     protected readonly ILogger logger;
+
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseController"/> class with the specified database context and
     /// logger.
@@ -112,7 +115,7 @@ public abstract class BaseController<TItem> : ControllerBase where TItem : class
     /// items matching the query.</returns>
     /// <exception cref="Exception">Thrown if the provided JSON string cannot be deserialized into valid query parameters.</exception>
     [HttpGet]
-    public virtual async Task<ODataServiceResult<TItem>> Get([FromQuery] string json)
+    public virtual async Task<QueryResult<TItem>> Get([FromQuery] string json)
     {
         QueryParams? queryParams = JsonSerializer.Deserialize<QueryParams>(Uri.UnescapeDataString(json));
 
@@ -134,24 +137,24 @@ public abstract class BaseController<TItem> : ControllerBase where TItem : class
             query = query.Where($"it => it.{queryParams.ForeginKey.Name}.ToString() == \"{queryParams.ForeginKey.Id}\"");
         }
 
-        if (!String.IsNullOrEmpty(queryParams.Args.Filter))
-            query = query.Where(queryParams.Args.Filter); 
+        if (!String.IsNullOrEmpty(queryParams.Filter))
+            query = query.Where(queryParams.Filter); 
 
         query = OnAfterWhereInGet(query,queryParams);
 
-        if (!String.IsNullOrEmpty(queryParams.Args.OrderBy))
+        if (!String.IsNullOrEmpty(queryParams.OrderBy))
         {
-            query = query.OrderBy(queryParams.Args.OrderBy);
+            query = query.OrderBy(queryParams.OrderBy);
         }
        
-        if (queryParams.Args.Skip != null)
-            query = query.Skip(queryParams.Args.Skip.Value); 
-        if (queryParams.Args.Top != null)
-            query = query.Take(queryParams.Args.Top.Value);
+        if (queryParams.Skip != null)
+            query = query.Skip(queryParams.Skip.Value); 
+        if (queryParams.Top != null)
+            query = query.Take(queryParams.Top.Value);
 
-        var result = new ODataServiceResult<TItem>();
+        var result = new QueryResult<TItem>();
         result.Value = await query.ToArrayAsync();
-        if ((queryParams.Args.Skip != null) || (queryParams.Args.Top != null))
+        if ((queryParams.Skip != null) || (queryParams.Top != null))
             result.Count = await query.CountAsync();
         return result;
     }

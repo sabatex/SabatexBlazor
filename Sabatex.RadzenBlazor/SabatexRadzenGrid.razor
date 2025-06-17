@@ -110,7 +110,7 @@
 
     public bool IsGridRO { get; set; } = false;
     protected RadzenDataGrid<TItem> grid = default!;
-    protected Core.RadzenBlazor.ODataServiceResult<TItem> dataCollection = new Core.RadzenBlazor.ODataServiceResult<TItem>();
+    protected QueryResult<TItem> dataCollection = new QueryResult<TItem>();
     protected bool IsGridDataLoading = false;
     protected IList<TItem>? SelectedItems;
     private TItem? CurrentItem => SelectedItems?.First();
@@ -167,31 +167,15 @@
                 }
             }
 
-            var largs = new Sabatex.Core.RadzenBlazor.LoadDataArgs
-            {
-                Filter = args.Filter,
-                Filters = args.Filters.Select(s=> new Core.RadzenBlazor.FilterDescriptor
+            var queryParams = new QueryParams
                 {
-                    FilterOperator = Enum.Parse<Sabatex.Core.RadzenBlazor.FilterOperator>(s.FilterOperator.ToString()),
-                    Property = s.Property,
-                    FilterProperty = s.FilterProperty,
-                    FilterValue = s.FilterValue,
-                    LogicalFilterOperator = Enum.Parse<Sabatex.Core.RadzenBlazor.LogicalFilterOperator>(s.LogicalFilterOperator.ToString()),
-                    SecondFilterOperator = Enum.Parse<Sabatex.Core.RadzenBlazor.FilterOperator>(s.SecondFilterOperator.ToString()),
+                    Filter = args.Filter,
+                    OrderBy = args.OrderBy,
+                    Skip = args.Skip,
+                    Top = args.Top,
+                    ForeginKey = ForeginKey,
+                };
 
-
-                }),
-                OrderBy = args.OrderBy,
-                Skip = args.Skip,
-                Top = args.Top,
-                Sorts = args.Sorts.Select(s => new Core.RadzenBlazor.SortDescriptor
-                {
-                    Property = s.Property,
-                    SortOrder = Enum.Parse<Sabatex.Core.RadzenBlazor.SortOrder>(s.SortOrder.ToString())
-                }).ToList()
-            };
-
-            var queryParams = new QueryParams(largs, ForeginKey);
 
             var result = await DataAdapter.GetAsync<TItem>(queryParams);
             dataCollection.Value = result.Value;

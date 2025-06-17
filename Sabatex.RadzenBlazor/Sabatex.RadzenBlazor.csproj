@@ -3,7 +3,7 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>9.0.52</Version>
+		<Version>9.0.6</Version>
 		<Copyright>Sabatex</Copyright>
 		<Authors>Serhiy Lakas</Authors>
 		<Title>Extend Radzen Blazor Components</Title>
@@ -29,13 +29,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.5" />
-		<PackageReference Include="Radzen.Blazor" Version="7.0.7" />
-		<PackageReference Include="System.Text.Encodings.Web" Version="9.0.5" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.5" />
-		<PackageReference Include="System.Text.Json" Version="9.0.5" />
-		<PackageReference Include="Sabatex.Core" Version="9.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.6" />
+		<PackageReference Include="Radzen.Blazor" Version="7.1.0" />
+		<PackageReference Include="System.Text.Encodings.Web" Version="9.0.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6" />
+		<PackageReference Include="System.Text.Json" Version="9.0.6" />
+		<PackageReference Include="Sabatex.Core" Version="9.0.5" />
 	</ItemGroup>
 
 

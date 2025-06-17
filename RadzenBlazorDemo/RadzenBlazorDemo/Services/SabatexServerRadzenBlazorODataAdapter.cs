@@ -20,10 +20,10 @@ public class SabatexServerRadzenBlazorODataAdapter : ISabatexRadzenBlazorDataAda
         throw new NotImplementedException();
     }
 
-    public async Task<Sabatex.Core.RadzenBlazor.ODataServiceResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null, string? ee = null) where TItem : class, IEntityBase<Guid>
+    public async Task<QueryResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null, string? ee = null) where TItem : class, IEntityBase<Guid>
     {
         var result = context.Set<TItem>().AsQueryable();
-        return new Sabatex.Core.RadzenBlazor.ODataServiceResult<TItem> { Count = 0,Value = await result.ToArrayAsync() };
+        return new QueryResult<TItem> { Count = 0,Value = await result.ToArrayAsync() };
     }
 
     public Task<string[]> GetAvaliableRolesAsync()
@@ -52,7 +52,7 @@ public class SabatexServerRadzenBlazorODataAdapter : ISabatexRadzenBlazorDataAda
         throw new NotImplementedException();
     }
 
-    Task<Sabatex.Core.RadzenBlazor.ODataServiceResult<TItem>> ISabatexRadzenBlazorDataAdapter<Guid>.GetAsync<TItem>(Sabatex.Core.RadzenBlazor.QueryParams queryParams)
+    Task<QueryResult<TItem>> ISabatexRadzenBlazorDataAdapter<Guid>.GetAsync<TItem>(Sabatex.Core.RadzenBlazor.QueryParams queryParams)
     {
         return null;
         throw new NotImplementedException();

@@ -83,7 +83,7 @@ public SabatexRadzenBlazorODataAdapter(HttpClient httpClient, ILogger<SabatexRad
         baseUri = new Uri(this.httpClient.BaseAddress ?? new Uri(navigationManager.BaseUri), "odata/");
         this.logger = logger;
     }
-    public async Task<Core.RadzenBlazor.ODataServiceResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null,string? apply = null) where TItem : class, IEntityBase<TKey>
+    public async Task<QueryResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null,string? apply = null) where TItem : class, IEntityBase<TKey>
     {
         var uri = new Uri(baseUri, $"{typeof(TItem).Name}");
         uri = GetODataUri2(uri: uri, filter: filter, top: top, skip: skip, orderby: orderby, expand: expand, select: select, count: count,apply);
@@ -92,21 +92,20 @@ public SabatexRadzenBlazorODataAdapter(HttpClient httpClient, ILogger<SabatexRad
         var response = await httpClient.SendAsync(httpRequestMessage);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             throw new Exception($"Помилка запиту {response.StatusCode}");
-        return await Radzen.HttpResponseMessageExtensions.ReadAsync<Core.RadzenBlazor.ODataServiceResult<TItem>>(response);
+        return await Radzen.HttpResponseMessageExtensions.ReadAsync<QueryResult<TItem>>(response);
 
     }
-    public async Task<Core.RadzenBlazor.ODataServiceResult<TItem>> GetAsync<TItem>(QueryParams queryParams) where TItem : class, IEntityBase<TKey>
+    public async Task<QueryResult<TItem>> GetAsync<TItem>(QueryParams queryParams) where TItem : class, IEntityBase<TKey>
     {
-        var args = queryParams.Args;
         var uri = new Uri(baseUri, $"{typeof(TItem).Name}");
         string expand = string.Empty;
-        uri = Radzen.ODataExtensions.GetODataUri(uri: uri, filter: args.Filter, top: args.Top, skip: args.Skip, orderby: args.OrderBy, expand: expand, count: args.Top != null && args.Skip != null);
+        uri = Radzen.ODataExtensions.GetODataUri(uri: uri, filter: queryParams.Filter, top: queryParams.Top, skip: queryParams.Skip, orderby: queryParams.OrderBy, expand: expand, count: queryParams.Top != null && queryParams.Skip != null);
         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
 
         var response = await httpClient.SendAsync(httpRequestMessage);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             throw new Exception($"Помилка запиту {response.StatusCode}");
-        return await Radzen.HttpResponseMessageExtensions.ReadAsync<Core.RadzenBlazor.ODataServiceResult<TItem>>(response);
+        return await Radzen.HttpResponseMessageExtensions.ReadAsync<QueryResult<TItem>>(response);
 
     }
 

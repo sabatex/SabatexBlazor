@@ -40,7 +40,7 @@ public class SabatexRadzenBlazorApiDataAdapter<TKey> : ISabatexRadzenBlazorDataA
         baseUri = new Uri(this.httpClient.BaseAddress ?? new Uri(navigationManager.BaseUri), "api/");
         this.logger = logger;
     }
-    public async Task<Core.RadzenBlazor.ODataServiceResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null,string? apply = null) where TItem : class, IEntityBase<TKey>
+    public async Task<QueryResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null,string? apply = null) where TItem : class, IEntityBase<TKey>
     {
         var uri = new Uri(baseUri, $"{typeof(TItem).Name}");
         //uri = GetODataUri(uri: uri, filter: filter, top: top, skip: skip, orderby: orderby, expand: expand, select: select, count: count,apply);
@@ -49,15 +49,15 @@ public class SabatexRadzenBlazorApiDataAdapter<TKey> : ISabatexRadzenBlazorDataA
         var response = await httpClient.SendAsync(httpRequestMessage);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             throw new Exception($"Помилка запиту {response.StatusCode}");
-        return await Radzen.HttpResponseMessageExtensions.ReadAsync<Core.RadzenBlazor.ODataServiceResult<TItem>>(response);
+        return await Radzen.HttpResponseMessageExtensions.ReadAsync<QueryResult<TItem>>(response);
 
     }
-    public async Task<Core.RadzenBlazor.ODataServiceResult<TItem>> GetAsync<TItem>(QueryParams queryParams) where TItem : class, IEntityBase<TKey>
+    public async Task<QueryResult<TItem>> GetAsync<TItem>(QueryParams queryParams) where TItem : class, IEntityBase<TKey>
     {
         var uri = new Uri(baseUri, $"{typeof(TItem).Name}?json={System.Text.Json.JsonSerializer.Serialize(queryParams)}");
         var response = await httpClient.GetAsync(uri);
         if (response.IsSuccessStatusCode)
-            return await ReadAsync<Core.RadzenBlazor.ODataServiceResult<TItem>>(response);
+            return await ReadAsync<QueryResult<TItem>>(response);
         if (response.StatusCode == HttpStatusCode.Unauthorized)
             throw new Exception(Localize<SabatexRadzenBlazorApiDataAdapter<TKey>>("Access denied!"));
 
