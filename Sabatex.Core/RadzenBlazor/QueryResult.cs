@@ -11,13 +11,12 @@ namespace Sabatex.Core.RadzenBlazor;
 /// Class ODataServiceResult.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class ODataServiceResult<T>
+public class QueryResult<T>
 {
     /// <summary>
     /// Gets or sets the count.
     /// </summary>
     /// <value>The count.</value>
-    [JsonPropertyName("@odata.count")]
     public int Count { get; set; }
 
     /// <summary>

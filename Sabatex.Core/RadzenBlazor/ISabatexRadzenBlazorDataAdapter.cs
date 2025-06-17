@@ -10,8 +10,8 @@ namespace Sabatex.Core.RadzenBlazor;
 
 public interface ISabatexRadzenBlazorDataAdapter<TKey>
 {
-    Task<ODataServiceResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format=null, string? select=null, string? apply = null) where TItem : class,IEntityBase<TKey>;
-    Task<ODataServiceResult<TItem>> GetAsync<TItem>(QueryParams queryParams) where TItem : class, IEntityBase<TKey>;
+    Task<QueryResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format=null, string? select=null, string? apply = null) where TItem : class,IEntityBase<TKey>;
+    Task<QueryResult<TItem>> GetAsync<TItem>(QueryParams queryParams) where TItem : class, IEntityBase<TKey>;
     Task<TItem?> GetByIdAsync<TItem>(TKey id, string? expand=null) where TItem: class, IEntityBase<TKey>;
     Task<TItem?> GetByIdAsync<TItem>(string id, string? expand = null) where TItem : class, IEntityBase<TKey>;
 

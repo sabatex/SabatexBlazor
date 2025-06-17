@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Sabatex.Core.RadzenBlazor;
 
-public enum RadzenSearchDirection
-{
-    Start,
-    End,
-    Contains
-}
+//public enum RadzenSearchDirection
+//{
+//    Start,
+//    End,
+//    Contains
+//}
