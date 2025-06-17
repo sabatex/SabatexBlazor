@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Radzen;
 using Sabatex.Core;
+using Sabatex.Core.RadzenBlazor;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -82,7 +83,7 @@ public SabatexRadzenBlazorODataAdapter(HttpClient httpClient, ILogger<SabatexRad
         baseUri = new Uri(this.httpClient.BaseAddress ?? new Uri(navigationManager.BaseUri), "odata/");
         this.logger = logger;
     }
-    public async Task<ODataServiceResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null,string? apply = null) where TItem : class, IEntityBase<TKey>
+    public async Task<Core.RadzenBlazor.ODataServiceResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null,string? apply = null) where TItem : class, IEntityBase<TKey>
     {
         var uri = new Uri(baseUri, $"{typeof(TItem).Name}");
         uri = GetODataUri2(uri: uri, filter: filter, top: top, skip: skip, orderby: orderby, expand: expand, select: select, count: count,apply);
@@ -91,10 +92,10 @@ public SabatexRadzenBlazorODataAdapter(HttpClient httpClient, ILogger<SabatexRad
         var response = await httpClient.SendAsync(httpRequestMessage);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             throw new Exception($"Помилка запиту {response.StatusCode}");
-        return await Radzen.HttpResponseMessageExtensions.ReadAsync<Radzen.ODataServiceResult<TItem>>(response);
+        return await Radzen.HttpResponseMessageExtensions.ReadAsync<Core.RadzenBlazor.ODataServiceResult<TItem>>(response);
 
     }
-    public async Task<ODataServiceResult<TItem>> GetAsync<TItem>(QueryParams queryParams) where TItem : class, IEntityBase<TKey>
+    public async Task<Core.RadzenBlazor.ODataServiceResult<TItem>> GetAsync<TItem>(QueryParams queryParams) where TItem : class, IEntityBase<TKey>
     {
         var args = queryParams.Args;
         var uri = new Uri(baseUri, $"{typeof(TItem).Name}");
@@ -105,7 +106,7 @@ public SabatexRadzenBlazorODataAdapter(HttpClient httpClient, ILogger<SabatexRad
         var response = await httpClient.SendAsync(httpRequestMessage);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             throw new Exception($"Помилка запиту {response.StatusCode}");
-        return await Radzen.HttpResponseMessageExtensions.ReadAsync<Radzen.ODataServiceResult<TItem>>(response);
+        return await Radzen.HttpResponseMessageExtensions.ReadAsync<Core.RadzenBlazor.ODataServiceResult<TItem>>(response);
 
     }
 

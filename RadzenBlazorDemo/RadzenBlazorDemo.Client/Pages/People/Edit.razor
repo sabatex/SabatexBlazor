@@ -1,0 +1,37 @@
+﻿@page "/people/edit"
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@inject ISabatexRadzenBlazorDataAdapter<Guid> DataAdapter
+@using RadzenBlazorDemo.Client.Models
+@using Sabatex.Core.RadzenBlazor
+
+<SabatexEditForm TItem="Person" TKey="Guid" Item="item" IsNew="@(Id==null)" Style="height:100%"  TextButtonSave="Зберегти" TextButtonCancel="Закрити">
+     <Content Context="item">
+        <RadzenTextBox @bind-Value="item.Name" Name="Name" Style="width:100%" Placeholder="Ім'я" Required="true" />
+
+
+
+
+    </Content>
+</SabatexEditForm>
+
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    private Person? item;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != null)
+        {
+            item = await DataAdapter.GetByIdAsync<Person>(Id);
+        }
+        else
+        {
+            item = new Person();
+        }
+    }
+
+}

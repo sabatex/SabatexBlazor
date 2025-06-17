@@ -17,7 +17,7 @@
             <ValidationSummary class="text-danger" role="alert" />
              <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.FullName" class="form-control" placeholder="@Localizer["Please choose your Full Name"]" />
-                <label for="name" class="form-label">@Localizer["FullName"]</label>
+                <label for="full-name" class="form-label">@Localizer["FullName"]</label>
             </div>
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.PhoneNumber" class="form-control" placeholder=@Localizer["Please enter your phone number."] />
@@ -67,12 +67,11 @@
 
     private sealed class InputModel
     {
-        [Display(Name = "FullName", ResourceType = typeof(Index))]
+        [Display(Name = "FullName")]
         public string? FullName { get; set; }
 
 
-        [Phone]
-        [Display(Name = "Phone number", ResourceType = typeof(Index))]
+        [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
     }
 }

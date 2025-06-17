@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using RadzenBlazorDemo.Client.Pages;
 using RadzenBlazorDemo.Components;
 using RadzenBlazorDemo.Data;
+using RadzenBlazorDemo.Services;
 using Sabatex.Core.Identity;
+using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor;
 using Sabatex.RadzenBlazor.Server;
 
@@ -44,12 +46,29 @@ namespace RadzenBlazorDemo
             builder.Services.AddAuthorization();
 
 
-            builder.Services.AddSingleton<Sabatex.Core.IEmailSender<ApplicationUser>, IdentityEmailSender>();
+            builder.Services.AddSingleton<Sabatex.Core.Identity.IEmailSender<ApplicationUser>, IdentityEmailSender>();
             builder.Services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
+            builder.Services.AddControllers();
             builder.Services.AddSabatexRadzenBlazor();
             builder.Services.AddScoped<IIdentityAdapter,IdentityAdapterServer>();
+            builder.Services.AddScoped<ISabatexRadzenBlazorDataAdapter<Guid>, SabatexServerRadzenBlazorODataAdapter>();
             builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
             builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
+
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    if (context.Request.Path.StartsWithSegments("/api"))
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    }
+                    context.Response.Redirect(context.RedirectUri);
+                    return Task.CompletedTask;
+                };
+            });
 
             var app = builder.Build();
 
@@ -92,7 +111,7 @@ namespace RadzenBlazorDemo
 
             // Add additional endpoints required by the Identity /Account Razor components.
             app.MapAdditionalIdentityEndpoints();
-
+            app.MapControllers();
             app.Run();
         }
     }

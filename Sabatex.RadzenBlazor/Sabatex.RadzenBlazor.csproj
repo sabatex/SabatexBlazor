@@ -3,11 +3,11 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>9.0.5</Version>
+		<Version>9.0.52</Version>
 		<Copyright>Sabatex</Copyright>
 		<Authors>Serhiy Lakas</Authors>
 		<Title>Extend Radzen Blazor Components</Title>
-		<Description>Migrate to NET9.0</Description>
+		<Description>Extend Radzen Blazor Components</Description>
 		<PackageTags>#Blazor</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -35,7 +35,7 @@
 		<PackageReference Include="System.Text.Encodings.Web" Version="9.0.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.5" />
 		<PackageReference Include="System.Text.Json" Version="9.0.5" />
-		<PackageReference Include="Sabatex.Core" Version="9.0.2" />
+		<PackageReference Include="Sabatex.Core" Version="9.0.4" />
 	</ItemGroup>
 
 

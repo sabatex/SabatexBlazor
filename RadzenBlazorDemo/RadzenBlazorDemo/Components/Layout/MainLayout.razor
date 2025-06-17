@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager Navigation
 
-<RadzenComponents />
+<RadzenComponents @rendermode=InteractiveWebAssembly />
 <RadzenLayout @ref="radzenLayout">
     <RadzenHeader Style="min-height:auto" @ref="radzenHeader">
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.End" JustifyContent="JustifyContent.SpaceBetween" class="rz-ml-2">

@@ -1,4 +1,5 @@
 ﻿@using Sabatex.Core
+@using Sabatex.Core.RadzenBlazor
 @typeparam TKey
 @typeparam TItem  where TItem : class, IEntityBase<TKey>,new()
 @inherits SabatexRadzenBlazorBaseDataComponent<TKey>
@@ -109,7 +110,7 @@
 
     public bool IsGridRO { get; set; } = false;
     protected RadzenDataGrid<TItem> grid = default!;
-    protected ODataServiceResult<TItem> dataCollection = new ODataServiceResult<TItem>();
+    protected Core.RadzenBlazor.ODataServiceResult<TItem> dataCollection = new Core.RadzenBlazor.ODataServiceResult<TItem>();
     protected bool IsGridDataLoading = false;
     protected IList<TItem>? SelectedItems;
     private TItem? CurrentItem => SelectedItems?.First();
@@ -123,7 +124,7 @@
 
 
 
-    protected async Task GridLoadData(LoadDataArgs args)
+    protected async Task GridLoadData(Radzen.LoadDataArgs args)
     {
         IsGridDataLoading = true;
         IEnumerable<FieldDescriptor>? filterFields = null;
@@ -131,8 +132,11 @@
         {
 
 
+
             if (dataCollection == null)
                 throw new ArgumentNullException(nameof(dataCollection));
+
+
             string filter = string.Empty;
             if (filterFields != null)
             {
@@ -162,15 +166,34 @@
                     filter = $"{filter} and {ForeginKey.Name} eq {ForeginKey.Id}";
                 }
             }
-            var queryParams = new QueryParams(args, ForeginKey);
+
+            var largs = new Sabatex.Core.RadzenBlazor.LoadDataArgs
+            {
+                Filter = args.Filter,
+                Filters = args.Filters.Select(s=> new Core.RadzenBlazor.FilterDescriptor
+                {
+                    FilterOperator = Enum.Parse<Sabatex.Core.RadzenBlazor.FilterOperator>(s.FilterOperator.ToString()),
+                    Property = s.Property,
+                    FilterProperty = s.FilterProperty,
+                    FilterValue = s.FilterValue,
+                    LogicalFilterOperator = Enum.Parse<Sabatex.Core.RadzenBlazor.LogicalFilterOperator>(s.LogicalFilterOperator.ToString()),
+                    SecondFilterOperator = Enum.Parse<Sabatex.Core.RadzenBlazor.FilterOperator>(s.SecondFilterOperator.ToString()),
+
+
+                }),
+                OrderBy = args.OrderBy,
+                Skip = args.Skip,
+                Top = args.Top,
+                Sorts = args.Sorts.Select(s => new Core.RadzenBlazor.SortDescriptor
+                {
+                    Property = s.Property,
+                    SortOrder = Enum.Parse<Sabatex.Core.RadzenBlazor.SortOrder>(s.SortOrder.ToString())
+                }).ToList()
+            };
+
+            var queryParams = new QueryParams(largs, ForeginKey);
 
             var result = await DataAdapter.GetAsync<TItem>(queryParams);
-            //var result = await DataAdapter.GetAsync<TItem>(orderby: $"{args.OrderBy}",
-            //top: args.Top,
-            //skip: args.Skip,
-            //count: args.Top != null && args.Skip != null,
-            //expand: ExpandGrid,
-            //filter: filter);
             dataCollection.Value = result.Value;
             dataCollection.Count = result.Count;
         }

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
+using Sabatex.Core.RadzenBlazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;

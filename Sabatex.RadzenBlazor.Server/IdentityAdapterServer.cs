@@ -39,7 +39,7 @@ public class IdentityAdapterServer : IIdentityAdapter
     private readonly IUserStore<ApplicationUser> _userStore;
     private readonly ILogger<IdentityAdapterServer> _logger;
     private readonly NavigationManager _navigationManager;
-    private readonly Core.IEmailSender<ApplicationUser> _emailSender;
+    private readonly Core.Identity.IEmailSender<ApplicationUser> _emailSender;
     private readonly IStringLocalizer<IdentityAdapterServer> _localizer;
 
     /// <summary>
@@ -62,7 +62,7 @@ public class IdentityAdapterServer : IIdentityAdapter
                                  IUserStore<ApplicationUser> userStore,
                                  ILogger<IdentityAdapterServer> logger,
                                  NavigationManager navigationManager,
-                                 Core.IEmailSender<ApplicationUser> emailSender,
+                                 Core.Identity.IEmailSender<ApplicationUser> emailSender,
                                  IStringLocalizer<IdentityAdapterServer> stringLocalizer)
     {
         _signInManager = signInManager;
@@ -414,7 +414,8 @@ public class IdentityAdapterServer : IIdentityAdapter
             RedirectToCurrentPageWithStatus(message);
             return; // Failed to update user name
         }
-        RedirectToCurrentPageWithStatus(message);
+        await _signInManager.RefreshSignInAsync(user);
+        RedirectTo("/");
         return; // User info updated successfully
 
     }

@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<Version>9.0.5</Version>
+	<Version>9.0.52</Version>
 	<Copyright>Serhiy Lakas</Copyright>
 	<Authors>Serhiy Lakas</Authors>
 	<Title>Sabatex Radzen Blazor Server</Title>
@@ -22,8 +22,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="9.0.5" />
 		<PackageReference Include="MailKit" Version="4.12.1" />
-		<PackageReference Include="Sabatex.Core" Version="9.0.2" />
-		<PackageReference Include="Sabatex.RadzenBlazor" Version="9.0.5" />
+		<PackageReference Include="Sabatex.Core" Version="9.0.4" />
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.6" />
 	</ItemGroup>
 

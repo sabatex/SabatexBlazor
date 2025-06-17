@@ -12,7 +12,7 @@ using MailKit.Net.Smtp;
 namespace Sabatex.RadzenBlazor.Server;
 
 // Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.
-public sealed class IdentityEmailSender : Sabatex.Core.IEmailSender<ApplicationUser>
+public sealed class IdentityEmailSender : Sabatex.Core.Identity.IEmailSender<ApplicationUser>
 {
     private readonly IConfiguration Configuration;
     private readonly ILogger<IdentityEmailSender> _logger;
