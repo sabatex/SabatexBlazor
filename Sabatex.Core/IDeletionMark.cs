@@ -1,11 +1,11 @@
 namespace Sabatex.Core;
 /// <summary>
-/// Entity object support mark object as deleted
+/// Defines an entity that supports logical (soft) deletion via a deletion mark.
 /// </summary>
 public interface IDeletionMark
 {
-       /// <summary>
-       /// Mark record for delete (user invisble )
-       /// </summary>
-       public bool DeletionMark { get; set; }
+    /// <summary>
+    /// Indicates whether the record is marked as deleted (invisible to the user).
+    /// </summary>
+    public bool DeletionMark { get; set; }
 }
