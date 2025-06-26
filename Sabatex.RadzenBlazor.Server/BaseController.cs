@@ -35,7 +35,7 @@ namespace Sabatex.RadzenBlazor.Server;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public abstract class BaseController<TItem> : ControllerBase where TItem : class, IEntityBase<Guid>, new()
+public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : class, IEntityBase<TKey>, new()
 {
     /// <summary>
     /// Represents the database context used for interacting with the underlying data store.
@@ -169,7 +169,7 @@ public abstract class BaseController<TItem> : ControllerBase where TItem : class
     /// <param name="id">The unique identifier of the item to be retrieved. This parameter can be used to refine the query.</param>
     /// <returns>An <see cref="IQueryable{TItem}"/> representing the modified query. The returned query will be used to retrieve
     /// the item by its identifier.</returns>
-    protected virtual IQueryable<TItem> OnBeforeGetById(IQueryable<TItem> query,Guid id)
+    protected virtual IQueryable<TItem> OnBeforeGetById(IQueryable<TItem> query,TKey id)
     {
         return query;
     }
@@ -181,7 +181,7 @@ public abstract class BaseController<TItem> : ControllerBase where TItem : class
     /// <param name="item">The item retrieved by its identifier. This parameter may be <see langword="null"/> if no item was found.</param>
     /// <param name="id">The unique identifier used to retrieve the item.</param>
     /// <returns></returns>
-    protected virtual async Task OnAfterGetById(TItem item, Guid id)
+    protected virtual async Task OnAfterGetById(TItem item, TKey id)
     {
         await Task.Yield();
     }
@@ -203,11 +203,11 @@ public abstract class BaseController<TItem> : ControllerBase where TItem : class
     /// <returns>An <see cref="IActionResult"/> containing the requested item if access is granted,  or an <see
     /// cref="UnauthorizedResult"/> if access is denied.</returns>
     [HttpGet("{id}")]
-    public virtual async Task<IActionResult> GetById([FromRoute]Guid id)
+    public virtual async Task<IActionResult> GetById([FromRoute]TKey id)
     {
         var query = context.Set<TItem>().AsQueryable<TItem>();
         query = OnBeforeGetById(query,id);
-        var result  = await query.Where(s=>s.Id == id).SingleAsync();
+        var result  = await query.Where(s=>EqualityComparer<TKey>.Default.Equals(s.Id,id)).SingleAsync();
         if (await CheckAccess(result,null))
         {
             await OnAfterGetById(result, id);
@@ -311,15 +311,15 @@ public abstract class BaseController<TItem> : ControllerBase where TItem : class
     /// access to update the item.</description></item> <item><description><see cref="OkObjectResult"/> containing the
     /// updated item if the operation succeeds.</description></item> </list></returns>
     [HttpPut("{id}")]
-    public virtual async Task<IActionResult> Put([FromRoute] Guid id, TItem update)
+    public virtual async Task<IActionResult> Put([FromRoute] TKey id, TItem update)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        if (id != update.Id)
+        if (! EqualityComparer<TKey>.Default.Equals(id,update.Id))
         {
-            return BadRequest();
+            return BadRequest("Mismatched entity ID.");
         }
 
         var item = await context.Set<TItem>().FindAsync(id);
@@ -328,7 +328,16 @@ public abstract class BaseController<TItem> : ControllerBase where TItem : class
 
         if (!await CheckAccess(item,update))
             return Unauthorized(ModelState);
-        
+
+        if (item is IVersionedEntity versionedItem &&  update is IVersionedEntity versionedUpdate &&  versionedItem.DateStamp != versionedUpdate.DateStamp)
+        {
+            return Conflict("The item was modified by another user.");
+        }
+
+        //  update the DateStamp if the item implements IVersionedEntity
+        if (item is IVersionedEntity versioned)
+            versioned.DateStamp = DateTimeOffset.UtcNow;
+
         await OnBeforeUpdateAsync(item,update);
         context.Entry(item).CurrentValues.SetValues(update);
         try
@@ -393,11 +402,39 @@ public abstract class BaseController<TItem> : ControllerBase where TItem : class
     }
 
 
-    private bool ValueExists(Guid key)
+    private bool ValueExists(TKey key)
     {
-        return context.Set<TItem>().Any(p => p.Id == key);
+        return context.Set<TItem>().Any(p => EqualityComparer<TKey>.Default.Equals(p.Id,key));
     }
 
 
 
+}
+
+
+/// <summary>
+/// Serves as the base class for API controllers that manage entities of type <typeparamref name="TItem"/>.
+/// </summary>
+/// <remarks>The <see cref="BaseController{TItem}"/> class provides common functionality for handling CRUD
+/// operations, including querying, adding, updating, and deleting entities. It is designed to be inherited by specific
+/// controllers that manage particular entity types. This class includes extension points for customizing query behavior
+/// and access control, as well as built-in support for OData-style querying.  Key features include: <list
+/// type="bullet"> <item><description>Support for OData-style querying, including filtering, sorting, and
+/// pagination.</description></item> <item><description>Customizable query modification through virtual methods such as
+/// <see cref="OnAfterIncludeInGet"/> and <see cref="OnAfterWhereInGet"/>.</description></item>
+/// <item><description>Access control checks via the abstract <see cref="CheckAccess"/> method.</description></item>
+/// <item><description>Pre- and post-operation hooks for CRUD actions, such as <see cref="OnBeforeAddItemToDatabase"/>
+/// and <see cref="OnAfterGetById"/>.</description></item> </list> Derived classes must implement the <see
+/// cref="CheckAccess"/> method to define access control logic.</remarks>
+/// <typeparam name="TItem">The type of entity managed by the controller. Must implement <see cref="IEntityBase{Guid}"/> and have a
+/// parameterless constructor.</typeparam>
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public abstract class BaseController<TItem> : BaseController<TItem,Guid> where TItem : class, IEntityBase<Guid>, new()
+{
+    protected BaseController(DbContext context, ILogger logger): base(context, logger)
+    {
+        
+    }
 }
