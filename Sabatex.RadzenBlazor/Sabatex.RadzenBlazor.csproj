@@ -3,7 +3,7 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>9.0.7-rc4</Version>
+		<Version>9.0.7-rc7</Version>
 		<Copyright>Sabatex</Copyright>
 		<Authors>Serhiy Lakas</Authors>
 		<Title>Extend Radzen Blazor Components</Title>

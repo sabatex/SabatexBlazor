@@ -82,6 +82,10 @@
     public bool DoubleClickRowEdit { get; set; } = true;
     [Parameter]
     public Action<DataGridCellRenderEventArgs<TItem>>? CellRender { get; set; }
+
+    [Parameter]
+    public IEnumerable<string>? IncludeNestedProperty { get; set; }
+
     /// <summary>
     /// Support insert to collection
     /// </summary>
@@ -174,6 +178,7 @@
                     Skip = args.Skip,
                     Top = args.Top,
                     ForeginKey = ForeginKey,
+                    Include = IncludeNestedProperty ?? new string[] { },
                 };
 
 
