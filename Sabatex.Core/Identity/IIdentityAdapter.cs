@@ -119,8 +119,14 @@ public interface IIdentityAdapter
 
     Task<string?> GetStatusMessage();
 
-
-
+    /// <summary>
+    /// Asynchronously retrieves a collection of available roles.
+    /// </summary>
+    /// <remarks>The returned collection may be empty if no roles are available. The roles are typically used 
+    /// for authorization or access control purposes.</remarks>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an  IEnumerable{T} of strings, where
+    /// each string represents the name of an available role.</returns>
+    Task<IEnumerable<string>?> GetAvailableRolesAsync();
 
 
 

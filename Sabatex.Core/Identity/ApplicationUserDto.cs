@@ -10,7 +10,7 @@ namespace Sabatex.Core.Identity;
 /// </summary>
 /// <remarks>This class is used to encapsulate user identity details, such as the unique identifier, full name, 
 /// email address, and optional phone number, for transfer between application layers or external systems.</remarks>
-public class ApplicationUserDto
+public class ApplicationUserDto:IEntityBase<string>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the user identity (do not set).
