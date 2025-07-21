@@ -104,7 +104,13 @@ public interface IIdentityAdapter
 
     /// <summary>Провести реєстрацію (або прив’язку) зовнішнього логіну</summary>
     Task<bool> CompleteRegistrationAsync(ExtermnalRegisterDTO model);
-
+    /// <summary>
+    /// Asynchronously retrieves information about the currently authenticated user.
+    /// </summary>
+    /// <remarks>This method requires the user to be authenticated. If no user is authenticated, the result
+    /// may be null or an exception may be thrown, depending on the implementation.</remarks>
+    /// <returns>A <see cref="Task{TResult}"/> representing the asynchronous operation.  The task result contains an <see
+    /// cref="ApplicationUserDto"/> object with details about the authenticated user.</returns>
     Task<ApplicationUserDto> GetUserInfoAsync();
 
     Task UpdateUserInfoAsync(ApplicationUserDto userInfo);
@@ -126,8 +132,14 @@ public interface IIdentityAdapter
     /// for authorization or access control purposes.</remarks>
     /// <returns>A task that represents the asynchronous operation. The task result contains an  IEnumerable{T} of strings, where
     /// each string represents the name of an available role.</returns>
-    Task<IEnumerable<string>?> GetAvailableRolesAsync();
-
-
+    Task<IEnumerable<string>> GetAvailableRolesAsync();
+    /// <summary>
+    /// Retrieves detailed information about a user based on their unique identifier.
+    /// </summary>
+    /// <param name="Id">The unique identifier of the user whose information is to be retrieved. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationUserDto"/>
+    /// object  with the user's information, or <see langword="null"/> if no user is found with the specified
+    /// identifier.</returns>
+    Task<ApplicationUserDto> GetUserInfoAsync(string Id);
 
 }

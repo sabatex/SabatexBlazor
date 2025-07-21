@@ -28,4 +28,8 @@ public class ApplicationUserDto:IEntityBase<string>
     /// Gets or sets the phone number associated with the user identity.
     /// </summary>
     public string? PhoneNumber { get; set; }
+    /// <summary>
+    /// Gets or sets the collection of roles associated with the current entity.
+    /// </summary>
+    public IEnumerable<string>? Roles { get; set; }
 }
