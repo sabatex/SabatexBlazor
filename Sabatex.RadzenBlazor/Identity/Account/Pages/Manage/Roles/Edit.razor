@@ -1,0 +1,52 @@
+﻿@page "/account/manage/role/edit/{id}"
+@using Microsoft.AspNetCore.Authorization
+@using Sabatex.Core.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@attribute [Authorize(Roles ="Admin,Administrator")]
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+
+@inject IIdentityAdapter DataAdapter
+<SabatexEditForm TItem="ApplicationUserDto" TKey="string" Item="Item" IsNew="@(Id == null)">
+    <Content Context="item">
+        <RadzenColumn Size="12" SizeMD="8" SizeLG="10">
+            <RadzenFormField Text="Description" Style="width:100%">
+                <RadzenTextBox @bind-Value="item.FullName" Name="Description" class="w-100" ReadOnly="true" />
+            </RadzenFormField>
+            <RadzenCheckBoxList @bind-Value=@Item.Roles TValue="string" class="mb-5" Change=@(args=>Item.Roles = args)>
+                <Items>
+                    @{
+                        foreach (var value in rolesCollection)
+                        {
+                            <RadzenCheckBoxListItem Text=@value Value=@value /> 
+                        }
+
+                    }
+                </Items>
+            </RadzenCheckBoxList>
+
+        </RadzenColumn>
+
+    </Content>
+</SabatexEditForm>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    IEnumerable<string>? rolesCollection;
+
+
+    ApplicationUserDto? Item;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        rolesCollection = await DataAdapter.GetAvailableRolesAsync();
+
+
+        Item = await DataAdapter.GetUserInfoAsync(Id);
+ 
+    }
+
+ 
+
+
+}

@@ -144,4 +144,43 @@ public class IdentityAdapterWasm : IIdentityAdapter
     {
         throw new NotImplementedException();
     }
+    /// <summary>
+    /// Asynchronously retrieves the list of available roles from the server.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an  IEnumerable{T} of strings
+    /// representing the available roles, or null  if the response content is empty.</returns>
+    /// <exception cref="Exception">Thrown if the server response indicates a failure. The exception message includes the HTTP status code.</exception>
+    public async Task<IEnumerable<string>?> GetAvailableRolesAsync()
+    {
+        var response = await _http.GetAsync("/api/account/roles");
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<IEnumerable<string>>();
+        }
+        else
+        {
+            throw new Exception($"Error fetching roles: {response.StatusCode}");
+        }
+    }
+    /// <summary>
+    /// Retrieves user information for the specified user ID.
+    /// </summary>
+    /// <param name="Id">The unique identifier of the user whose information is to be retrieved. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationUserDto"/>
+    /// object  with the user's information if the operation is successful.</returns>
+    /// <exception cref="Exception">Thrown if the request to fetch user roles fails. The exception message includes the HTTP status code of the
+    /// failed response.</exception>
+    public async Task<ApplicationUserDto> GetUserInfoAsync(string Id)
+    {
+        var response = await _http.GetAsync($"/api/account/userroles/{Id}");
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<ApplicationUserDto>();
+        }
+        else
+        {
+            throw new Exception($"Error fetching roles: {response.StatusCode}");
+        }
+
+    }
 }

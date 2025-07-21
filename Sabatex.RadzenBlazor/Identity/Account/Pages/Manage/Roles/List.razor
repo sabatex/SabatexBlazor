@@ -1,0 +1,19 @@
+﻿@page "/account/manage/role/list"
+@using Microsoft.AspNetCore.Authorization
+@using Sabatex.Core.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@attribute [Authorize(Roles =  $"{ISecurityRoles.Administrator},{ISecurityRoles.RoleManager}")]
+@inject ContextMenuService ContextMenuService
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+
+<h3>User roles</h3>
+<SabatexRadzenGrid TItem="ApplicationUserDto" TKey="string" IsInserted="false">
+
+    <Columns>
+        <RadzenDataGridColumn TItem="ApplicationUserDto" Property="Name" Title="Name" />
+        <RadzenDataGridColumn TItem="ApplicationUserDto" Property="Roles" Title="Roles" Width="120px" />
+    </Columns>
+</SabatexRadzenGrid>
+@code {
+ 
+}

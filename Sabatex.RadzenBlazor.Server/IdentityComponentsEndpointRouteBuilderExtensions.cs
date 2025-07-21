@@ -208,6 +208,10 @@ namespace Microsoft.AspNetCore.Routing
             });
 
 
+            manageGroup.MapGet("/roles",async ([FromServices] IIdentityAdapter adapter) => await adapter.GetAvailableRolesAsync());
+
+            var apiGroup = endpoints.MapGroup("/api");
+            apiGroup.MapGet($"/{nameof(ApplicationUserDto)}", async ([FromServices] IIdentityAdapter adapter) => await adapter.GetAvailableRolesAsync());
 
 
             return accountGroup;

@@ -24,7 +24,7 @@
 		<PackageReference Include="MailKit" Version="4.12.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="9.6.6" />
 		<PackageReference Include="Radzen.Blazor" Version="7.1.0" />
-		<PackageReference Include="Sabatex.Core" Version="9.0.6-rc3" />
+		<PackageReference Include="Sabatex.Core" Version="9.0.6-rc8" />
 	</ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Sabatex.Core;
@@ -35,6 +36,7 @@ public class IdentityAdapterServer : IIdentityAdapter
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly IUserStore<ApplicationUser> _userStore;
     private readonly ILogger<IdentityAdapterServer> _logger;
@@ -58,6 +60,7 @@ public class IdentityAdapterServer : IIdentityAdapter
     /// cref="IdentityAdapterServer"/>.</param>
     public IdentityAdapterServer(SignInManager<ApplicationUser> signInManager,
                                  UserManager<ApplicationUser> userManager,
+                                 RoleManager<IdentityRole> roleManager,
                                  IHttpContextAccessor contextAccessor,
                                  IUserStore<ApplicationUser> userStore,
                                  ILogger<IdentityAdapterServer> logger,
@@ -73,6 +76,7 @@ public class IdentityAdapterServer : IIdentityAdapter
         _navigationManager = navigationManager;
         _emailSender = emailSender;
         _localizer = stringLocalizer;
+        _roleManager = roleManager;
     }
     /// <summary>
     /// 
@@ -443,5 +447,15 @@ public class IdentityAdapterServer : IIdentityAdapter
             throw new InvalidOperationException(_localizer["User is not authenticated. Ensure this method is called within a valid user context."]);
         }
         return user;
+    }
+
+    public async Task<IEnumerable<string>> GetAvailableRolesAsync()
+    {
+        return await _roleManager.Roles.Select(s=>s.Name).ToArrayAsync() ?? new string[] { };
+    }
+
+    public Task<ApplicationUserDto> GetUserInfoAsync(string Id)
+    {
+        throw new NotImplementedException();
     }
 }
