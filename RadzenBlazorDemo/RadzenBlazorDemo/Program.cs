@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using RadzenBlazorDemo.Client.Pages;
 using RadzenBlazorDemo.Components;
@@ -10,16 +11,12 @@ using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor;
 using Sabatex.RadzenBlazor.Server;
 
-namespace RadzenBlazorDemo
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("MemoryTestDataBase"));
+            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddIdentity<ApplicationUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
@@ -107,12 +104,34 @@ namespace RadzenBlazorDemo
 
             app.MapRazorComponents<App>()
                 .AddInteractiveWebAssemblyRenderMode()
-                .AddAdditionalAssemblies(typeof(Client._Imports).Assembly,typeof(Sabatex.RadzenBlazor._Imports).Assembly);
+                .AddAdditionalAssemblies(typeof(RadzenBlazorDemo.Client._Imports).Assembly,typeof(Sabatex.RadzenBlazor._Imports).Assembly);
 
             // Add additional endpoints required by the Identity /Account Razor components.
             app.MapAdditionalIdentityEndpoints();
             app.MapControllers();
-            app.Run();
-        }
-    }
-}
+            await app.RunAsync(args,
+                async () => 
+                {
+                    var serviceProvider = app.Services.CreateScope().ServiceProvider;
+                    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                    var adminRole = await roleManager.GetOrCreateRoleAsync(Sabatex.Core.ISecurityRoles.Administrator);
+                    var userRole =  await roleManager.GetOrCreateRoleAsync("ApplicationUser");
+
+                    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                    var admin = await userManager.GetOrCreateUserAsync("testAdmin@mail.com", "Test Admin", "Aa1234567890-");
+                    var user = await userManager.GetOrCreateUserAsync("testUser@mail.com", "Test User", "Aa1234567890-");
+                },
+                async (string userName) => 
+                {
+                    var serviceProvider = app.Services.CreateScope().ServiceProvider;
+                    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                    await userManager.GrandUserAdminRoleAsync(userName);
+                },
+                async () => 
+                {
+                    var serviceProvider = app.Services.CreateScope().ServiceProvider;
+                    var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+                    //await dbContext.Database.MigrateAsync();
+
+                });

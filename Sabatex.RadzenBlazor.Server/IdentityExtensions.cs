@@ -32,7 +32,7 @@ public static class IdentityExtensions
     /// <param name="builder"></param>
     /// <param name="configuration"></param>
     /// <returns></returns>
-    public static AuthenticationBuilder AddIsConfiguredGoogle(this AuthenticationBuilder builder,IConfiguration configuration)
+    public static AuthenticationBuilder AddIsConfiguredGoogle(this AuthenticationBuilder builder, IConfiguration configuration)
     {
         var clientId = configuration["Authentication:Google:ClientId"];
         var clientSecret = configuration["Authentication:Google:ClientSecret"];
@@ -74,11 +74,11 @@ public static class IdentityExtensions
     /// <param name="manager"></param>
     /// <param name="userFileConfig"></param>
     /// <returns></returns>
-    public static ConfigurationManager AddUserConfiguration(this ConfigurationManager manager,string userFileConfig)
+    public static ConfigurationManager AddUserConfiguration(this ConfigurationManager manager, string userFileConfig)
     {
         var confogFileName = $"/etc/sabatex/{userFileConfig}";
         if (File.Exists(confogFileName))
-            manager.AddJsonFile(confogFileName,optional:true,reloadOnChange:false);
+            manager.AddJsonFile(confogFileName, optional: true, reloadOnChange: false);
         return manager;
     }
     /// <summary>
@@ -101,7 +101,7 @@ public static class IdentityExtensions
     /// <param name="roleName">Role name</param>
     /// <returns>object IdentityRole </returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<IdentityRole> GetOrCreateRoleAsync(this RoleManager<IdentityRole> roleManager,string roleName)
+    public static async Task<IdentityRole> GetOrCreateRoleAsync(this RoleManager<IdentityRole> roleManager, string roleName)
     {
         var role = await roleManager.FindByNameAsync(roleName);
         if (role == null)
@@ -123,11 +123,12 @@ public static class IdentityExtensions
     /// </summary>
     /// <param name="userManager"></param>
     /// <param name="userName">user email</param>
-    /// <param name="password">user password</param>
-    /// <param name="roleName">user role</param>
+    /// <param name="FullName">Frendly user name</param>
+    /// <param name="password">user password </param>
+    /// <param name="roleNames">user role</param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<ApplicationUser> GetOrCreateUserAsync(this UserManager<ApplicationUser> userManager, string userName, string password,  string roleName)
+    public static async Task<ApplicationUser> GetOrCreateUserAsync(this UserManager<ApplicationUser> userManager, string userName, string FullName,string password, string? roleNames = null)
     {
         var user = await userManager.FindByEmailAsync(userName);
         if (user == null)
@@ -135,23 +136,35 @@ public static class IdentityExtensions
             user = new ApplicationUser
             {
                 Email = userName,
-                    UserName = userName
-                };
+                UserName = userName,
+                FullName = FullName
+            };
 
-                IdentityResult result;
-                result = await userManager.CreateAsync(user, password);
-                if (!result.Succeeded)
-                {
-                    throw new Exception("Failed to create user");
-                }
-                // grand user role
-                result = await userManager.AddToRoleAsync(user, roleName);
-                if (!result.Succeeded)
-                {
-                    throw new Exception("Failed to add role ClientUser to user");
-                }
+            IdentityResult result;
+            result = await userManager.CreateAsync(user, password);
+            if (!result.Succeeded)
+            {
+                throw new Exception("Failed to create user");
             }
-            return user;
+            if (!string.IsNullOrEmpty(roleNames))
+            {
+                var roles = roleNames.Split(new char[] { ',', ';' });
+                foreach (var roleName in roles)
+                {
+                    var role = await userManager.GetRolesAsync(user);
+                    if (!role.Contains(roleName))
+                    {
+                        result = await userManager.AddToRoleAsync(user, roleName);
+                        if (!result.Succeeded)
+                        {
+                            throw new Exception($"Failed to add role {roleName} to user");
+                        }
+                    }
+                }
+
+            }
+        }
+        return user;
     }
     /// <summary>
     /// Grand user role Administrator if user in roles Administrator not exist
@@ -167,7 +180,7 @@ public static class IdentityExtensions
         {
             throw new Exception("Failed to find user");
         }
- 
+
         var usersInRole = await userManager.GetUsersInRoleAsync(IUserAdminRole.Administrator);
         if (usersInRole.Count() == 0)
         {
@@ -193,50 +206,12 @@ public static class IdentityExtensions
     //    where TDBContext : IdentityDbContext
     //    where TCmd : CommandLineOperations<TDBContext>
     {
-    //    services.AddDbContext<TDBContext>();
-    //    services.AddIdentity<ApplicationUser, IdentityRole>()
-    //        .AddEntityFrameworkStores<TDBContext>()
-    //        .AddDefaultTokenProviders();
-    //    services.AddScoped<ICommandLineOperations,TCmd>();
+        //    services.AddDbContext<TDBContext>();
+        //    services.AddIdentity<ApplicationUser, IdentityRole>()
+        //        .AddEntityFrameworkStores<TDBContext>()
+        //        .AddDefaultTokenProviders();
+        //    services.AddScoped<ICommandLineOperations,TCmd>();
         return services;
     }
-
-
-
-
-    /// <summary>
-    /// Run web application with command line arguments
-    /// </summary>
-    /// <param name="app"></param>
-    /// <param name="args"></param>
-    /// <returns></returns>
-    public static async Task RunAsync(this WebApplication app, string[] args)
-    {
-        var cmd = app.Services.CreateScope().ServiceProvider.GetRequiredService<ICommandLineOperations>();
-        foreach (var arg in args)
-        {
-            if (arg == "--migrate")
-            {
-                await cmd.MigrateAsync();
-                return;
-            }
-
-            if (arg.StartsWith("--admin"))
-            {
-                var user = arg.Replace("--admin", string.Empty);
-                await cmd.GrandUserAdminRoleAsync(user);
-                return;
-            }
-
-            if (arg == "--initialDemo")
-            {
-                await cmd.InitialDemoDataAsync();
-                return;
-            }
-        }
-        app.Run();
-
-    }
-
 
 }

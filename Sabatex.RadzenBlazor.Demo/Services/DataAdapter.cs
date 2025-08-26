@@ -1,6 +1,7 @@
 using Radzen;
 using Radzen.Blazor.Markdown;
 using Sabatex.Core;
+using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor.Demo.Models;
 using System.Collections;
 
@@ -25,12 +26,13 @@ public class DataAdapter : ISabatexRadzenBlazorDataAdapter<Guid>
         }
     }
 
-    Task<ODataServiceResult<TItem>> ISabatexRadzenBlazorDataAdapter<Guid>.GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format, string? select, string? apply)
+ 
+    Task<QueryResult<TItem>> ISabatexRadzenBlazorDataAdapter<Guid>.GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format, string? select, string? apply)
     {
         throw new NotImplementedException();
     }
 
-    Task<ODataServiceResult<TItem>> ISabatexRadzenBlazorDataAdapter<Guid>.GetAsync<TItem>(QueryParams queryParams)
+    Task<QueryResult<TItem>> ISabatexRadzenBlazorDataAdapter<Guid>.GetAsync<TItem>(QueryParams queryParams)
     {
         throw new NotImplementedException();
     }

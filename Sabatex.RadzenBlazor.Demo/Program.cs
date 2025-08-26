@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
 using Sabatex.Core.Identity;
+using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor;
 using Sabatex.RadzenBlazor.Demo;
 using Sabatex.RadzenBlazor.Demo.Services;
