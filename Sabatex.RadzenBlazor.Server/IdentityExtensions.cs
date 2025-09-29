@@ -181,18 +181,14 @@ public static class IdentityExtensions
             throw new Exception("Failed to find user");
         }
 
-        var usersInRole = await userManager.GetUsersInRoleAsync(IUserAdminRole.Administrator);
-        if (usersInRole.Count() == 0)
+        if (!await userManager.IsInRoleAsync(user,IUserAdminRole.Administrator))
         {
-            var resultAddRole = await userManager.AddToRoleAsync(user, IUserAdminRole.Administrator);
+           var resultAddRole = await userManager.AddToRoleAsync(user, IUserAdminRole.Administrator);
             if (!resultAddRole.Succeeded)
             {
                 throw new Exception("Failed to add role Administrator to user");
             }
-        }
-        else
-        {
-            throw new Exception("User already has role Administrator");
+
         }
     }
 

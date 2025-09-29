@@ -146,16 +146,18 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
         {
             query = query.OrderBy(queryParams.OrderBy);
         }
-       
+        
+        var result = new QueryResult<TItem>();
+        if ((queryParams.Skip != null) || (queryParams.Top != null))
+            result.Count = await query.CountAsync();
+
         if (queryParams.Skip != null)
             query = query.Skip(queryParams.Skip.Value); 
         if (queryParams.Top != null)
             query = query.Take(queryParams.Top.Value);
 
-        var result = new QueryResult<TItem>();
+        
         result.Value = await query.ToArrayAsync();
-        if ((queryParams.Skip != null) || (queryParams.Top != null))
-            result.Count = await query.CountAsync();
         return result;
     }
  
@@ -207,7 +209,9 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
     {
         var query = context.Set<TItem>().AsQueryable<TItem>();
         query = OnBeforeGetById(query,id);
-        var result  = await query.Where(s=>EqualityComparer<TKey>.Default.Equals(s.Id,id)).SingleAsync();
+        //var result  = await query.Where(s=>EqualityComparer<TKey>.Default.Equals(s.Id,id)).SingleAsync();
+        var result = await query.Where("Id == @0",id).SingleAsync();
+
         if (await CheckAccess(result,null))
         {
             await OnAfterGetById(result, id);
@@ -343,7 +347,7 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
         try
         {
             await context.SaveChangesAsync();
-            await OnAfterSaveObject(update);
+            await OnAfterSaveObject(item);
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -356,7 +360,7 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
                 throw;
             }
         }
-        return Ok(update);
+        return Ok(item);
     }
 
 

@@ -1,4 +1,5 @@
-﻿@using Sabatex.Core
+﻿@using Microsoft.JSInterop
+@using Sabatex.Core
 @using Sabatex.Core.RadzenBlazor
 @typeparam TKey
 @typeparam TItem  where TItem : class, IEntityBase<TKey>,new()
@@ -16,13 +17,13 @@
             {
                 <RadzenButton class="rz-px-xs-1" 
                               Icon="add" 
-                              Click="()=>NavigateToEditPage()" 
+                              Click="AddButtonClickHandler"
                               Disabled="IsGridRO" 
                               MouseEnter="@(args => tooltipService.Open(args, TooltipAddButtonText, null))" />
             }
             <RadzenButton class="rz-px-xs-1"
                           Icon="edit"
-                          Click="()=>NavigateToEditPage(SelectedItems?.First()?.Id?.ToString())"
+                          Click="EditSelectedItem"
                           Disabled=@(IsGridRO || !IsItemSelected)  />
             @if (IsDeleted)
             {
@@ -55,16 +56,15 @@
                     CellRender="@CellRender"
                     EditMode="@(EditMode ?? DataGridEditMode.Single)"
                     FilterMode=@FilterMode
-    >
-
-
+                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                    @bind-Settings="@Settings" >
     </RadzenDataGrid>
 
 </div>
 
 @code {
     [Parameter]
-    public FilterMode FilterMode { get; set; } = FilterMode.Advanced;
+    public FilterMode FilterMode { get; set; } = FilterMode.Simple;
     [Parameter]
     public string TooltipAddButtonText { get; set; } = "Add new item";
 
@@ -131,34 +131,14 @@
     protected async Task GridLoadData(Radzen.LoadDataArgs args)
     {
         IsGridDataLoading = true;
-        IEnumerable<FieldDescriptor>? filterFields = null;
         try
         {
-
-
-
             if (dataCollection == null)
                 throw new ArgumentNullException(nameof(dataCollection));
 
 
             string filter = string.Empty;
-            if (filterFields != null)
-            {
-                // search in combobox
-            }
-            else
-                filter = args.Filter;
-
-            if (filterFields != null && !string.IsNullOrWhiteSpace(args.Filter))
-            {
-                ODataSearchFilterBuilder filterBuilder = new ODataSearchFilterBuilder();
-                foreach (var field in filterFields.OrderBy(o => o.priority))
-                {
-                    filterBuilder.AddField(field, args.Filter);
-                }
-                filter = filterBuilder.ToString();
-            }
-
+ 
             if (ForeginKey != null)
             {
                 if (string.IsNullOrWhiteSpace(filter))
@@ -361,5 +341,58 @@
     public async Task RefreshAsync()
     {
         await grid.Reload();
+    }
+    DataGridSettings _settings;
+    public DataGridSettings Settings
+    {
+        get
+        {
+            return _settings;
+        }
+        set
+        {
+            if (_settings != value)
+            {
+                _settings = value;
+                InvokeAsync(SaveStateAsync);
+            }
+        }
+    }
+
+    private async Task LoadStateAsync()
+    {
+        await Task.CompletedTask;
+
+        var result = await JSRuntime.InvokeAsync<string>("window.localStorage.getItem", $"GridSettings{typeof(TItem).Name}");
+        if (!string.IsNullOrEmpty(result))
+        {
+            _settings = System.Text.Json.JsonSerializer.Deserialize<DataGridSettings>(result);
+        }
+    }
+    private async Task SaveStateAsync()
+    {
+        await Task.CompletedTask;
+
+        await JSRuntime.InvokeVoidAsync("window.localStorage.setItem", $"GridSettings{typeof(TItem).Name}", System.Text.Json.JsonSerializer.Serialize<DataGridSettings>(Settings));
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadStateAsync();
+            StateHasChanged();
+        }
+    }
+
+    protected virtual void AddButtonClickHandler()
+    {
+        NavigateToEditPage();
+    }
+
+    private void EditSelectedItem()
+    {
+        NavigateToEditPage(SelectedItems?.First()?.Id?.ToString());
     }
 }

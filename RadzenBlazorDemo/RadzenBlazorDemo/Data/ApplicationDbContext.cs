@@ -9,6 +9,7 @@ namespace RadzenBlazorDemo.Data
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
         public DbSet<Person> People { get; set; }
+        public DbSet<Product> Products { get; set; }
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             base.ConfigureConventions(configurationBuilder);
