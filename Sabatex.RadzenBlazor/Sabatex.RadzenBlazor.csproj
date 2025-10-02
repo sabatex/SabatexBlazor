@@ -29,14 +29,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.9" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.9" />
-		<PackageReference Include="Radzen.Blazor" Version="7.4.3" />
-		<PackageReference Include="System.Text.Encodings.Web" Version="9.0.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.9" />
-		<PackageReference Include="System.Text.Json" Version="9.0.9" />
-		<PackageReference Include="Sabatex.Core" Version="9.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" />
+		<PackageReference Include="Microsoft.Extensions.Localization"/>
+		<PackageReference Include="Radzen.Blazor" />
+		<PackageReference Include="System.Text.Encodings.Web" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+		<PackageReference Include="System.Text.Json" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<ProjectReference Include="..\Sabatex.Core\Sabatex.Core.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="Sabatex.Core" />
+	</ItemGroup>
+
 
 
 	<ItemGroup>

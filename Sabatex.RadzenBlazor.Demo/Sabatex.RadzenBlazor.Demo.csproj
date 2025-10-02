@@ -9,10 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Markdig" Version="0.41.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.5" PrivateAssets="all" />
-    <PackageReference Include="PublishSPAforGitHubPages.Build" Version="3.0.0" />
+    <PackageReference Include="Markdig" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="PublishSPAforGitHubPages.Build" />
   </ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-    	<PackageReference Include="Sabatex.RadzenBlazor" Version="*" />
+    	<PackageReference Include="Sabatex.RadzenBlazor" />
 	</ItemGroup>
 
   <ItemGroup>

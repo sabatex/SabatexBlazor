@@ -14,18 +14,26 @@
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <RepositoryUrl>https://github.com/sabatex/Sabatex.RadzenBlazor</RepositoryUrl>
   </PropertyGroup>
-
 	<ItemGroup>
 		<!--<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.5" />-->
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="9.0.9" />
-		<PackageReference Include="MailKit" Version="4.14.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="9.6.8" />
-		<PackageReference Include="Radzen.Blazor" Version="7.4.3" />
-		<PackageReference Include="Sabatex.Core" Version="9.0.7" />
-		<PackageReference Include="System.CommandLine" Version="2.0.0-rc.1.25451.107" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" />
+		<PackageReference Include="MailKit"  />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" />
+		<PackageReference Include="Radzen.Blazor" />
+		<PackageReference Include="System.CommandLine" />
+	</ItemGroup>
+	
+	
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<ProjectReference Include="..\Sabatex.Core\Sabatex.Core.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+			<PackageReference Include="Sabatex.Core" />
 	</ItemGroup>
 
 </Project>
