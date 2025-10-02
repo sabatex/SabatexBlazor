@@ -375,7 +375,7 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
     /// the item does not exist,  <see cref="NoContentResult"/> if the item is successfully deleted,  or <see
     /// cref="UnauthorizedResult"/> if the deletion is not authorized.</returns>
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> Delete([FromRoute] Guid id)
+    public virtual async Task<IActionResult> Delete([FromRoute] TKey id)
     {
         var item = await context.Set<TItem>().FindAsync(id);
         if (item == null)
