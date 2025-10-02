@@ -1,0 +1,10 @@
+﻿.side-bar-collapse {
+    width: 0px !important;
+    transform: translateX(-100%);
+}
+
+@media (max-width: 768px) {
+    .hide-on-small {
+        display: none;
+    }
+}
