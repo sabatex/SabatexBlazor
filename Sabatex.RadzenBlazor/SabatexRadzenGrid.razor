@@ -67,7 +67,6 @@
     public FilterMode FilterMode { get; set; } = FilterMode.Simple;
     [Parameter]
     public string TooltipAddButtonText { get; set; } = "Add new item";
-
     [Parameter]
     public RenderFragment Columns { get; set; } = default!;
     [Parameter]
@@ -136,21 +135,6 @@
             if (dataCollection == null)
                 throw new ArgumentNullException(nameof(dataCollection));
 
-
-            string filter = string.Empty;
- 
-            if (ForeginKey != null)
-            {
-                if (string.IsNullOrWhiteSpace(filter))
-                {
-                    filter = $"{ForeginKey.Name} eq {ForeginKey.Id}";
-                }
-                else
-                {
-                    filter = $"{filter} and {ForeginKey.Name} eq {ForeginKey.Id}";
-                }
-            }
-
             var queryParams = new QueryParams
                 {
                     Filter = args.Filter,
@@ -160,7 +144,6 @@
                     ForeginKey = ForeginKey,
                     Include = IncludeNestedProperty ?? new string[] { },
                 };
-
 
             var result = await DataAdapter.GetAsync<TItem>(queryParams);
             dataCollection.Value = result.Value;
@@ -260,6 +243,7 @@
                 NavigateToEditPage(data.Id?.ToString());
         }
     }
+
     async Task DeleteButtonClick(TItem? data)
     {
         if (data == null)
@@ -342,6 +326,7 @@
     {
         await grid.Reload();
     }
+
     DataGridSettings _settings;
     public DataGridSettings Settings
     {
@@ -375,7 +360,6 @@
 
         await JSRuntime.InvokeVoidAsync("window.localStorage.setItem", $"GridSettings{typeof(TItem).Name}", System.Text.Json.JsonSerializer.Serialize<DataGridSettings>(Settings));
     }
-
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

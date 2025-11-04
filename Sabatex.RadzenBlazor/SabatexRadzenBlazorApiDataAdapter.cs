@@ -40,6 +40,7 @@ public class SabatexRadzenBlazorApiDataAdapter<TKey> : ISabatexRadzenBlazorDataA
         baseUri = new Uri(this.httpClient.BaseAddress ?? new Uri(navigationManager.BaseUri), "api/");
         this.logger = logger;
     }
+    
     public async Task<QueryResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null,string? apply = null) where TItem : class, IEntityBase<TKey>
     {
         var uri = new Uri(baseUri, $"{typeof(TItem).Name}");

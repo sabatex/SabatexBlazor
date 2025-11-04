@@ -12,6 +12,13 @@ namespace Sabatex.RadzenBlazor
 {
     public static class ServiceInitialize
     {
+        /// <summary>
+        /// Adds Sabatex Radzen Blazor services to the specified <see cref="IServiceCollection"/>.
+        /// </summary>
+        /// <remarks>This method registers the required services for Sabatex Radzen Blazor, including
+        /// Radzen components, Sabatex JavaScript interop, and application state management.</remarks>
+        /// <param name="services">The <see cref="IServiceCollection"/> to which the services will be added.</param>
+        /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
         public static IServiceCollection AddSabatexRadzenBlazor(this IServiceCollection services) 
         {
             services.AddRadzenComponents();
@@ -19,23 +26,35 @@ namespace Sabatex.RadzenBlazor
             services.AddSingleton<SabatexBlazorAppState>();
             return services;
         }
+        /// <summary>
+        /// Adds Sabatex Radzen Blazor services to the specified <see cref="IServiceCollection"/> and registers a custom
+        /// implementation of <see cref="IPWAPush"/>.
+        /// </summary>
+        /// <remarks>This method registers the specified implementation of <see cref="IPWAPush"/> as a
+        /// scoped service and then adds the default Sabatex Radzen Blazor services.</remarks>
+        /// <typeparam name="TPWAPush">The type of the class implementing the <see cref="IPWAPush"/> interface.</typeparam>
+        /// <param name="services">The <see cref="IServiceCollection"/> to which the services will be added.</param>
+        /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
         public static IServiceCollection AddSabatexRadzenBlazor<TPWAPush>(this IServiceCollection services) where TPWAPush :class, IPWAPush
         {
             services.AddScoped<IPWAPush, TPWAPush>();
             return services.AddSabatexRadzenBlazor();
         }
-
+        /// <summary>
+        /// Adds Sabatex Radzen Blazor services to the specified <see cref="IServiceCollection"/> and registers a custom
+        /// data adapter implementation.
+        /// </summary>
+        /// <remarks>This method registers the default Sabatex Radzen Blazor services and adds a scoped
+        /// service for the specified data adapter type <typeparamref name="TDataAdapter"/>.</remarks>
+        /// <typeparam name="TDataAdapter">The type of the data adapter to register. Must implement <see
+        /// cref="ISabatexRadzenBlazorDataAdapter{TKey}"/>.</typeparam>
+        /// <typeparam name="TKey">The type of the key used by the data adapter.</typeparam>
+        /// <param name="services">The <see cref="IServiceCollection"/> to which the services will be added.</param>
+        /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
         public static IServiceCollection AddSabatexRadzenBlazor<TDataAdapter,TKey>(this IServiceCollection services) where TDataAdapter : class, ISabatexRadzenBlazorDataAdapter<TKey>
         {
             services.AddSabatexRadzenBlazor().AddScoped<ISabatexRadzenBlazorDataAdapter<TKey>, TDataAdapter>();
             return services;
         }
-    
-    
-        //public static void AddNotNull(this QueryBuilder queryBuilder,  string key,string? value)
-        //{
-        //    if (value != null) queryBuilder.Add(key, value);
-        //}
-    
     }
 }
