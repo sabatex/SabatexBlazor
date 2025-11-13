@@ -5,28 +5,28 @@
     <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.0" />
     <PackageVersion Include="MailKit" Version="4.14.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="9.6.9" />
-    <PackageVersion Include="Radzen.Blazor" Version="8.1.8" />
-    <PackageVersion Include="Sabatex.Core" Version="9.0.7" />
-    <PackageVersion Include="System.CommandLine" Version="2.0.0-rc.1.25451.107" />
-    <PackageVersion Include="System.Text.Encodings.Web" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.10" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="9.6.10" />
+    <PackageVersion Include="Radzen.Blazor" Version="8.3.0" />
+    <PackageVersion Include="Sabatex.Core" Version="10.0.0" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.0" />
+    <PackageVersion Include="System.Text.Encodings.Web" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.0" />
+    <PackageVersion Include="System.Text.Json" Version="10.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
