@@ -1,2 +1,0 @@
-﻿## Sabatex base common definitions for all libraries
-This library contains common definitions and utilities that are used across all Sabatex libraries. It is designed to provide a shared foundation for the Sabatex ecosystem, ensuring consistency and reusability of code.

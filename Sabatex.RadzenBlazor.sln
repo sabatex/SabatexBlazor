@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.002.0
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sabatex.RadzenBlazor", "Sabatex.RadzenBlazor\Sabatex.RadzenBlazor.csproj", "{03887255-E56B-42F0-94BF-E19D309CD8F5}"
 EndProject
@@ -18,12 +18,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadzenBlazorDemo.Client", "RadzenBlazorDemo\RadzenBlazorDemo.Client\RadzenBlazorDemo.Client.csproj", "{C8598124-957C-4D98-92F8-AF7BAD31E7DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sabatex.RadzenBlazor.Server", "Sabatex.RadzenBlazor.Server\Sabatex.RadzenBlazor.Server.csproj", "{0C28443B-1DB9-41E9-9756-E6F43FF3F2F2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sabatex.Core", "Sabatex.Core\Sabatex.Core.csproj", "{7A93183B-0F80-CFF4-A67A-AB3AE7042705}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sabatex.Extensions", "Sabatex.Extensions\Sabatex.Extensions.csproj", "{BD3FD0BA-4F97-224D-F4EB-64302907C141}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sabatex.Extensions.Tests", "Sabatex.Extensions.Tests\Sabatex.Extensions.Tests.csproj", "{216D35D7-90B0-84BF-1F60-AD976C7C8298}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,18 +45,6 @@ Global
 		{0C28443B-1DB9-41E9-9756-E6F43FF3F2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C28443B-1DB9-41E9-9756-E6F43FF3F2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C28443B-1DB9-41E9-9756-E6F43FF3F2F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A93183B-0F80-CFF4-A67A-AB3AE7042705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A93183B-0F80-CFF4-A67A-AB3AE7042705}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A93183B-0F80-CFF4-A67A-AB3AE7042705}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A93183B-0F80-CFF4-A67A-AB3AE7042705}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD3FD0BA-4F97-224D-F4EB-64302907C141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD3FD0BA-4F97-224D-F4EB-64302907C141}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD3FD0BA-4F97-224D-F4EB-64302907C141}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD3FD0BA-4F97-224D-F4EB-64302907C141}.Release|Any CPU.Build.0 = Release|Any CPU
-		{216D35D7-90B0-84BF-1F60-AD976C7C8298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{216D35D7-90B0-84BF-1F60-AD976C7C8298}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{216D35D7-90B0-84BF-1F60-AD976C7C8298}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{216D35D7-90B0-84BF-1F60-AD976C7C8298}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

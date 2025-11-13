@@ -20,20 +20,10 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" />
-		<PackageReference Include="MailKit"  />
+		<PackageReference Include="MailKit" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" />
 		<PackageReference Include="Radzen.Blazor" />
 		<PackageReference Include="System.CommandLine" />
+		<PackageReference Include="Sabatex.Core" />
 	</ItemGroup>
-	
-	
-	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
-		<ProjectReference Include="..\Sabatex.Core\Sabatex.Core.csproj" />
-	</ItemGroup>
-
-
-	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-			<PackageReference Include="Sabatex.Core" />
-	</ItemGroup>
-
 </Project>
