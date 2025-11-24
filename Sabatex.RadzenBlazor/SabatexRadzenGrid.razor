@@ -3,7 +3,7 @@
 @using Sabatex.Core.RadzenBlazor
 @typeparam TKey
 @typeparam TItem  where TItem : class, IEntityBase<TKey>,new()
-@inherits SabatexRadzenBlazorBaseDataComponent<TKey>
+@inherits SabatexRadzenBlazorBaseDataComponent
 @inject TooltipService tooltipService
 
 @inject DialogService DialogService
@@ -145,7 +145,7 @@
                     Include = IncludeNestedProperty ?? new string[] { },
                 };
 
-            var result = await DataAdapter.GetAsync<TItem>(queryParams);
+            var result = await DataAdapter.GetAsync<TItem,TKey>(queryParams);
             dataCollection.Value = result.Value;
             dataCollection.Count = result.Count;
         }
@@ -262,7 +262,7 @@
             {
                 try
                 {
-                    await DataAdapter.DeleteAsync<TItem>(data.Id);
+                    await DataAdapter.DeleteAsync<TItem,TKey>(data.Id);
                     await grid.Reload();
                 }
                 catch (Exception e)
@@ -296,7 +296,7 @@
     }
     protected async Task gridRowCreate(TItem item)
     {
-        var result = await DataAdapter.PostAsync(item);
+        var result = await DataAdapter.PostAsync<TItem,TKey>(item);
         if (grid != null)
             await grid.Reload();
         itemToInsert = null;

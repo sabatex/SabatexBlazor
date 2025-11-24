@@ -11,12 +11,23 @@ using MailKit.Net.Smtp;
 
 namespace Sabatex.RadzenBlazor.Server;
 
-// Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.
+/// <summary>
+/// Provides an implementation of the email sender for identity operations, enabling the sending of confirmation and
+/// password reset emails to users.
+/// </summary>
+/// <remarks>This class is typically used by identity workflows to deliver account-related emails, such as
+/// confirmation links and password reset instructions. It relies on mail server configuration settings provided via the
+/// application's configuration system. Ensure that the required mail server settings are present and valid before using
+/// this sender. This class is sealed and cannot be inherited.</remarks>
 public sealed class IdentityEmailSender : Sabatex.Core.Identity.IEmailSender<ApplicationUser>
 {
     private readonly IConfiguration Configuration;
     private readonly ILogger<IdentityEmailSender> _logger;
-
+    /// <summary>
+    /// Initializes a new instance of the IdentityEmailSender class using the specified configuration and logger.
+    /// </summary>
+    /// <param name="configuration">The configuration settings used to retrieve email-related options and credentials.</param>
+    /// <param name="logger">The logger instance used to record email sending operations and errors.</param>
     public IdentityEmailSender(IConfiguration configuration,ILogger<IdentityEmailSender> logger)
     {
         Configuration = configuration;
@@ -64,12 +75,34 @@ public sealed class IdentityEmailSender : Sabatex.Core.Identity.IEmailSender<App
 
 
     }
+    /// <summary>
+    /// Sends an email containing a confirmation link to the specified user.
+    /// </summary>
+    /// <remarks>The confirmation email includes a clickable link that directs the user to confirm their
+    /// account. This method does not validate the email address or confirmation link; callers are responsible for
+    /// ensuring valid input.</remarks>
+    /// <param name="user">The user to whom the confirmation email will be sent. Must not be null.</param>
+    /// <param name="email">The email address of the recipient. Must be a valid, non-empty email address.</param>
+    /// <param name="confirmationLink">The URL that the user should visit to confirm their account. Must be a valid, non-empty link.</param>
+    /// <returns>A task that represents the asynchronous operation of sending the confirmation email.</returns>
     public Task SendConfirmationLinkAsync(ApplicationUser user, string email, string confirmationLink) =>
         SendEmailAsync(email, "Confirm your email", $"Please confirm your account by <a href='{confirmationLink}'>clicking here</a>.");
-
+    /// <summary>
+    /// Sends a password reset email to the specified user with a link to reset their password.
+    /// </summary>
+    /// <param name="user">The user for whom the password reset email is being sent. Cannot be null.</param>
+    /// <param name="email">The email address to which the password reset link will be sent. Must be a valid, non-empty email address.</param>
+    /// <param name="resetLink">The URL that the user can use to reset their password. Must be a valid, non-empty link.</param>
+    /// <returns>A task that represents the asynchronous operation of sending the password reset email.</returns>
     public Task SendPasswordResetLinkAsync(ApplicationUser user, string email, string resetLink) =>
         SendEmailAsync(email, "Reset your password", $"Please reset your password by <a href='{resetLink}'>clicking here</a>.");
-
+    /// <summary>
+    /// Sends a password reset code to the specified email address for the given user asynchronously.
+    /// </summary>
+    /// <param name="user">The user for whom the password reset code is being sent. Cannot be null.</param>
+    /// <param name="email">The email address to which the password reset code will be sent. Must be a valid, non-empty email address.</param>
+    /// <param name="resetCode">The password reset code to include in the email. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation of sending the password reset email.</returns>
     public Task SendPasswordResetCodeAsync(ApplicationUser user, string email, string resetCode) =>
         SendEmailAsync(email, "Reset your password", $"Please reset your password using the following code: {resetCode}");
 }

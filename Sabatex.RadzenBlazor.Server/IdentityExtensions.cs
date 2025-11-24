@@ -22,7 +22,16 @@ namespace Sabatex.RadzenBlazor.Server;
 /// </summary>
 public static class IdentityExtensions
 {
+    /// <summary>
+    /// Represents the action name used for login callback operations.
+    /// </summary>
     public const string LoginCallbackAction = "LoginCallback";
+    /// <summary>
+    /// Represents the action name used for the link login callback in authentication workflows.
+    /// </summary>
+    /// <remarks>This constant is typically used to identify the callback endpoint when linking external login
+    /// providers. It can be referenced in routing or controller logic to ensure consistency across authentication
+    /// operations.</remarks>
     public const string LinkLoginCallbackAction = "LinkLoginCallback";
 
 
@@ -67,13 +76,17 @@ public static class IdentityExtensions
         }
         return builder;
     }
-
     /// <summary>
-    /// 
+    /// Adds a user-specific JSON configuration file to the specified <see cref="ConfigurationManager"/> instance if the
+    /// file exists.
     /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="userFileConfig"></param>
-    /// <returns></returns>
+    /// <remarks>If the specified configuration file does not exist, no changes are made to the <see
+    /// cref="ConfigurationManager"/>. The configuration file is added as optional and will not reload on
+    /// change.</remarks>
+    /// <param name="manager">The <see cref="ConfigurationManager"/> instance to which the user configuration file will be added.</param>
+    /// <param name="userFileConfig">The name of the user configuration file to add, located in the '/etc/sabatex/' directory. Cannot be null.</param>
+    /// <returns>The <see cref="ConfigurationManager"/> instance with the user configuration file added if the file exists;
+    /// otherwise, the original instance.</returns>
     public static ConfigurationManager AddUserConfiguration(this ConfigurationManager manager, string userFileConfig)
     {
         var confogFileName = $"/etc/sabatex/{userFileConfig}";
@@ -82,11 +95,15 @@ public static class IdentityExtensions
         return manager;
     }
     /// <summary>
-    /// 
+    /// Adds user-specific configuration to the specified <see cref="ConfigurationManager"/> instance using the current
+    /// project's name.
     /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="userFileConfig"></param>
-    /// <returns></returns>
+    /// <remarks>This method is intended for use in extension scenarios where user-specific configuration
+    /// should be loaded based on the executing project's name. If called multiple times, user configuration may be
+    /// merged or overwritten depending on the underlying implementation of <see
+    /// cref="ConfigurationManager.AddUserConfiguration(string)"/>.</remarks>
+    /// <param name="manager">The <see cref="ConfigurationManager"/> instance to which the user configuration will be added. Cannot be null.</param>
+    /// <returns>The <see cref="ConfigurationManager"/> instance with user configuration added for the current project.</returns>
     public static ConfigurationManager AddUserConfiguration(this ConfigurationManager manager)
     {
         Assembly assembly = Assembly.GetExecutingAssembly(); // Retrieve the project name 

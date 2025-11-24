@@ -9,9 +9,9 @@ using System.Xml.Linq;
 
 namespace Sabatex.RadzenBlazor;
 
-public abstract class SabatexRadzenBlazorBaseDataComponent<TKey>: SabatexRadzenBlazorBaseComponent 
+public abstract class SabatexRadzenBlazorBaseDataComponent: SabatexRadzenBlazorBaseComponent 
 {
    [Inject]
-    protected ISabatexRadzenBlazorDataAdapter<TKey> DataAdapter { get; set; } = default!;
+    protected ISabatexRadzenBlazorDataAdapter DataAdapter { get; set; } = default!;
    
 }

@@ -48,7 +48,7 @@ using Sabatex.RadzenBlazor.Server;
             builder.Services.AddControllers();
             builder.Services.AddSabatexRadzenBlazor();
             builder.Services.AddScoped<IIdentityAdapter,IdentityAdapterServer>();
-            builder.Services.AddScoped<ISabatexRadzenBlazorDataAdapter<Guid>, SabatexServerRadzenBlazorODataAdapter>();
+            builder.Services.AddScoped<ISabatexRadzenBlazorDataAdapter, SabatexServerRadzenBlazorDataAdapter>();
             builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
             builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
 

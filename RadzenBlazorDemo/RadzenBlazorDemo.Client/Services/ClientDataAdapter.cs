@@ -6,9 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace Sabatex.Bakery.Client.Services;
 
-public class ClientDataAdapter: SabatexRadzenBlazorApiDataAdapter<Guid>
+public class ClientDataAdapter: SabatexRadzenBlazorApiDataAdapter
 {
-    public ClientDataAdapter(HttpClient httpClient, ILogger<SabatexRadzenBlazorODataAdapter<Guid>> logger, NavigationManager navigationManager) : base(httpClient, logger, navigationManager)
+    public ClientDataAdapter(HttpClient httpClient, ILogger<ClientDataAdapter> logger, NavigationManager navigationManager) : base(httpClient, logger, navigationManager)
     {
     }
 

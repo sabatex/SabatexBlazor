@@ -25,8 +25,9 @@ namespace Sabatex.RadzenBlazor.Server;
 /// <item><description>Pre- and post-operation hooks for CRUD actions, such as <see cref="OnBeforeAddItemToDatabase"/>
 /// and <see cref="OnAfterGetById"/>.</description></item> </list> Derived classes must implement the <see
 /// cref="CheckAccess"/> method to define access control logic.</remarks>
-/// <typeparam name="TItem">The type of entity managed by the controller. Must implement <see cref="IEntityBase{Guid}"/> and have a
+/// <typeparam name="TItem">The type of entity managed by the controller. Must implement <see cref="IEntityBase{TKey}"/> and have a
 /// parameterless constructor.</typeparam>
+/// <typeparam name="TKey">The type of the unique identifier for the entity. This type is used to identify and
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
@@ -53,7 +54,6 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
     /// </summary>
     /// <remarks>This constructor is intended to be used by derived controller classes to provide access to
     /// database operations  and logging functionality. Ensure that valid instances of <paramref name="context"/> and
-    /// <paramref name="logger"/>  are provided to avoid runtime errors.</remarks>
     /// <param name="context">The <see cref="DbContext"/> instance used to interact with the database. Cannot be null.</param>
     /// <param name="logger">The <see cref="ILogger"/> instance used for logging operations. Cannot be null.</param>
     protected BaseController(DbContext context, ILogger logger)
@@ -101,12 +101,12 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
     /// <summary>
     /// Retrieves a collection of items based on the specified query parameters.
     /// </summary>
-    /// <remarks>This method supports OData-style querying, allowing clients to filter, sort, include related
+    /// <remarks>This method supports Dynamic LINQ-style querying, allowing clients to filter, sort, include related
     /// entities, and paginate the results. The query parameters are provided as a JSON string and must be properly
     /// formatted.</remarks>
     /// <param name="json">A JSON-encoded string representing the query parameters. The string must include valid OData query options such
     /// as filtering, ordering, inclusion of related entities, and pagination settings.</param>
-    /// <returns>An <see cref="ODataServiceResult{TItem}"/> containing the queried items and, if applicable, the total count of
+    /// <returns>An <see cref="QueryResult{TItem}"/> containing the queried items and, if applicable, the total count of
     /// items matching the query.</returns>
     /// <exception cref="Exception">Thrown if the provided JSON string cannot be deserialized into valid query parameters.</exception>
     [HttpGet]

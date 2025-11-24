@@ -1,7 +1,7 @@
 ﻿@using Sabatex.Core.RadzenBlazor
 @typeparam TKey
 @typeparam TItem where TItem : class, IEntityBase<TKey>,new()
-@inherits SabatexRadzenBlazorBaseDataComponent<TKey>
+@inherits SabatexRadzenBlazorBaseDataComponent
 
 @if (Item == null)
 {
@@ -92,9 +92,9 @@ else
         try
         {
             if (IsNew ?? false)
-                result = await DataAdapter.PostAsync<TItem>(item);
+                result = await DataAdapter.PostAsync<TItem,TKey>(item);
             else
-                result = await DataAdapter.UpdateAsync<TItem>(item);
+                result = await DataAdapter.UpdateAsync<TItem,TKey>(item);
             if (result == null)
             {
                 NotificationService?.Notify(new NotificationMessage() { Severity = NotificationSeverity.Error, Summary = $"Помилка запису", Detail = "Server response null" });

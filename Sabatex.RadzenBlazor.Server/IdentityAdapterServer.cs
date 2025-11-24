@@ -79,9 +79,10 @@ public class IdentityAdapterServer : IIdentityAdapter
         _roleManager = roleManager;
     }
     /// <summary>
-    /// 
+    /// Retrieves a collection of available external authentication providers that can be used for sign-in.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>An enumerable collection of <see cref="ExternalProvider"/> objects representing the external authentication
+    /// providers currently configured. The collection will be empty if no external providers are available.</returns>
     public async Task<IEnumerable<ExternalProvider>> GetExternalProvidersAsync()
     {
         var schemes = await _signInManager.GetExternalAuthenticationSchemesAsync();
@@ -259,7 +260,12 @@ public class IdentityAdapterServer : IIdentityAdapter
         return SignInStatus.InvalidCredentials;
     }
 
-
+    /// <summary>
+    /// Signs out the current user asynchronously.
+    /// </summary>
+    /// <remarks>After calling this method, the user's authentication session will be terminated. Subsequent
+    /// requests will not be associated with the signed-out user until a new sign-in occurs.</remarks>
+    /// <returns>A task that represents the asynchronous sign-out operation.</returns>
     public async Task SignOutAsync()
     {
         await _signInManager.SignOutAsync();
@@ -294,27 +300,67 @@ public class IdentityAdapterServer : IIdentityAdapter
         }
         return (IUserEmailStore<ApplicationUser>)_userStore;
     }
-
+    /// <summary>
+    /// Redirects the current request to the specified URI, optionally providing a status message to the client.
+    /// </summary>
+    /// <param name="uri">The destination URI to which the request will be redirected. Cannot be null or empty.</param>
+    /// <param name="statusMessage">An optional status message to include with the redirect response. If null, no message is provided.</param>
+    /// <exception cref="NotImplementedException">Thrown in all cases as the method is not implemented.</exception>
     public void RedirectTo(string uri, string? statusMessage = null)
     {
         throw new NotImplementedException();
     }
-
+    /// <summary>
+    /// Asynchronously retrieves a collection of available external authentication providers.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
+    /// cref="ExternalProvider"/> instances representing the available external providers. If no providers are
+    /// available, the collection will be empty.</returns>
+    /// <exception cref="NotImplementedException">Thrown in all cases, as this method is not yet implemented.</exception>
     public Task<IEnumerable<ExternalProvider>> GetProvidersAsync()
     {
         throw new NotImplementedException();
     }
-
+    /// <summary>
+    /// Initiates an authentication challenge using the specified external provider and redirects the user to the given
+    /// return URL upon completion.
+    /// </summary>
+    /// <param name="provider">The name of the external authentication provider to use for the challenge. Cannot be null or empty.</param>
+    /// <param name="returnUrl">The URL to redirect the user to after successful authentication. Must be a valid, absolute or relative URL.</param>
+    /// <returns>A task that represents the asynchronous operation of initiating the authentication challenge.</returns>
+    /// <exception cref="NotImplementedException">Thrown in all cases, as this method is not yet implemented.</exception>
     public Task ChallengeAsync(string provider, string returnUrl)
     {
         throw new NotImplementedException();
     }
-
+    /// <summary>
+    /// Processes the external authentication callback and retrieves login information for the authenticated user.
+    /// </summary>
+    /// <param name="returnUrl">The URL to redirect to after successful authentication. This value is typically used to continue the user's
+    /// workflow after login.</param>
+    /// <param name="remoteError">An optional error message returned by the external authentication provider. If not null, indicates that the
+    /// authentication process failed.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an <see
+    /// cref="ExternalLoginInfoDTO"/> with the user's external login information if authentication succeeds; otherwise,
+    /// <see langword="null"/>.</returns>
+    /// <exception cref="NotImplementedException">Thrown in all cases, as this method is not yet implemented.</exception>
     public Task<ExternalLoginInfoDTO?> HandleCallbackAsync(string returnUrl, string? remoteError)
     {
         throw new NotImplementedException();
     }
-
+    /// <summary>
+    /// Completes the registration process for a user using external authentication information. Creates a new user
+    /// account if one does not exist and associates the external login provider with the user.
+    /// </summary>
+    /// <remarks>If the user does not already exist, a new account is created and linked to the specified
+    /// external provider. Upon successful registration, the user is signed in and redirected to the provided return
+    /// URL. The method does not confirm the user's email address; additional steps may be required for email
+    /// confirmation depending on application configuration.</remarks>
+    /// <param name="model">An object containing the external registration details, including the user's email, name, provider, provider
+    /// key, and return URL. The email must not be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if registration and
+    /// external login association succeed; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="Exception">Thrown if user account creation fails due to validation or other errors.</exception>
     public async Task<bool> CompleteRegistrationAsync(ExtermnalRegisterDTO model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
@@ -364,7 +410,14 @@ public class IdentityAdapterServer : IIdentityAdapter
         return false; // Registration failed, return false  
 
     }
-
+    /// <summary>
+    /// Asynchronously retrieves the current user's information as an application-specific data transfer object.
+    /// </summary>
+    /// <remarks>This method returns user information for the currently authenticated user. The returned data
+    /// reflects the latest values from the underlying data source. If no user is authenticated, the behavior depends on
+    /// the implementation of <c>GetApplicationUserAsync</c> and may result in an exception or a default
+    /// value.</remarks>
+    /// <returns>A <see cref="ApplicationUserDto"/> containing the user's identifier, full name, email address, and phone number.</returns>
     public async Task<ApplicationUserDto> GetUserInfoAsync()
     {
         // This method should retrieve the user information from the database or context.
@@ -448,12 +501,22 @@ public class IdentityAdapterServer : IIdentityAdapter
         }
         return user;
     }
-
+    /// <summary>
+    /// Asynchronously retrieves the names of all available roles in the system.
+    /// </summary>
+    /// <returns>A collection of strings containing the names of all available roles. The collection will be empty if no roles
+    /// are defined.</returns>
     public async Task<IEnumerable<string>> GetAvailableRolesAsync()
     {
         return await _roleManager.Roles.Select(s=>s.Name).ToArrayAsync() ?? new string[] { };
     }
-
+    /// <summary>
+    /// Asynchronously retrieves user information for the specified user identifier.
+    /// </summary>
+    /// <param name="Id">The unique identifier of the user whose information is to be retrieved. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="ApplicationUserDto"/>
+    /// with the user's information, or <c>null</c> if the user does not exist.</returns>
+    /// <exception cref="NotImplementedException">Thrown in all cases as this method is not yet implemented.</exception>
     public Task<ApplicationUserDto> GetUserInfoAsync(string Id)
     {
         throw new NotImplementedException();

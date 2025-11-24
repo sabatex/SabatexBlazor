@@ -19,7 +19,7 @@ builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticat
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddSabatexRadzenBlazor();
-builder.Services.AddScoped<ISabatexRadzenBlazorDataAdapter<Guid>, DataAdapter>();
+builder.Services.AddScoped<ISabatexRadzenBlazorDataAdapter, DataAdapter>();
 builder.Services.AddScoped<IIdentityAdapter, IdentityAdapter>();
 // 1. Зареєструвати підтримку локалізації та вказати папку з ресурсами
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");

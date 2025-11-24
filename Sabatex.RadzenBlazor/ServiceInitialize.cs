@@ -24,6 +24,7 @@ namespace Sabatex.RadzenBlazor
             services.AddRadzenComponents();
             services.AddScoped<SabatexJsInterop>();
             services.AddSingleton<SabatexBlazorAppState>();
+            services.AddScoped<IComponentStateStore, PWALocalStorageStore>();
             return services;
         }
         /// <summary>
@@ -51,9 +52,9 @@ namespace Sabatex.RadzenBlazor
         /// <typeparam name="TKey">The type of the key used by the data adapter.</typeparam>
         /// <param name="services">The <see cref="IServiceCollection"/> to which the services will be added.</param>
         /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
-        public static IServiceCollection AddSabatexRadzenBlazor<TDataAdapter,TKey>(this IServiceCollection services) where TDataAdapter : class, ISabatexRadzenBlazorDataAdapter<TKey>
+        public static IServiceCollection AddSabatexRadzenBlazor<TDataAdapter,TKey>(this IServiceCollection services) where TDataAdapter : class, ISabatexRadzenBlazorDataAdapter
         {
-            services.AddSabatexRadzenBlazor().AddScoped<ISabatexRadzenBlazorDataAdapter<TKey>, TDataAdapter>();
+            services.AddSabatexRadzenBlazor().AddScoped<ISabatexRadzenBlazorDataAdapter, TDataAdapter>();
             return services;
         }
     }

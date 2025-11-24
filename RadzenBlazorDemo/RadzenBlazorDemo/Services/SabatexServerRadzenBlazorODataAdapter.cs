@@ -5,56 +5,43 @@ using Sabatex.Core;
 using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor;
 
-
 namespace RadzenBlazorDemo.Services;
 
-public class SabatexServerRadzenBlazorODataAdapter : ISabatexRadzenBlazorDataAdapter<Guid>
+public class SabatexServerRadzenBlazorDataAdapter : ISabatexRadzenBlazorDataAdapter
 {
     private readonly ApplicationDbContext context;
-    public SabatexServerRadzenBlazorODataAdapter(ApplicationDbContext context)
+    public SabatexServerRadzenBlazorDataAdapter(ApplicationDbContext context)
     {
         this.context = context;
     }
-    public Task DeleteAsync<TItem>(Guid id) where TItem : class,Sabatex.Core.IEntityBase<Guid>
+
+    Task ISabatexRadzenBlazorDataAdapter.DeleteAsync<TItem, TKey>(TKey id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<QueryResult<TItem>> GetAsync<TItem>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null, string? ee = null) where TItem : class, IEntityBase<Guid>
-    {
-        var result = context.Set<TItem>().AsQueryable();
-        return new QueryResult<TItem> { Count = 0,Value = await result.ToArrayAsync() };
-    }
-
-    public Task<string[]> GetAvaliableRolesAsync()
+    Task<QueryResult<TItem>> ISabatexRadzenBlazorDataAdapter.GetAsync<TItem, TKey>(QueryParams queryParams)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<TItem?> GetByIdAsync<TItem>(Guid id, string? expand = null) where TItem : class, Sabatex.Core.IEntityBase<Guid>
-    {
-        await Task.Yield();
-        return null;
-    }
-
-    public Task<TItem?> GetByIdAsync<TItem>(string id, string? expand = null) where TItem : class, Sabatex.Core.IEntityBase<Guid>
-    {
-        return null;
-    }
-
-    public Task<SabatexValidationModel<TItem>> PostAsync<TItem>(TItem? item) where TItem : class, Sabatex.Core.IEntityBase<Guid>
+    Task<TItem?> ISabatexRadzenBlazorDataAdapter.GetByIdAsync<TItem, TKey>(TKey id, string? expand) where TItem : class
     {
         throw new NotImplementedException();
     }
 
-    public Task<SabatexValidationModel<TItem>> UpdateAsync<TItem>(TItem item) where TItem : class, Sabatex.Core.IEntityBase<Guid>
+    Task<TItem?> ISabatexRadzenBlazorDataAdapter.GetByIdAsync<TItem, TKey>(string id, string? expand) where TItem : class
     {
         throw new NotImplementedException();
     }
 
-    Task<QueryResult<TItem>> ISabatexRadzenBlazorDataAdapter<Guid>.GetAsync<TItem>(Sabatex.Core.RadzenBlazor.QueryParams queryParams)
+    Task<SabatexValidationModel<TItem>> ISabatexRadzenBlazorDataAdapter.PostAsync<TItem, TKey>(TItem? item) where TItem : class
     {
-        return null;
+        throw new NotImplementedException();
+    }
+
+    Task<SabatexValidationModel<TItem>> ISabatexRadzenBlazorDataAdapter.UpdateAsync<TItem, TKey>(TItem item)
+    {
         throw new NotImplementedException();
     }
 }
