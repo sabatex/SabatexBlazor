@@ -43,22 +43,12 @@ public class SabatexRadzenBlazorApiDataAdapter : ISabatexRadzenBlazorDataAdapter
         this.logger = logger;
     }
     
-    public async Task<QueryResult<TItem>> GetAsync<TItem,TKey>(string? filter, string? orderby, string? expand, int? top, int? skip, bool? count, string? format = null, string? select = null,string? apply = null) where TItem : class, IEntityBase<TKey>
-    {
-        var uri = new Uri(baseUri, $"{typeof(TItem).Name}");
-        //uri = GetODataUri(uri: uri, filter: filter, top: top, skip: skip, orderby: orderby, expand: expand, select: select, count: count,apply);
-        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-
-        var response = await httpClient.SendAsync(httpRequestMessage);
-        if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            throw new Exception($"Помилка запиту {response.StatusCode}");
-        return await Radzen.HttpResponseMessageExtensions.ReadAsync<QueryResult<TItem>>(response);
-
-    }
     public async Task<QueryResult<TItem>> GetAsync<TItem,TKey>(QueryParams queryParams) where TItem : class, IEntityBase<TKey>
     {
-        var uri = new Uri(baseUri, $"{typeof(TItem).Name}?json={System.Text.Json.JsonSerializer.Serialize(queryParams)}");
-        var response = await httpClient.GetAsync(uri);
+        var uri = new Uri(baseUri, $"{typeof(TItem).Name}/query");
+        
+        
+        var response = await httpClient.PostAsJsonAsync(uri,queryParams);
         if (response.IsSuccessStatusCode)
             return await ReadAsync<QueryResult<TItem>>(response);
         if (response.StatusCode == HttpStatusCode.Unauthorized)

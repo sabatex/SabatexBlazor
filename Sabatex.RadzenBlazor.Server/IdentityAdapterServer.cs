@@ -50,6 +50,7 @@ public class IdentityAdapterServer : IIdentityAdapter
     /// </summary>
     /// <param name="signInManager">The <see cref="SignInManager{TUser}"/> used to handle user sign-in operations.</param>
     /// <param name="userManager">The <see cref="UserManager{TUser}"/> used to manage user accounts, including creation, deletion, and updates.</param>
+    /// <param name="roleManager">The <see cref="RoleManager{TRole}"/> used to manage user roles and role-based authorization.</param>
     /// <param name="contextAccessor">The <see cref="IHttpContextAccessor"/> used to access the current HTTP context.</param>
     /// <param name="userStore">The <see cref="IUserStore{TUser}"/> used to interact with the underlying user data store.</param>
     /// <param name="logger">The <see cref="ILogger{TCategoryName}"/> used for logging messages related to the <see

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using RadzenBlazorDemo.Client.Models;
 using RadzenBlazorDemo.Client.Pages;
 using RadzenBlazorDemo.Components;
 using RadzenBlazorDemo.Data;
@@ -10,6 +11,7 @@ using Sabatex.Core.Identity;
 using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor;
 using Sabatex.RadzenBlazor.Server;
+
 
             var builder = WebApplication.CreateBuilder(args);
 
@@ -121,6 +123,22 @@ using Sabatex.RadzenBlazor.Server;
 
                     var admin = await userManager.GetOrCreateUserAsync("testAdmin@mail.com", "Test Admin", "Aa1234567890-");
                     var user = await userManager.GetOrCreateUserAsync("testUser@mail.com", "Test User", "Aa1234567890-");
+
+                    var startDate = DateOnly.FromDateTime(DateTime.Now);
+                    var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+                    
+                    for ( var i = 0;i<10;i++)
+                    {
+                        var weatherForecast = new WeatherForecast
+                        {
+                            Id = Guid.NewGuid(),
+                            Date = startDate.AddDays(i),
+                            TemperatureC = Random.Shared.Next(-20, 55),
+                            Summary = summaries[Random.Shared.Next(summaries.Length)]
+                        };
+                        serviceProvider.GetRequiredService<ApplicationDbContext>().Add(weatherForecast);
+                    } 
+                    await serviceProvider.GetRequiredService<ApplicationDbContext>().SaveChangesAsync();
                 },
                 async (string userName) => 
                 {

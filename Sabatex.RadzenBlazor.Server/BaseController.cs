@@ -109,13 +109,13 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
     /// <returns>An <see cref="QueryResult{TItem}"/> containing the queried items and, if applicable, the total count of
     /// items matching the query.</returns>
     /// <exception cref="Exception">Thrown if the provided JSON string cannot be deserialized into valid query parameters.</exception>
-    [HttpGet]
-    public virtual async Task<QueryResult<TItem>> Get([FromQuery] string json)
+    [HttpPost("query")]
+    public virtual async Task<QueryResult<TItem>> Get([FromBody] QueryParams queryParams)
     {
-        QueryParams? queryParams = JsonSerializer.Deserialize<QueryParams>(Uri.UnescapeDataString(json));
+        //QueryParams? queryParams = JsonSerializer.Deserialize<QueryParams>(Uri.UnescapeDataString(json));
 
-        if (queryParams == null)
-            throw new Exception("Deserialize error");
+        //if (queryParams == null)
+        //    throw new Exception("Deserialize error");
 
         var query = context.Set<TItem>().AsQueryable<TItem>();
         if (queryParams.Include != null)
@@ -414,17 +414,6 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
 /// <summary>
 /// Serves as the base class for API controllers that manage entities of type <typeparamref name="TItem"/>.
 /// </summary>
-/// <remarks>The <see cref="BaseController{TItem}"/> class provides common functionality for handling CRUD
-/// operations, including querying, adding, updating, and deleting entities. It is designed to be inherited by specific
-/// controllers that manage particular entity types. This class includes extension points for customizing query behavior
-/// and access control, as well as built-in support for OData-style querying.  Key features include: <list
-/// type="bullet"> <item><description>Support for OData-style querying, including filtering, sorting, and
-/// pagination.</description></item> <item><description>Customizable query modification through virtual methods such as
-/// <see cref="OnAfterIncludeInGet"/> and <see cref="OnAfterWhereInGet"/>.</description></item>
-/// <item><description>Access control checks via the abstract <see cref="CheckAccess"/> method.</description></item>
-/// <item><description>Pre- and post-operation hooks for CRUD actions, such as <see cref="OnBeforeAddItemToDatabase"/>
-/// and <see cref="OnAfterGetById"/>.</description></item> </list> Derived classes must implement the <see
-/// cref="CheckAccess"/> method to define access control logic.</remarks>
 /// <typeparam name="TItem">The type of entity managed by the controller. Must implement <see cref="IEntityBase{Guid}"/> and have a
 /// parameterless constructor.</typeparam>
 [Route("api/[controller]")]
@@ -432,6 +421,11 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
 [Authorize]
 public abstract class BaseController<TItem> : BaseController<TItem,Guid> where TItem : class, IEntityBase<Guid>, new()
 {
+    /// <summary>
+    /// Initializes a new instance of the BaseController class with the specified database context and logger.
+    /// </summary>
+    /// <param name="context">The database context to be used by the controller. Cannot be null.</param>
+    /// <param name="logger">The logger instance used for logging operations. Cannot be null.</param>
     protected BaseController(DbContext context, ILogger logger): base(context, logger)
     {
         

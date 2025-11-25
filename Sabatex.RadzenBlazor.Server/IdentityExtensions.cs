@@ -87,8 +87,10 @@ public static class IdentityExtensions
     /// <param name="userFileConfig">The name of the user configuration file to add, located in the '/etc/sabatex/' directory. Cannot be null.</param>
     /// <returns>The <see cref="ConfigurationManager"/> instance with the user configuration file added if the file exists;
     /// otherwise, the original instance.</returns>
-    public static ConfigurationManager AddUserConfiguration(this ConfigurationManager manager, string userFileConfig)
+    public static ConfigurationManager AddUserConfiguration(this ConfigurationManager manager, string? userFileConfig)
     {
+        if (string.IsNullOrEmpty(userFileConfig))
+            throw new ArgumentNullException(nameof(userFileConfig));
         var confogFileName = $"/etc/sabatex/{userFileConfig}";
         if (File.Exists(confogFileName))
             manager.AddJsonFile(confogFileName, optional: true, reloadOnChange: false);
@@ -98,16 +100,12 @@ public static class IdentityExtensions
     /// Adds user-specific configuration to the specified <see cref="ConfigurationManager"/> instance using the current
     /// project's name.
     /// </summary>
-    /// <remarks>This method is intended for use in extension scenarios where user-specific configuration
-    /// should be loaded based on the executing project's name. If called multiple times, user configuration may be
-    /// merged or overwritten depending on the underlying implementation of <see
-    /// cref="ConfigurationManager.AddUserConfiguration(string)"/>.</remarks>
     /// <param name="manager">The <see cref="ConfigurationManager"/> instance to which the user configuration will be added. Cannot be null.</param>
     /// <returns>The <see cref="ConfigurationManager"/> instance with user configuration added for the current project.</returns>
     public static ConfigurationManager AddUserConfiguration(this ConfigurationManager manager)
     {
-        Assembly assembly = Assembly.GetExecutingAssembly(); // Retrieve the project name 
-        string projectName = assembly.GetName().Name;
+        var assembly = Assembly.GetExecutingAssembly(); // Retrieve the project name 
+        var projectName = assembly.GetName().Name;
         return manager.AddUserConfiguration(projectName);
     }
 

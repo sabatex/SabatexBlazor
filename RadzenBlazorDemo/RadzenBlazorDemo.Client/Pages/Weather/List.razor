@@ -1,0 +1,28 @@
+﻿@page "/weather/list"
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@inject ISabatexRadzenBlazorDataAdapter DataAdapter
+@using RadzenBlazorDemo.Client.Models
+@using Sabatex.Core.RadzenBlazor
+
+<SabatexRadzenGrid TItem="WeatherForecast" TKey="Guid" @ref="dg" FilterMode="FilterMode.Simple">
+    <Columns>
+        <RadzenDataGridColumn TItem="WeatherForecast" Property="Date" Title="Date"></RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="WeatherForecast" Property="TemperatureC" Title="Temp. (C)"></RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="WeatherForecast" Property="TemperatureF" Title="Temp. (F)" Sortable="false" Filterable="false"></RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="WeatherForecast" Property="Summary" Title="Summary"></RadzenDataGridColumn>
+    </Columns>
+</SabatexRadzenGrid>
+
+@code {
+
+    SabatexRadzenGrid<Guid, WeatherForecast> dg;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+
+}
+
