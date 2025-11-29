@@ -54,8 +54,11 @@ public abstract class DataAdapterBase<TItem, TKey> : ISabatexRadzenBlazorDataAda
 }
 
 
-public sealed class SabatexDataAdapterServerSide : ISabatexRadzenBlazorDataAdapter
+public  class SabatexDataAdapterServerSide : ISabatexRadzenBlazorDataAdapter
 {
+    protected readonly DbContext Db;
+    protected readonly ILogger Logger;
+
     private readonly IServiceProvider _sp;
     private static readonly Dictionary<(Type, Type), Type> _map;
     public static Dictionary<(Type Item, Type Key), Type> DiscoverAdapters(Assembly assembly)
@@ -83,9 +86,10 @@ public sealed class SabatexDataAdapterServerSide : ISabatexRadzenBlazorDataAdapt
         _map = DiscoverAdapters(typeof(SabatexDataAdapterServerSide).Assembly);
     }
 
-    public SabatexDataAdapterServerSide(IServiceProvider sp)
+    public SabatexDataAdapterServerSide(DbContext db, ILogger logger)
     {
-        _sp = sp;
+        Db = db;
+        Logger = logger;
     }
 
     private ISabatexRadzenBlazorDataAdapter Resolve<TItem, TKey>()

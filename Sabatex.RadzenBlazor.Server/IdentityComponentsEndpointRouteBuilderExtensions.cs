@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -34,6 +35,21 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
         IsEssential = true,
         MaxAge = TimeSpan.FromSeconds(5),
     };
+    private static bool IsLocalUrl(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+            return false;
+        // must start with single '/' and must not be protocol absolute
+        if (url.StartsWith('/') && !url.StartsWith("//") && !url.Contains("://"))
+            return true;
+        return false;
+    }
+    private static string LocalSafe(HttpContext ctx, string? url)
+    {
+        if (IsLocalUrl(url))
+            return url!;
+        return ctx.Request.PathBase.HasValue ? ctx.Request.PathBase.Value! : "/";
+    }
 
 
     /// <summary>
@@ -59,10 +75,10 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
             [FromForm] string provider,
             [FromForm] string returnUrl) =>
         {
-            // 1.1) query для callback-Uri
+            // Build callback URI with lower-case returnUrl to match server expectation
             var query = new[]
             {
-                new KeyValuePair<string,string>("ReturnUrl", returnUrl),
+                new KeyValuePair<string,string>("returnUrl", returnUrl),
                 new KeyValuePair<string,string>("Action", IdentityExtensions.LoginCallbackAction)
             };
 
@@ -75,23 +91,24 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
 
             // 1.3) генеруємо властивості та повертаємо 302 Challenge
             var props = signInManager.ConfigureExternalAuthenticationProperties(provider, callbackUri);
-            return TypedResults.Challenge(props, [provider]);
-
-         });
+            return Results.Challenge(props, new[] { provider });
+        });
         
         // 1.2) GET-ендпоінт, на який провайдер редіректить із кодом та state
         accountGroup.MapGet("/ExternalLogin",
             async (HttpContext context,
                            [FromServices] SignInManager<ApplicationUser> signInManager,
                            [FromServices]UserManager<ApplicationUser> userManager,
-                           [FromServices] NavigationManager _navigationManager,
+                           [FromServices] IMemoryCache cache,
+                           [FromServices] ILogger<IdentityAdapterServer> logger,
                            [FromQuery] string? returnUrl,
                            [FromQuery] string? remoteError) =>
             {
                 // 1) Якщо провайдер повернув помилку — одразу назад на /Account/Login
                 if (!string.IsNullOrEmpty(remoteError))
                 {
-                    var msg = $"Error from external provider: {remoteError}";
+                    var msg = $"External provider returned error: {remoteError}";
+                    logger.LogWarning(msg);
                     context.Response.Cookies.Append("Identity.StatusMessage", msg, StatusCookieBuilder.Build(context));
                     context.Response.Redirect("/Account/Login");
                     return;
@@ -101,30 +118,52 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
                 var info = await signInManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
-                    context.Response.Cookies.Append("Identity.StatusMessage", "Error loading external login information.", StatusCookieBuilder.Build(context));
+                    var msg = "ExternalLoginInfo is null (external cookie missing).";
+                    logger.LogWarning(msg);
+                    context.Response.Cookies.Append("Identity.StatusMessage", msg, StatusCookieBuilder.Build(context));
                     context.Response.Redirect("/Account/Login");
                     return;
                 }
 
+                logger.LogDebug("External login info received from provider {Provider}", info.LoginProvider);
                 // 3) Прагнемо залогінити існуючого користувача
-                var result = await signInManager.ExternalLoginSignInAsync(
+                var signInResult = await signInManager.ExternalLoginSignInAsync(
                         info.LoginProvider,
                         info.ProviderKey,
                         isPersistent: false,
                         bypassTwoFactor: true);
 
-                if (result.Succeeded)
+                if (signInResult.Succeeded)
                 {
                     // якщо є локальний профіль → повертаємося куди треба
-                    var basePath = context.Request.PathBase.HasValue ? context.Request.PathBase.Value : "/";
-                    context.Response.Redirect(string.IsNullOrWhiteSpace(returnUrl) ? basePath : $"{basePath}{returnUrl}");
+                    logger.LogInformation("External login succeeded for provider {Provider}", info.LoginProvider);
+                    context.Response.Redirect(LocalSafe(context, returnUrl));
                     return;
                 }
 
-                if (result.IsLockedOut)
+                if (signInResult.IsLockedOut)
                 {
                     // якщо користувач заблокований → редіректимо на сторінку блокування
+                    logger.LogWarning("User locked out during external login.");
                     context.Response.Redirect("/Account/Lockout");
+                    return;
+                }
+                if (signInResult.RequiresTwoFactor)
+                {
+                    logger.LogInformation("External login requires two-factor authentication.");
+                    var twoFaUrl = QueryHelpers.AddQueryString("/Account/Login2FA", new Dictionary<string, string?>
+                    {
+                        ["returnUrl"] = LocalSafe(context, returnUrl)
+                    });
+                    context.Response.Redirect(twoFaUrl);
+                    return;
+                }
+
+                if (signInResult.IsNotAllowed)
+                {
+                    logger.LogWarning("External login is not allowed (IsNotAllowed) for provider {Provider}.", info.LoginProvider);
+                    context.Response.Cookies.Append("Identity.StatusMessage", "External login is not allowed for this account.", StatusCookieBuilder.Build(context));
+                    context.Response.Redirect("/Account/Login");
                     return;
                 }
 
@@ -134,25 +173,50 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
                 var name = info.Principal.FindFirstValue(ClaimTypes.Name)
                         ?? info.Principal.FindFirstValue(ClaimTypes.GivenName)
                         ?? "";
-                // Перевіряємо, чи є в системі користувач з цим email
-                var existingUser = !string.IsNullOrEmpty(email)
-                    && (await userManager.FindByEmailAsync(email) != null);
 
+                // Check if a user with this email already exists
+                ApplicationUser? existingUser = null;
+                if (!string.IsNullOrEmpty(email))
+                {
+                    existingUser = await userManager.FindByEmailAsync(email);
+                }
+
+                if (existingUser != null)
+                {
+                    // Try to attach external login to existing user (if not already linked) and sign in
+                    var addLoginResult = await userManager.AddLoginAsync(existingUser, info);
+                    if (addLoginResult.Succeeded)
+                    {
+                        logger.LogInformation("Linked external login {Provider} to existing user {Email}", info.LoginProvider, email);
+                        await signInManager.SignInAsync(existingUser, isPersistent: false);
+                        context.Response.Redirect(LocalSafe(context, returnUrl));
+                        return;
+                    }
+                    logger.LogWarning("Failed to link external login to existing user {Email}: {Errors}", email,
+                        string.Join(';', addLoginResult.Errors.Select(e => e.Code)));
+                    // Fall through to registration UI as a fallback
+                }
+
+
+                // Store ExternalLoginInfo server-side (IMemoryCache) under a short-lived nonce to avoid leaking providerKey
+                var nonce = Guid.NewGuid().ToString("N");
+                var cacheKey = $"ExternalLoginInfo:{nonce}";
+                var cacheOptions = new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) };
+                cache.Set(cacheKey, info, cacheOptions);
 
                 var qs = new Dictionary<string, string?>
                 {
-                    ["returnUrl"] = returnUrl,
+                    ["returnUrl"] = LocalSafe(context, returnUrl),
                     ["provider"] = info.LoginProvider,
-                    ["providerKey"] = info.ProviderKey,
+                    ["nonce"] = nonce,
                     ["email"] = email,
                     ["name"] = name,
-                    ["existingUser"] = existingUser.ToString().ToLowerInvariant()
-
+                    ["existingUser"] = (existingUser != null).ToString().ToLowerInvariant()
                 };
-                var url = QueryHelpers.AddQueryString("/Account/ExternalLoginRegister", qs);
-                
-                context.Response.Redirect(url);
 
+                var registerUrl = QueryHelpers.AddQueryString("/Account/ExternalLoginRegister", qs);
+                logger.LogInformation("Redirecting to ExternalLoginRegister for provider {Provider} (nonce={Nonce}).", info.LoginProvider, nonce);
+                context.Response.Redirect(registerUrl);
             });
 
 
