@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Sabatex.Core.Identity;
 using System.Diagnostics;
-using System.Security.Claims;
 
 namespace Sabatex.RadzenBlazor.Server;
 

@@ -1,19 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Sabatex.Core;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sabatex.RadzenBlazor.Server;
 

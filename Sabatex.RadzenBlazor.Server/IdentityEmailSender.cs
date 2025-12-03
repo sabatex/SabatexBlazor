@@ -1,12 +1,8 @@
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-
-using System.Net;
-using System.Security.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
-using MailKit.Net.Smtp;
 
 
 namespace Sabatex.RadzenBlazor.Server;

@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<Version>10.0.0-alpha5</Version>
+	<Version>10.0.0-alpha6</Version>
 	<Copyright>Serhiy Lakas</Copyright>
 	<Authors>Serhiy Lakas</Authors>
 	<Title>Sabatex Radzen Blazor Server</Title>
@@ -17,12 +17,10 @@
 	<ItemGroup>
 		<!--<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.5" />-->
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" />
 		<PackageReference Include="MailKit" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" />
-		<PackageReference Include="Radzen.Blazor" />
 		<PackageReference Include="System.CommandLine" />
 		<PackageReference Include="Sabatex.Core" />
 	</ItemGroup>
