@@ -1,7 +1,8 @@
 <Project>
 	<PropertyGroup>
-		<!-- Базовий шлях для всіх вихідних файлів -->
-		<BaseOutputPath>E:\builds\$(MSBuildProjectName)\bin\</BaseOutputPath>
-		<BaseIntermediateOutputPath>E:\builds\$(MSBuildProjectName)\obj\</BaseIntermediateOutputPath>
+		<!-- Centralized output path for all projects -->
+		<!-- Builds will be placed under E:\builds\<ProjectName>\<Configuration> -->
+		<OutputPath>E:\builds\SabatexBlazor\$(MSBuildProjectName)\bin\$(Configuration)\</OutputPath>
+		<BaseIntermediateOutputPath>E:\builds\SabatexBlazor\$(MSBuildProjectName)\obj\$(Configuration)\</BaseIntermediateOutputPath>
 	</PropertyGroup>
 </Project>
