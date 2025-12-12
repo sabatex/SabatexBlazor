@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Sabatex.RadzenBlazor.Server\Sabatex.RadzenBlazor.Server.csproj" />
+    <ProjectReference Include="..\Sabatex.RadzenBlazor.Server\Sabatex.RadzenBlazor.Server.csproj" />
     <ProjectReference Include="..\RadzenBlazorDemo.Client\RadzenBlazorDemo.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
