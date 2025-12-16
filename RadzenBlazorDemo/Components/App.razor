@@ -1,34 +1,92 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Sabatex.RadzenBlazor.Server
+@using System.Reflection
+@* <SabatexApp Lang="en">
+     <BodyWASM>
+        <ClientRoutes @rendermode="new InteractiveWebAssemblyRenderMode(prerender: false)" />
+        <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
+    </BodyWASM>
+    <BodySSR>
+        <SSRRoutes />
+    </BodySSR>
+ 
+</SabatexApp>
 
+ *@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
-    <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
+    <ResourcePreloader />
     <link rel="stylesheet" href="@Assets["app.css"]" />
     <link rel="stylesheet" href="@Assets["RadzenBlazorDemo.styles.css"]" />
-    <link rel="stylesheet" href="@Assets["_content/Radzen.Blazor/css/material-base.css"]" id="sabatex-radzenCSS" /> 
-    <link rel="stylesheet" href="@Assets["_content/Sabatex.RadzenBlazor/radzen_ssr_layout.css"]"/>
-    <ImportMap />
+    <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
+    <RadzenTheme Theme="material" />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <HeadOutlet />
+    <SabatexPWAHeaderContent />
+    <ImportMap />
+    <HeadOutlet @rendermode="@PageRenderMode" />
 </head>
-
 <body>
-    <Routes />
-    <script src="_framework/blazor.web.js"></script>
-    <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
-    <script src="_content/Sabatex.RadzenBlazor/radzen_ssr_layout.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/service-worker.js');
-          });
+    @if (isWASMClient)
+    {
+        <WASMLoadProgress />
+        <ClientRoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
+    }else
+    {
+        <SSRRoutes />
+    }
+
+
+    <BlazorErrorUI />
+    @if (isWASMClient)
+    {
+        <script src="_framework/blazor.web.js"></script>
+        <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
+        <script>
+             if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                    navigator.serviceWorker.register('/service-worker.js');
+                });
+            }
+        </script>
+    }
+    else
+    {
+        <script>
+        window.toggleSidebar = function (state) {
+            const sidebar = document.querySelector('.sidebar');
+            if (!sidebar) return;
+            const isCollapse = sidebar.classList.contains("side-bar-collapse");
+            // toggle: if collapsed -> show, else collapse
+            if (isCollapse) {
+                sidebar.classList.remove("side-bar-collapse");
+            } else {
+                sidebar.classList.add("side-bar-collapse");
+            }
         }
-    </script>
+        </script>
+        
+    }
 
+  
+ 
 </body>
-
 </html>
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
 
+    private IComponentRenderMode? PageRenderMode =>
+     isWASMClient ? new InteractiveWebAssemblyRenderMode(prerender: false) : null;
+
+    private bool isWASMClient;
+ 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        isWASMClient = HttpContext.IsRouteWASMClient();
+    }
+
+}

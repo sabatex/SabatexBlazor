@@ -1,0 +1,32 @@
+﻿<div class="page">
+    <div class="top-row">
+        <div class="brand">
+            @Brand
+        </div>
+        <div class="d-flex flex-row nav">
+            @Header
+        </div>
+        <input type="checkbox" title="Navigation menu" class="navbar-toggler" checked onclick="toggleSidebar(this.checked)" />
+    </div>
+    
+    <div class="content-with-sidebar">
+        <div class="sidebar" onclick="document.querySelector('.navbar-toggler').click()">
+            @SideBar
+        </div>
+        <main class="container-fluid">
+            @Body
+        </main>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+    [Parameter]
+    public RenderFragment? Body { get; set; }
+    [Parameter]
+    public RenderFragment? SideBar { get; set; }
+    [Parameter]
+    public RenderFragment? Brand { get; set; }
+
+}

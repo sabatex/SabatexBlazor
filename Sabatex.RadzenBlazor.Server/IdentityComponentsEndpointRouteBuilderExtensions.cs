@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Sabatex.Core.Identity;
 using Sabatex.RadzenBlazor.Server;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -295,4 +296,5 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
 
         return accountGroup;
     }
+ 
 }

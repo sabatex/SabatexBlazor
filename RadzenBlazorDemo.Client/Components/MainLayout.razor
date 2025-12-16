@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager Navigation
 
-@* <RadzenComponents @rendermode=InteractiveWebAssembly />
+<RadzenComponents @rendermode=InteractiveWebAssembly />
 <RadzenLayout @ref="radzenLayout">
     <RadzenHeader Style="min-height:auto" @ref="radzenHeader">
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.End" JustifyContent="JustifyContent.SpaceBetween" class="rz-ml-2">
@@ -24,23 +24,7 @@
     <RadzenBody>
         @Body
     </RadzenBody>
-</RadzenLayout> *@
-
-<SabatexLayout>
-    <Brand>
-        <h4>"Sabatex"</h4>
-    </Brand>
-    <Header>
-        <h4>Welcome to Sabatex</h4>
-    </Header>
-    <SideBar>
-        <NavMenu />
-    </SideBar>
-    <Body>
-        @Body
-    </Body>
-</SabatexLayout>
-
+</RadzenLayout>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.

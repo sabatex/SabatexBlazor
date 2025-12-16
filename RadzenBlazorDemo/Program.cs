@@ -104,13 +104,18 @@ using Sabatex.RadzenBlazor.Server;
                 .SetDefaultCulture("uk-UA")
                 );
 
+            Sabatex.Core.RadzenBlazor.WASMClient.AddWASMClient(typeof(RadzenBlazorDemo.Client._Imports).Assembly, null);
+            var additionalAssemblies = Sabatex.Core.RadzenBlazor.WASMClient.WASMClients.Select(s=>s.Assembly).ToList();
+            additionalAssemblies.Add(typeof(Sabatex.RadzenBlazor._Imports).Assembly);
+     
             app.MapRazorComponents<App>()
                 .AddInteractiveWebAssemblyRenderMode()
-                .AddAdditionalAssemblies(typeof(RadzenBlazorDemo.Client._Imports).Assembly,typeof(Sabatex.RadzenBlazor._Imports).Assembly);
+                .AddAdditionalAssemblies(additionalAssemblies.ToArray());
 
             // Add additional endpoints required by the Identity /Account Razor components.
             app.MapAdditionalIdentityEndpoints();
             app.MapControllers();
+            
             await app.RunAsync(args,
                 async () => 
                 {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System.CommandLine;
@@ -97,6 +98,25 @@ public static class WebApplicationExtensions
 
 
 
+    }
+
+    /// <summary>
+    /// Determines whether the current HTTP request path matches any registered WebAssembly (WASM) client route.
+    /// </summary>
+    /// <remarks>Use this method to identify requests that should be handled by a WASM client route, such as
+    /// for routing or middleware decisions.</remarks>
+    /// <param name="httpContext">The HTTP context for the current request. Cannot be null.</param>
+    /// <returns>true if the request path starts with the prefix of any registered WASM client route; otherwise, false.</returns>
+    public static bool IsRouteWASMClient(this HttpContext httpContext)
+    {
+        foreach (var WASMClient in Sabatex.Core.RadzenBlazor.WASMClient.WASMClients)
+        {
+            if (httpContext.Request.Path.StartsWithSegments(WASMClient.PrefixRoute))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

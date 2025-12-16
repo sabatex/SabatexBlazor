@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Http
+@foreach (var WASMClient in Sabatex.Core.RadzenBlazor.WASMClient.WASMClients)
+{
+    if (HttpContext.Request.Path.StartsWithSegments(WASMClient.PrefixRoute))
+    {
+        if (WASMClient.PWA != null)
+        {
+            <link rel="icon" type="image/png" href="@WASMClient.PWA.Icon" />
+            <link rel="apple-touch-icon" sizes="512x512" href="@WASMClient.PWA.AppleTouchIcon" />
+            <link rel="manifest" href="@WASMClient.PWA.Manifest" />
+        }
+    }
+}
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+}

@@ -1,0 +1,82 @@
+﻿.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-block-size: 100vh;
+}
+
+.top-row {
+    height: 3rem;
+    /*background-color: #f7f7f7;*/
+    background-color: rgba(0,0,0,0.4);
+    border-bottom: 1px solid #d6d5d5;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+
+/* Transparent toggler sitting over the top-row.
+   White icon provides contrast on the dark top-row. */
+.navbar-toggler {
+    appearance: none;
+    cursor: pointer;
+    width: 2.5rem;
+    height: 2rem;
+    color: #fff;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1.2rem;
+    border: none;
+    border-radius: 4px;
+    padding: 0;
+}
+    /* subtle hover/checked/focus visuals while keeping overall transparency */
+    .navbar-toggler:hover,
+    .navbar-toggler:focus {
+        background-color: rgba(255,255,255,0.04);
+        outline: none;
+    }
+    .navbar-toggler:active,
+    .navbar-toggler:checked {
+        background-color: rgba(255,255,255,0.06);
+    }
+
+.content-with-sidebar {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 3rem);
+    width:auto;
+}
+
+.side-bar-collapse {
+
+}
+
+.sidebar {
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    width: 16rem;
+}
+
+main {
+    /*width:max-content;*/
+    overflow-y: auto;
+    flex:1;
+}
+
+@media (max-width: 641px) {
+    .sidebar:not(.side-bar-collapse) {
+        display: none;
+    }
+}
+@media (min-width: 642px) {
+    .side-bar-collapse {
+        display:none;
+    }
+}

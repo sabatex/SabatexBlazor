@@ -4,16 +4,16 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
-@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@using Microsoft.Extensions.Logging
 @using Microsoft.AspNetCore.Components.Web.Virtualization
-@using Microsoft.JSInterop
-@using RadzenBlazorDemo
-@using RadzenBlazorDemo.Client
-@using RadzenBlazorDemo.Components
-
-@using Radzen
-@using Radzen.Blazor
-@using Sabatex.RadzenBlazor
-@using Sabatex.RadzenBlazor.Server.Components
-
 @using Microsoft.Extensions.Localization
+@using Microsoft.JSInterop
+
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+
+@using Sabatex.Core
+@using Sabatex.Core.Identity
+
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider

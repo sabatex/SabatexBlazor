@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Localization
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IdentityAdapterServer RedirectManager
+@inject IStringLocalizer<ExternalLoginPicker> Localizer
+@if (externalLogins.Length != 0)
+{
+       <div class="border">
+        <h4 class="text-center">@Header</h4>
+        <hr />
+  
+     <form class="form-horizontal" action="Account/PerformExternalLogin" method="post">
+        <div>
+            <AntiforgeryToken />
+            <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
+                <p class="d-flex justify-content-center">
+                @foreach (var provider in externalLogins)
+                {
+                        <button type="submit" class="btn btn-primary bi bi-google" style="margin-left:10px" name="provider" value="@provider.Name" title=@Localizer["Log in using your {0} account",@provider.DisplayName]>@provider.DisplayName</button>
+                }
+            </p>
+            </div>
+    
+        </form>
+     </div>
+}
+
+@code {
+
+    private AuthenticationScheme[] externalLogins = [];
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    [Parameter]
+    public string? Header { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        externalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToArray();
+    }
+}

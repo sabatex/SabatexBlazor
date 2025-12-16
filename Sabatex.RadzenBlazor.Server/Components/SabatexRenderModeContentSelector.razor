@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Http
+    @if (IsWebAssembly)
+    {
+        @WASM
+    }
+    else
+    {
+        @SSR
+    }
+
+@code {
+    [Parameter]
+    public RenderFragment? WASM { get; set; }
+    [Parameter]
+    public RenderFragment? SSR { get; set; }
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+    
+    private bool IsWebAssembly 
+    {
+        get 
+        {
+            foreach (var WASMClient in Sabatex.Core.RadzenBlazor.WASMClient.WASMClients)
+            {
+                if (HttpContext.Request.Path.StartsWithSegments(WASMClient.PrefixRoute))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+}
