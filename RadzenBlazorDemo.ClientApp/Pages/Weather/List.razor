@@ -1,7 +1,7 @@
 ﻿@page "/weather/list"
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
 @inject ISabatexRadzenBlazorDataAdapter DataAdapter
-@using RadzenBlazorDemo.Client.Models
+@using RadzenBlazorDemo.ClientApp.Models
 @using Sabatex.Core.RadzenBlazor
 
 <SabatexRadzenGrid TItem="WeatherForecast" TKey="Guid" @ref="dg" FilterMode="FilterMode.Simple">

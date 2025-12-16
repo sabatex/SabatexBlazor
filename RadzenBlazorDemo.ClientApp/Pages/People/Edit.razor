@@ -1,7 +1,7 @@
 ﻿@page "/people/edit"
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
 @inject ISabatexRadzenBlazorDataAdapter DataAdapter
-@using RadzenBlazorDemo.Client.Models
+@using RadzenBlazorDemo.ClientApp.Models
 @using Sabatex.Core.RadzenBlazor
 
 <SabatexEditForm TItem="Person" TKey="Guid" Item="item" IsNew="@(Id==null)" Style="height:100%"  TextButtonSave="Зберегти" TextButtonCancel="Закрити">

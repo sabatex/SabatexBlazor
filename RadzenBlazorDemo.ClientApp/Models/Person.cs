@@ -1,6 +1,6 @@
 ﻿using Sabatex.Core;
 
-namespace RadzenBlazorDemo.Client.Models;
+namespace RadzenBlazorDemo.ClientApp.Models;
 
 public class Person:IEntityBase<Guid>
 {

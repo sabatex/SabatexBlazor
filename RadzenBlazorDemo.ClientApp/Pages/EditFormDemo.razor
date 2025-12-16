@@ -1,7 +1,7 @@
 ﻿@page "/editFormDemo"
 @using Microsoft.AspNetCore.Authorization
 @using Sabatex.RadzenBlazor
-@using RadzenBlazorDemo.Client.Models
+@using RadzenBlazorDemo.ClientApp.Models
 @attribute [Authorize]
 <div style="border:2px double black;">
 <SabatexEditForm Item="@person" TItem="Person" TKey="Guid" IsReadOnly=@isReadOnly ReturnUrl="@returnUrl" IsNew="true">

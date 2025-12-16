@@ -4,7 +4,7 @@ using Sabatex.Bakery.Client.Services;
 using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor;
 
-namespace RadzenBlazorDemo.Client
+namespace RadzenBlazorDemo.ClientApp
 {
     internal class Program
     {

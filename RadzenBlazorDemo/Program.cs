@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using RadzenBlazorDemo.Client.Models;
-using RadzenBlazorDemo.Client.Pages;
+using RadzenBlazorDemo.ClientApp.Models;
 using RadzenBlazorDemo.Components;
 using RadzenBlazorDemo.Data;
 using RadzenBlazorDemo.Services;
@@ -104,7 +103,7 @@ using Sabatex.RadzenBlazor.Server;
                 .SetDefaultCulture("uk-UA")
                 );
 
-            Sabatex.Core.RadzenBlazor.WASMClient.AddWASMClient(typeof(RadzenBlazorDemo.Client._Imports).Assembly, null);
+            Sabatex.Core.RadzenBlazor.WASMClient.AddWASMClient(typeof(SabatexRadzenBlazorDemo.Client._Imports).Assembly, null);
             var additionalAssemblies = Sabatex.Core.RadzenBlazor.WASMClient.WASMClients.Select(s=>s.Assembly).ToList();
             additionalAssemblies.Add(typeof(Sabatex.RadzenBlazor._Imports).Assembly);
      
