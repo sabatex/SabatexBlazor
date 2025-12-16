@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using RadzenBlazorDemo.ClientApp.Models;
-using RadzenBlazorDemo.ClientApp.Pages;
+using RadzenBlazorDemo.Models;
 using Sabatex.RadzenBlazor.Server;
 
 namespace RadzenBlazorDemo.Data

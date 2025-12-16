@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RadzenBlazorDemo.ClientApp.Models;
 using RadzenBlazorDemo.Data;
+using RadzenBlazorDemo.Models;
 using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor;
 using Sabatex.RadzenBlazor.Server;

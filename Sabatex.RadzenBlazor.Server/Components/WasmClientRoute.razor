@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Http
+@if (!string.IsNullOrEmpty(PrefixRoute))
+{
+    @if (Sabatex.Core.RadzenBlazor.WASMClient.WASMClients.Any(s=>s.PrefixRoute == PrefixRoute))
+    {
+        if (HttpContext.Request.Path.StartsWithSegments(PrefixRoute))
+        {
+            @Content
+        }
+    }
+}
+
+
+
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+    [Parameter]
+    public RenderFragment? Content { get; set; }
+    [Parameter]
+    public string? PrefixRoute { get; set; }
+
+}

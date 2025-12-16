@@ -1,16 +1,19 @@
 ﻿@page "/RadzenBlazorDemo_Client/enumdropdowndemo"
+@using RadzenBlazorDemo.Models
 @using Sabatex.RadzenBlazor
-@rendermode InteractiveWebAssembly
+
 
 <h3>EnumDropDown</h3>
-<RadzenText>Enum DropDown bind to Models.DaysOfWeek</RadzenText>
-<SabatexEnumDropDown TEnum="Models.DaysOfWeek"  @bind-Value="dayOfWeek" Placeholder="Select day of week" />
+<RadzenText>Enum DropDown bind to DaysOfWeek</RadzenText>
+<SabatexEnumDropDown TEnum="DaysOfWeek"  @bind-Value="dayOfWeek" Placeholder="Select day of week" />
 <RadzenText>Selected value @dayOfWeek</RadzenText>
 
-<RadzenText>Enum DropDown bind to Models.DaysOfWeek?</RadzenText>
-<SabatexEnumDropDown TEnum="Models.DaysOfWeek?" @bind-Value="dayOfWeekNulable" Placeholder="Select day of week" />
+<RadzenText>Enum DropDown bind to DaysOfWeek?</RadzenText>
+<SabatexEnumDropDown TEnum="DaysOfWeek?" @bind-Value="dayOfWeekNulable" Placeholder="Select day of week" />
 <RadzenText>Selected value @(dayOfWeekNulable == null?"null":dayOfWeekNulable)</RadzenText>
+
 @code {
-    Models.DaysOfWeek? dayOfWeekNulable;
-    Models.DaysOfWeek dayOfWeek = Models.DaysOfWeek.Sunday;
+
+    DaysOfWeek? dayOfWeekNulable;
+    DaysOfWeek dayOfWeek = DaysOfWeek.Sunday;
 }

@@ -2,6 +2,119 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h2>Demo Sabatex SSR Page by Sabatex.RadzenBlazor!</h2>
 
-Welcome to your new app.
+<section class="page-mode-description">
+    <h4 style="color:brown">Page genareted with GitHub Copilot AI</h4>
+    <p>
+        This page is rendered using pure Server-Side Rendering (SSR). Components on this page are executed and rendered on the server,
+        producing static HTML that is delivered to the client. No interactive WebAssembly prerender markers or non-serializable reflection
+        objects are sent to the browser for this page. The goal is maximum load speed and minimal client-side initialization — behavior
+        similar to Razor Pages.
+    </p>
+    <p>
+        This page uses Bootstrap for markup and layout. To keep the rendering pure SSR and minimize client-side work, the page does not
+        load a service worker and does not include `blazor.web.js` for client-side interactivity.
+    </p>
+    <p>
+        This demo showcases the usage of components from <strong>Sabatex.RadzenBlazor</strong> and <strong>Sabatex.RadzenBlazor.Server</strong>.
+        It demonstrates running the website together with multiple WebAssembly applications inside a single host application.
+        <em>WASMClientA</em> is an example client application without authentication; <em>WASMClientB</em> is an example client with authentication.
+        The WASM clients load <code>Sabatex.RadzenBlazor</code> and <code>Radzen.Blazor</code> libraries and support separate PWA registration per client.
+    </p>
+    <p>
+        This project uses a single Blazor WebAssembly host application (WASMApp) that references Razor class libraries
+        (`WASMClientA`, `WASMClientB`) as virtual client applications. The Razor libraries consume the shared project
+        (for models and common frameworks). The host serves the clients' static assets, coordinates routing and
+        render-mode selection (SSR vs WASM), and injects per-client PWA headers. WASMClientA is a sample client without
+        authentication; WASMClientB includes authentication. This setup enables running multiple WASM experiences from
+        one host while keeping shared code centralized.
+    </p>
+</section>
+
+<section class="architecture-diagram my-4">
+    <h2>Application Architecture (4 Layers)</h2>
+    <div class="svg-container" style="max-width:100%;overflow:auto;">
+        <svg viewBox="0 0 1000 700" width="100%" height="auto" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="4-layer simplified application architecture">
+            <defs>
+                <style><![CDATA[
+                    .layer-label { font-size:13px; font-weight:700; fill:#222; letter-spacing:0.5px; }
+                    .box-host { fill:#90EE90; stroke:#2d5a2d; stroke-width:2; rx:6; }
+                    .box-ssr { fill:#87CEEB; stroke:#1e3a8a; stroke-width:2; rx:6; }
+                    .box-wasm { fill:#DDA0DD; stroke:#5a1a5a; stroke-width:2; rx:6; }
+                    .box-rcl { fill:#FFD700; stroke:#b8860b; stroke-width:2; rx:6; }
+                    .box-shared { fill:#FFB6C1; stroke:#8b1538; stroke-width:2; rx:6; }
+                    .text { font-family: 'Segoe UI', Arial, sans-serif; font-size:12px; fill:#222; }
+                    .text-bold { font-weight:700; font-size:13px; }
+                    .arrow { stroke:#333; stroke-width:2.5; marker-end:url(#arrowhead); fill:none; }
+                    .note { font-size:10px; fill:#555; font-style:italic; }
+                ]]></style>
+                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#333" />
+                </marker>
+            </defs>
+
+            <!-- LEVEL 1: HOST + API LAYER -->
+            <text x="30" y="30" class="layer-label">LEVEL 1: HOST SERVER + API</text>
+            <rect x="50" y="45" width="900" height="100" class="box-host" />
+            <text x="500" y="75" text-anchor="middle" class="text text-bold">SabatexBlazorDemo (Host + API Layer)</text>
+            <text x="500" y="95" text-anchor="middle" class="text">.NET 10 • App.razor • SabatexRenderModeContentSelector • PersonController • WeatherForecastController</text>
+            <text x="500" y="115" text-anchor="middle" class="text">Program.cs • Controllers • wwwroot</text>
+
+            <!-- Two arrows down: one to SSR, one to WASM -->
+            <path d="M 280 145 L 210 180" class="arrow" stroke="#28a745" stroke-width="2.5" />
+            <path d="M 720 145 L 790 180" class="arrow" stroke="#6f42c1" stroke-width="2.5" />
+
+            <!-- LEVEL 2: WEB CONTENT (SSR + WASM) -->
+            <text x="30" y="180" class="layer-label">LEVEL 2: WEB CONTENT (Render Modes)</text>
+
+            <!-- SSR Block -->
+            <rect x="50" y="195" width="320" height="90" class="box-ssr" />
+            <text x="210" y="220" text-anchor="middle" class="text text-bold">SSR</text>
+            <text x="210" y="240" text-anchor="middle" class="text">SSRRoutes.razor</text>
+            <text x="210" y="260" text-anchor="middle" class="text">Home, NavMenu, Layout</text>
+
+            <!-- WASM Block -->
+            <rect x="630" y="195" width="320" height="90" class="box-wasm" />
+            <text x="790" y="220" text-anchor="middle" class="text text-bold">WASM (bootstrap only)</text>
+            <text x="790" y="240" text-anchor="middle" class="text">WASMApp + blazor.web.js</text>
+            <text x="790" y="260" text-anchor="middle" class="text">No routing • No layout</text>
+
+            <!-- Two arrows from WASM down to A and B -->
+            <path d="M 710 285 L 320 345" class="arrow" stroke="#6f42c1" stroke-width="2" />
+            <path d="M 710 285 L 780 345" class="arrow" stroke="#6f42c1" stroke-width="2" />
+
+            <!-- LEVEL 3: WASM ROUTING (A + B) - HORIZONTAL -->
+            <text x="30" y="330" class="layer-label">LEVEL 3: WASM ROUTING (RCL Virtual Apps)</text>
+
+            <!-- WASMClientA - LEFT -->
+            <rect x="80" y="345" width="240" height="110" class="box-rcl" />
+            <text x="200" y="370" text-anchor="middle" class="text text-bold">WASMClientA</text>
+            <text x="200" y="390" text-anchor="middle" class="text">• ClientARoutes.razor</text>
+            <text x="200" y="410" text-anchor="middle" class="text">• Home, EnumDropDownDemo</text>
+            <text x="200" y="430" text-anchor="middle" class="text">• Weather/List</text>
+            <text x="200" y="450" text-anchor="middle" class="note">No authentication</text>
+
+            <!-- WASMClientB - RIGHT -->
+            <rect x="680" y="345" width="240" height="110" class="box-rcl" />
+            <text x="800" y="370" text-anchor="middle" class="text text-bold">WASMClientB</text>
+            <text x="800" y="390" text-anchor="middle" class="text">• ClientBRoutes.razor</text>
+            <text x="800" y="410" text-anchor="middle" class="text">• Auth, People/*</text>
+            <text x="800" y="430" text-anchor="middle" class="text">• EditFormDemo</text>
+            <text x="800" y="450" text-anchor="middle" class="note">With authentication</text>
+
+            <!-- Arrows from A/B down to Shared -->
+            <path d="M 200 455 L 350 615" class="arrow" stroke="#fd7e14" stroke-width="1.5" stroke-dasharray="5,3" />
+            <path d="M 800 455 L 650 615" class="arrow" stroke="#fd7e14" stroke-width="1.5" stroke-dasharray="5,3" />
+
+            <!-- LEVEL 4: SHARED (unified block) -->
+            <text x="30" y="600" class="layer-label">LEVEL 4: SHARED (Models & Libraries)</text>
+            <rect x="200" y="615" width="600" height="70" class="box-shared" />
+            <text x="500" y="638" text-anchor="middle" class="text text-bold">Shared Models & Libraries</text>
+            <text x="500" y="655" text-anchor="middle" class="text">Person • Product • WeatherForecast • DaysOfWeek • Sabatex.RadzenBlazor • Sabatex.RadzenBlazor.Server • Radzen.Blazor</text>
+
+            <!-- Legend -->
+            <text x="30" y="700" class="note">■ Green: Host + API  |  ■ Blue: SSR (server-side)  |  ■ Purple: WASM bootstrap  |  ■ Gold: RCL apps (A/B routing)  |  ■ Pink: Shared</text>
+        </svg>
+    </div>
+</section>

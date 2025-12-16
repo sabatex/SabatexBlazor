@@ -20,7 +20,7 @@
     <base href="/" />
     <ResourcePreloader />
     <link rel="stylesheet" href="@Assets["app.css"]" />
-    <link rel="stylesheet" href="@Assets["RadzenBlazorDemo.styles.css"]" />
+    <link rel="stylesheet" href="@Assets["SabatexBlazorDemo.styles.css"]" />
     <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
     <RadzenTheme Theme="material" />
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -32,14 +32,25 @@
     @if (isWASMClient)
     {
         <WASMLoadProgress />
-        <ClientRoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
+        <WasmClientRoute PrefixRoute="/SabatexBlazorDemo_WASMClientA">
+            <Content>
+                <SabatexBlazorDemo.WASMClientA.ClientARoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
+            </Content>
+        </WasmClientRoute>
+        <WasmClientRoute PrefixRoute="/SabatexBlazorDemo_WASMClientB">
+            <Content>
+                <SabatexBlazorDemo.WASMClientB.ClientBRoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
+            </Content>
+        </WasmClientRoute>
+
+
+        
     }else
     {
         <SSRRoutes />
     }
 
 
-    <BlazorErrorUI />
     @if (isWASMClient)
     {
         <script src="_framework/blazor.web.js"></script>

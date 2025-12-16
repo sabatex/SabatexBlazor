@@ -2,17 +2,17 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using RadzenBlazorDemo.ClientApp.Models;
-using RadzenBlazorDemo.Components;
 using RadzenBlazorDemo.Data;
+using RadzenBlazorDemo.Models;
 using RadzenBlazorDemo.Services;
 using Sabatex.Core.Identity;
 using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor;
 using Sabatex.RadzenBlazor.Server;
+using SabatexBlazorDemo.Components;
 
 
-            var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
             //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             var connection = new SqliteConnection("DataSource=:memory:");
@@ -103,7 +103,8 @@ using Sabatex.RadzenBlazor.Server;
                 .SetDefaultCulture("uk-UA")
                 );
 
-            Sabatex.Core.RadzenBlazor.WASMClient.AddWASMClient(typeof(SabatexRadzenBlazorDemo.Client._Imports).Assembly, null);
+            Sabatex.Core.RadzenBlazor.WASMClient.AddWASMClient(typeof(SabatexBlazorDemo.WASMClientA._Imports).Assembly, null);
+            Sabatex.Core.RadzenBlazor.WASMClient.AddWASMClient(typeof(SabatexBlazorDemo.WASMClientB._Imports).Assembly, null);
             var additionalAssemblies = Sabatex.Core.RadzenBlazor.WASMClient.WASMClients.Select(s=>s.Assembly).ToList();
             additionalAssemblies.Add(typeof(Sabatex.RadzenBlazor._Imports).Assembly);
      
