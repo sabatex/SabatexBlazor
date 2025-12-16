@@ -11,4 +11,14 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Sabatex.RadzenBlazor\Sabatex.RadzenBlazor.csproj" />
+  </ItemGroup>
+
 </Project>

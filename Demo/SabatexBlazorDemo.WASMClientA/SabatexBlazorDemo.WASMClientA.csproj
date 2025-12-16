@@ -7,18 +7,17 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
-		<PackageReference Include="Microsoft.Extensions.Localization" />
-	</ItemGroup>
-
-	<ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\SabatexBlazorDemo.Shared\SabatexBlazorDemo.Shared.csproj" />
   </ItemGroup>
 
   

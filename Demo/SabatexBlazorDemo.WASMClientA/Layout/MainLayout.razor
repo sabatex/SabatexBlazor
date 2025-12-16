@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager Navigation
 
-<RadzenComponents @rendermode=InteractiveWebAssembly />
+<RadzenComponents />
 <RadzenLayout @ref="radzenLayout">
     <RadzenHeader Style="min-height:auto" @ref="radzenHeader">
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.End" JustifyContent="JustifyContent.SpaceBetween" class="rz-ml-2">
@@ -26,11 +26,7 @@
     </RadzenBody>
 </RadzenLayout>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>
+<BlazorErrorUI />
 @code {
     RadzenLayout? radzenLayout;
     RadzenHeader? radzenHeader;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RadzenBlazorDemo.ClientApp.Models;
+namespace RadzenBlazorDemo.Models;
 
 public enum DaysOfWeek
 {

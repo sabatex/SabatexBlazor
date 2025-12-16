@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sabatex.RadzenBlazor\Sabatex.RadzenBlazor.csproj" />
-    <ProjectReference Include="..\SabatexRadzenBlazorDemo.Client\SabatexRadzenBlazorDemo.Client.csproj" />
+    <ProjectReference Include="..\SabatexBlazorDemo.WASMClientA\SabatexBlazorDemo.WASMClientA.csproj" />
+    <ProjectReference Include="..\SabatexBlazorDemo.WASMClientB\SabatexBlazorDemo.WASMClientB.csproj" />
   </ItemGroup>
 
 </Project>

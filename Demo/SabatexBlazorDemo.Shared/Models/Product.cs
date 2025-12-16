@@ -1,5 +1,5 @@
 using Sabatex.Core;
-namespace RadzenBlazorDemo.ClientApp.Models;
+namespace RadzenBlazorDemo.Models;
 
 public class Product: IEntityBase<Guid>
 {

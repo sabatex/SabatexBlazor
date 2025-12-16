@@ -16,4 +16,9 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\SabatexBlazorDemo.Shared\SabatexBlazorDemo.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -15,17 +15,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{5D25820D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sabatex.RadzenBlazor.Server", "Sabatex.RadzenBlazor.Server\Sabatex.RadzenBlazor.Server.csproj", "{0C28443B-1DB9-41E9-9756-E6F43FF3F2F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadzenBlazorDemo", "RadzenBlazorDemo\RadzenBlazorDemo.csproj", "{17C44CD5-A9D8-3A7A-0335-7B41FC39728B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadzenBlazorDemo.ClientApp", "RadzenBlazorDemo.ClientApp\RadzenBlazorDemo.ClientApp.csproj", "{D35541F2-3723-96E2-D118-7EC6B174F1C7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabatexRadzenBlazorDemo.Client", "SabatexRadzenBlazorDemo.Client\SabatexRadzenBlazorDemo.Client.csproj", "{76172A8C-0A7A-4BAF-96DE-77F7FE7EAE6B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{3425C592-D618-4749-A916-9104106B4492}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabatexBlazorDemo.WASMClientB", "Demo\SabatexBlazorDemo.WASMClientB\SabatexBlazorDemo.WASMClientB.csproj", "{EA053B86-8E80-4B95-A963-2BE3ECE1E299}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabatexBlazorDemo.Shared", "Demo\SabatexBlazorDemo.Shared\SabatexBlazorDemo.Shared.csproj", "{AFA0F960-36B0-49EA-A150-0A7344D1CEBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabatexBlazorDemo.WASMClientA", "Demo\SabatexBlazorDemo.WASMClientA\SabatexBlazorDemo.WASMClientA.csproj", "{D24F13B8-0BC4-EE77-EE16-24B5FEB9CBCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabatexBlazorDemo.WASMApp", "Demo\SabatexBlazorDemo.WASMApp\SabatexBlazorDemo.WASMApp.csproj", "{C1781662-9199-0D06-05F8-563BE0C443E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabatexBlazorDemo", "Demo\SabatexBlazorDemo\SabatexBlazorDemo.csproj", "{10C51979-553C-AC33-6290-8079B9C25C2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,18 +41,6 @@ Global
 		{0C28443B-1DB9-41E9-9756-E6F43FF3F2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C28443B-1DB9-41E9-9756-E6F43FF3F2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C28443B-1DB9-41E9-9756-E6F43FF3F2F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17C44CD5-A9D8-3A7A-0335-7B41FC39728B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17C44CD5-A9D8-3A7A-0335-7B41FC39728B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17C44CD5-A9D8-3A7A-0335-7B41FC39728B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17C44CD5-A9D8-3A7A-0335-7B41FC39728B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D35541F2-3723-96E2-D118-7EC6B174F1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D35541F2-3723-96E2-D118-7EC6B174F1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D35541F2-3723-96E2-D118-7EC6B174F1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D35541F2-3723-96E2-D118-7EC6B174F1C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76172A8C-0A7A-4BAF-96DE-77F7FE7EAE6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76172A8C-0A7A-4BAF-96DE-77F7FE7EAE6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76172A8C-0A7A-4BAF-96DE-77F7FE7EAE6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76172A8C-0A7A-4BAF-96DE-77F7FE7EAE6B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EA053B86-8E80-4B95-A963-2BE3ECE1E299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EA053B86-8E80-4B95-A963-2BE3ECE1E299}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA053B86-8E80-4B95-A963-2BE3ECE1E299}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,6 +49,18 @@ Global
 		{AFA0F960-36B0-49EA-A150-0A7344D1CEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFA0F960-36B0-49EA-A150-0A7344D1CEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFA0F960-36B0-49EA-A150-0A7344D1CEBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D24F13B8-0BC4-EE77-EE16-24B5FEB9CBCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D24F13B8-0BC4-EE77-EE16-24B5FEB9CBCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D24F13B8-0BC4-EE77-EE16-24B5FEB9CBCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D24F13B8-0BC4-EE77-EE16-24B5FEB9CBCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1781662-9199-0D06-05F8-563BE0C443E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1781662-9199-0D06-05F8-563BE0C443E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1781662-9199-0D06-05F8-563BE0C443E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1781662-9199-0D06-05F8-563BE0C443E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10C51979-553C-AC33-6290-8079B9C25C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10C51979-553C-AC33-6290-8079B9C25C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10C51979-553C-AC33-6290-8079B9C25C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10C51979-553C-AC33-6290-8079B9C25C2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +68,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EA053B86-8E80-4B95-A963-2BE3ECE1E299} = {3425C592-D618-4749-A916-9104106B4492}
 		{AFA0F960-36B0-49EA-A150-0A7344D1CEBB} = {3425C592-D618-4749-A916-9104106B4492}
+		{D24F13B8-0BC4-EE77-EE16-24B5FEB9CBCB} = {3425C592-D618-4749-A916-9104106B4492}
+		{C1781662-9199-0D06-05F8-563BE0C443E4} = {3425C592-D618-4749-A916-9104106B4492}
+		{10C51979-553C-AC33-6290-8079B9C25C2A} = {3425C592-D618-4749-A916-9104106B4492}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9AE175BB-0F61-4B70-945C-B6046F5023F4}

@@ -1,0 +1,38 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<RadzenComponents />
+<RadzenLayout @ref="radzenLayout">
+    <RadzenHeader Style="min-height:auto" @ref="radzenHeader">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.End" JustifyContent="JustifyContent.SpaceBetween" class="rz-ml-2">
+            <RadzenStack Orientation="Orientation.Horizontal" Style="margin-bottom:auto;margin-top:auto">
+                <RadzenSidebarToggle Click="@(() => sideBarExpanded = !sideBarExpanded)" />
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Horizontal" class="rz-my-auto">
+                <SabatexLogin />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenHeader>
+
+    <RadzenSidebar @bind-Expanded="@sideBarExpanded">
+        <RadzenPanelMenu>
+            <NavMenu />
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+
+
+    <RadzenBody>
+        @Body
+    </RadzenBody>
+</RadzenLayout>
+
+<BlazorErrorUI />
+@code {
+    RadzenLayout? radzenLayout;
+    RadzenHeader? radzenHeader;
+    bool sideBarExpanded = true;
+    void LogOut()
+    {
+        Navigation.NavigateTo("Account/logout", true);
+    }
+}
