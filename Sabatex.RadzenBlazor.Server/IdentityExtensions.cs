@@ -199,21 +199,6 @@ public static class IdentityExtensions
     }
 
 
-    /// <summary>
-    /// add sabatex identity UI services
-    /// </summary>
-    /// <param name="services"></param>
-    /// <returns></returns>
-    public static IServiceCollection AddSabatexIdentityUI(this IServiceCollection services)
-    //    where TDBContext : IdentityDbContext
-    //    where TCmd : CommandLineOperations<TDBContext>
-    {
-        //    services.AddDbContext<TDBContext>();
-        //    services.AddIdentity<ApplicationUser, IdentityRole>()
-        //        .AddEntityFrameworkStores<TDBContext>()
-        //        .AddDefaultTokenProviders();
-        //    services.AddScoped<ICommandLineOperations,TCmd>();
-        return services;
-    }
+    
 
 }

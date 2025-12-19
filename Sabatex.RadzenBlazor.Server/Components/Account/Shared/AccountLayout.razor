@@ -2,16 +2,19 @@
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
-<div class="m-1">
 @if (HttpContext is null)
 {
-    <p>Loading...</p>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <p>Loading...</p>
+    </div>
 }
 else
 {
-    @Body
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        @Body
+    </div>
 }
-</div>
+
 @code {
     [CascadingParameter]
     private HttpContext? HttpContext { get; set; }

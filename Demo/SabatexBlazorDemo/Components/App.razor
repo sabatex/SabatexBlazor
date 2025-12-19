@@ -31,7 +31,8 @@
 <body>
     @if (isWASMClient)
     {
-        <WASMLoadProgress />
+        <WASMLoadProgress @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: true))" />
+
         <WasmClientRoute PrefixRoute="/SabatexBlazorDemo_WASMClientA">
             <Content>
                 <SabatexBlazorDemo.WASMClientA.ClientARoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
@@ -56,6 +57,22 @@
         <script src="_framework/blazor.web.js"></script>
         <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
         <script>
+             window.blazorLoadingHelper = {
+                hideLoader: function () {
+                    const loaders = document.querySelectorAll('.wasm-loader');
+                    loaders.forEach(function (loader) {
+                        loader.style.display = 'none';
+                    });
+                }
+            };
+            Blazor.start().then(function () {
+                    console.log('Blazor WASM fully started');
+                    setTimeout(function () {
+                        window.blazorLoadingHelper.hideLoader();
+                    }, 500);
+                });
+
+
              if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function () {
                     navigator.serviceWorker.register('/service-worker.js');
@@ -93,11 +110,11 @@
      isWASMClient ? new InteractiveWebAssemblyRenderMode(prerender: false) : null;
 
     private bool isWASMClient;
- 
+  
     protected override void OnInitialized()
     {
         base.OnInitialized();
         isWASMClient = HttpContext.IsRouteWASMClient();
     }
-
+   
 }

@@ -8,8 +8,9 @@
             <RadzenStack Orientation="Orientation.Horizontal" Style="margin-bottom:auto;margin-top:auto">
                 <RadzenSidebarToggle Click="@(() => sideBarExpanded = !sideBarExpanded)" />
             </RadzenStack>
+            <RadzenText TextStyle="TextStyle.DisplayH5">No Auth WASM</RadzenText>
             <RadzenStack Orientation="Orientation.Horizontal" class="rz-my-auto">
-                <SabatexLogin />
+               <RadzenAppearanceToggle />
             </RadzenStack>
         </RadzenStack>
     </RadzenHeader>

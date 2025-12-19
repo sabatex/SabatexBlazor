@@ -43,11 +43,13 @@ var builder = WebApplication.CreateBuilder(args);
                 .AddIsConfiguredGoogle(builder.Configuration);
             builder.Services.AddAuthorization();
 
+                
 
             builder.Services.AddSingleton<Sabatex.Core.Identity.IEmailSender<ApplicationUser>, IdentityEmailSender>();
             builder.Services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
             builder.Services.AddControllers();
             builder.Services.AddSabatexRadzenBlazor();
+            builder.Services.AddSabatexRadzenBlazorServer();
             builder.Services.AddScoped<IIdentityAdapter,IdentityAdapterServer>();
             builder.Services.AddScoped<ISabatexRadzenBlazorDataAdapter, SabatexServerRadzenBlazorDataAdapter>();
             builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
@@ -107,8 +109,9 @@ var builder = WebApplication.CreateBuilder(args);
             Sabatex.Core.RadzenBlazor.WASMClient.AddWASMClient(typeof(SabatexBlazorDemo.WASMClientB._Imports).Assembly, null);
             var additionalAssemblies = Sabatex.Core.RadzenBlazor.WASMClient.WASMClients.Select(s=>s.Assembly).ToList();
             additionalAssemblies.Add(typeof(Sabatex.RadzenBlazor._Imports).Assembly);
-     
-            app.MapRazorComponents<App>()
+            additionalAssemblies.Add(typeof(Sabatex.RadzenBlazor.Server.ApplicationUser).Assembly);
+
+app.MapRazorComponents<App>()
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(additionalAssemblies.ToArray());
 
@@ -132,7 +135,7 @@ var builder = WebApplication.CreateBuilder(args);
                     var startDate = DateOnly.FromDateTime(DateTime.Now);
                     var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
                     
-                    for ( var i = 0;i<10;i++)
+                    for ( var i = 0;i<100;i++)
                     {
                         var weatherForecast = new WeatherForecast
                         {

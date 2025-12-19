@@ -2,22 +2,3 @@
 <RadzenPanelMenuItem Text=@L["Home"] Icon="home" Path="/RadzenBlazorDemo_Client/" />
 <RadzenPanelMenuItem Text=@L["EnumDropDown"] Path="/RadzenBlazorDemo_Client/enumdropdowndemo" />
 <RadzenPanelMenuItem Text=@L["Weather"]  Path="/weather/list" />
-<RadzenPanelMenuItem Text=@L["Auth"]  Path="/auth" />
-<RadzenPanelMenuItem Text=@L["People"] Path="/people/list" />
-<AuthorizeView>
-    <Authorized>
-        <RadzenPanelMenuItem Text=@L["Users edit"] Path="/account/manage/role/list" />
-    </Authorized>
- </AuthorizeView>
-<UserProfileMenuItem /> 
-<AuthorizeView>
-   <Authorized>
-        <RadzenPanelMenuItem Text=@L["Logout"]  Path="Account/Logout"  />
-    </Authorized>
-    <NotAuthorized>
-        <RadzenPanelMenuItem Text=@L["Register"]  Path="Account/Register" />
-        <RadzenPanelMenuItem Text=@L["Login"]  Path="Account/Login" />
- 
-    </NotAuthorized>
-</AuthorizeView>
-

@@ -3,7 +3,7 @@
 @using Microsoft.Extensions.Localization
 
 @inject SignInManager<ApplicationUser> SignInManager
-@inject IdentityAdapterServer RedirectManager
+@inject IIdentityAdapter RedirectManager
 @inject IStringLocalizer<ExternalLoginPicker> Localizer
 @if (externalLogins.Length != 0)
 {

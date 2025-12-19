@@ -296,5 +296,18 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
 
         return accountGroup;
     }
- 
+
+    
+    public static IServiceCollection AddSabatexRadzenBlazorServer(this IServiceCollection services)
+    //    where TDBContext : IdentityDbContext
+    //    where TCmd : CommandLineOperations<TDBContext>
+    {
+        //    services.AddDbContext<TDBContext>();
+        //    services.AddIdentity<ApplicationUser, IdentityRole>()
+        //        .AddEntityFrameworkStores<TDBContext>()
+        //        .AddDefaultTokenProviders();
+        //    services.AddScoped<ICommandLineOperations,TCmd>();
+        services.AddScoped<IIdentityAdapter, IdentityAdapterServer>();
+        return services;
+    }
 }
