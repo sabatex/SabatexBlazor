@@ -1,0 +1,12 @@
+{
+  "projects": [
+    {
+      "path": "Sabatex.RadzenBlazor/Sabatex.RadzenBlazor.csproj",
+      "enabled": true
+    },
+    {
+      "path": "Sabatex.RadzenBlazor.Server/Sabatex.RadzenBlazor.Server.csproj",
+      "enabled": true
+    }
+  ]
+}

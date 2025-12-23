@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{5D25820D
 		Directory.Packages.props = Directory.Packages.props
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
+		sabatex-publish-solution.json = sabatex-publish-solution.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sabatex.RadzenBlazor.Server", "Sabatex.RadzenBlazor.Server\Sabatex.RadzenBlazor.Server.csproj", "{0C28443B-1DB9-41E9-9756-E6F43FF3F2F2}"

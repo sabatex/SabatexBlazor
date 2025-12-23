@@ -40,8 +40,9 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
-  <!-- Auto-assign Version from WASM library (runs BEFORE any other target) -->
-  <Target Name="SetVersionFromWasm" BeforeTargets="BeforeBuild;CoreCompile;GetAssemblyVersion;GenerateNuspec">
+  <!-- Auto-assign Version from WASM library (runs EARLY in build pipeline) -->
+  <Target Name="SetVersionFromWasm" 
+          BeforeTargets="BeforeBuild;CoreCompile;GetAssemblyVersion;GenerateNuspec;PrepareForBuild;ResolveReferences;PrepareForPublish;_GetOutputItemsFromPack">
     <PropertyGroup>
       <WasmProjectPath>$(MSBuildThisFileDirectory)..\Sabatex.RadzenBlazor\Sabatex.RadzenBlazor.csproj</WasmProjectPath>
     </PropertyGroup>
@@ -54,6 +55,9 @@
     <!-- Assign WASM version to Server library -->
     <PropertyGroup>
       <Version>$(WasmLibraryVersion)</Version>
+      <PackageVersion>$(WasmLibraryVersion)</PackageVersion>
+      <FileVersion>$(WasmLibraryVersion)</FileVersion>
+      <InformationalVersion>$(WasmLibraryVersion)</InformationalVersion>
     </PropertyGroup>
 
     <Message Importance="high" Text="✅ Server library version auto-assigned from WASM: $(Version)" />
