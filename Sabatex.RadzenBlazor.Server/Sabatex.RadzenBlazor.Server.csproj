@@ -36,13 +36,8 @@
     <PackageReference Include="Sabatex.Core" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
   <!-- Auto-assign Version from WASM library (runs EARLY in build pipeline) -->
-  <Target Name="SetVersionFromWasm" 
-          BeforeTargets="BeforeBuild;CoreCompile;GetAssemblyVersion;GenerateNuspec;PrepareForBuild;ResolveReferences;PrepareForPublish;_GetOutputItemsFromPack">
+  <Target Name="SetVersionFromWasm" BeforeTargets="BeforeBuild;CoreCompile;GetAssemblyVersion;GenerateNuspec;PrepareForBuild;ResolveReferences;PrepareForPublish;_GetOutputItemsFromPack">
     <PropertyGroup>
       <WasmProjectPath>$(MSBuildThisFileDirectory)..\Sabatex.RadzenBlazor\Sabatex.RadzenBlazor.csproj</WasmProjectPath>
     </PropertyGroup>

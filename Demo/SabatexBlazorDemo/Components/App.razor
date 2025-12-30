@@ -1,107 +1,36 @@
-﻿@using Sabatex.RadzenBlazor.Server
+@using Sabatex.RadzenBlazor.Server
 @using System.Reflection
-@* <SabatexApp Lang="en">
-     <BodyWASM>
-        <ClientRoutes @rendermode="new InteractiveWebAssemblyRenderMode(prerender: false)" />
-        <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
-    </BodyWASM>
-    <BodySSR>
-        <SSRRoutes />
-    </BodySSR>
- 
+
+<SabatexApp Lang="en" Href="/" >
+    <Head>
+        <link rel="stylesheet" href="@Assets["app.css"]" />
+        <link rel="stylesheet" href="@Assets["SabatexBlazorDemo.styles.css"]" />
+        <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
+        <link rel="icon" type="image/png" href="favicon.png" />
+    </Head>
+    <Body>
+        @if (isWASMClient)
+        {
+             <WasmClientRoute PrefixRoute="/SabatexBlazorDemo_WASMClientA">
+                <Content>
+                    <SabatexBlazorDemo.WASMClientA.ClientARoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
+                </Content>
+            </WasmClientRoute>
+            <WasmClientRoute PrefixRoute="/SabatexBlazorDemo_WASMClientB">
+                <Content>
+                    <SabatexBlazorDemo.WASMClientB.ClientBRoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
+                </Content>
+            </WasmClientRoute>
+        }
+        else
+        {
+            <SSRRoutes />
+        }
+    </Body>
+
 </SabatexApp>
 
- *@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/" />
-    <ResourcePreloader />
-    <link rel="stylesheet" href="@Assets["app.css"]" />
-    <link rel="stylesheet" href="@Assets["SabatexBlazorDemo.styles.css"]" />
-    <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
-    <RadzenTheme Theme="material" />
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <SabatexPWAHeaderContent />
-    <ImportMap />
-    <HeadOutlet @rendermode="@PageRenderMode" />
-</head>
-<body>
-    @if (isWASMClient)
-    {
-        <WASMLoadProgress @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: true))" />
 
-        <WasmClientRoute PrefixRoute="/SabatexBlazorDemo_WASMClientA">
-            <Content>
-                <SabatexBlazorDemo.WASMClientA.ClientARoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
-            </Content>
-        </WasmClientRoute>
-        <WasmClientRoute PrefixRoute="/SabatexBlazorDemo_WASMClientB">
-            <Content>
-                <SabatexBlazorDemo.WASMClientB.ClientBRoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
-            </Content>
-        </WasmClientRoute>
-
-
-        
-    }else
-    {
-        <SSRRoutes />
-    }
-
-
-    @if (isWASMClient)
-    {
-        <script src="_framework/blazor.web.js"></script>
-        <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
-        <script>
-             window.blazorLoadingHelper = {
-                hideLoader: function () {
-                    const loaders = document.querySelectorAll('.wasm-loader');
-                    loaders.forEach(function (loader) {
-                        loader.style.display = 'none';
-                    });
-                }
-            };
-            Blazor.start().then(function () {
-                    console.log('Blazor WASM fully started');
-                    setTimeout(function () {
-                        window.blazorLoadingHelper.hideLoader();
-                    }, 500);
-                });
-
-
-             if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function () {
-                    navigator.serviceWorker.register('/service-worker.js');
-                });
-            }
-        </script>
-    }
-    else
-    {
-        <script>
-        window.toggleSidebar = function (state) {
-            const sidebar = document.querySelector('.sidebar');
-            if (!sidebar) return;
-            const isCollapse = sidebar.classList.contains("side-bar-collapse");
-            // toggle: if collapsed -> show, else collapse
-            if (isCollapse) {
-                sidebar.classList.remove("side-bar-collapse");
-            } else {
-                sidebar.classList.add("side-bar-collapse");
-            }
-        }
-        </script>
-        
-    }
-
-  
- 
-</body>
-</html>
 @code {
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
