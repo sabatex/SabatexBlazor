@@ -1,4 +1,4 @@
-﻿@page "/Account/Login"
+@page "/Account/Login"
 
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
@@ -13,11 +13,11 @@
 @inject IIdentityAdapter IdentityAdapter
 @inject IStringLocalizer<Login> Localizer
 
-<PageTitle>Log in</PageTitle>
+<PageTitle>@Localizer["Log in"]</PageTitle>
 
 <div class="border">
      <section>
-            <ExternalLoginPicker Header="@Localizer["Use another service to log in."]" />
+            <ExternalLoginPicker />
     </section>
     <div class="d-flex justify-content-center border">
             <section>
@@ -89,23 +89,27 @@
         var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
         if (result.Succeeded)
         {
-            Logger.LogInformation("User logged in.");
-            IdentityAdapter.RedirectTo(ReturnUrl);
+            Logger.LogInformation("User {Email} successfully logged in.", Input.Email);
+            IdentityAdapter.RedirectTo(ReturnUrl ?? "/");
         }
         else if (result.RequiresTwoFactor)
         {
-            // IdentityAdapter.RedirectTo(
-            //     "Account/LoginWith2fa",
-            //     new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
+            Logger.LogInformation("User {Email} requires two-factor authentication.", Input.Email);
+            IdentityAdapter.RedirectTo("Account/LoginWith2fa", new Dictionary<string, object?>
+            {
+                ["returnUrl"] = ReturnUrl,
+                ["rememberMe"] = Input.RememberMe
+            });
         }
         else if (result.IsLockedOut)
         {
-            Logger.LogWarning("User account locked out.");
+            Logger.LogWarning("User {Email} is locked out.", Input.Email);
             IdentityAdapter.RedirectTo("Account/Lockout");
         }
         else
         {
-            errorMessage = "Error: Invalid login attempt.";
+            Logger.LogWarning("Invalid login attempt for user {Email}.", Input.Email);
+            errorMessage = "Error: " + Localizer["Invalid login attempt for user {0}.", Input.Email];
         }
     }
 

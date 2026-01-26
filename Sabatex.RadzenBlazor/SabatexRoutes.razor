@@ -1,11 +1,11 @@
-﻿@using System.Reflection
+@using System.Reflection
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 <Router AppAssembly="@AppAssembly" AdditionalAssemblies="@AdditionalAssemblies" >
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="routeData" DefaultLayout="@DefaultLayout">
             <NotAuthorized>
-                <SabatexRedirectToLogin />
+                Access denied
             </NotAuthorized>
         </AuthorizeRouteView>
         <FocusOnNavigate RouteData="routeData" Selector="h1" />

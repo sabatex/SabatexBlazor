@@ -1,6 +1,8 @@
-﻿<Router AppAssembly="typeof(_Imports).Assembly" NotFoundPage="typeof(Shared.Pages.NotFound)">
+<Router AppAssembly="typeof(_Imports).Assembly"
+        AdditionalAssemblies="@(new [] {typeof(SabatexBlazorDemo.Shared.Pages.NotFound).Assembly})"
+        NotFoundPage="typeof(Shared.Pages.NotFound)">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.BLayout)">
             <NotAuthorized>
                 <RedirectToLogin />
             </NotAuthorized>
@@ -8,3 +10,7 @@
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
 </Router>
+@code {
+    public const string RoutePrefix = "/WASMClientB";
+    public static string GetRoute(string relativePath) => RoutePrefix + relativePath;   
+}

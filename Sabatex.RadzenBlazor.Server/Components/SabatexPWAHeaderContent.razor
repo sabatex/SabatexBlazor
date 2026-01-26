@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
-@foreach (var WASMClient in Sabatex.Core.RadzenBlazor.WASMClient.WASMClients)
+@using Microsoft.AspNetCore.Http
+@foreach (var WASMClient in RadzenBlazor.WASMClient.WASMClients)
 {
     if (HttpContext.Request.Path.StartsWithSegments(WASMClient.PrefixRoute))
     {

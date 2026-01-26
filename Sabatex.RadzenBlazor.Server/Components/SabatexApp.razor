@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html lang="@Lang">
     <head>
-        <meta charset="utf-8" />
+        <meta charset="@Charset" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <base href="/" />
+        <base href="@Href" />
         <ResourcePreloader />
         @Head
         <RadzenTheme Theme="material" />
@@ -14,11 +14,9 @@
         <HeadOutlet @rendermode="@PageRenderMode" />
     </head>
     <body>
-        @Body
-   
-        @*  JS for WASM clients *@
         @if (isWASMClient)
         {
+            @Body
             <div id="sabatex-wasm-load-progress">
                 <svg class="loading-progress" >
                     <circle r="40%" cx="50%" cy="50%" />
@@ -35,10 +33,9 @@
                     });
                 }
             </script>
-        }
-        @* JS for SSR clients *@
-        @if (!isWASMClient)
+        }else
         {
+            @Body
             <script>
                 window.toggleSidebar = function (state) {
                     const sidebar = document.querySelector('.sidebar');

@@ -1,24 +1,55 @@
-﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager NavigationManager
+
 @if (!string.IsNullOrEmpty(PrefixRoute))
 {
-    @if (Sabatex.Core.RadzenBlazor.WASMClient.WASMClients.Any(s=>s.PrefixRoute == PrefixRoute))
+    if (RadzenBlazor.WASMClient.WASMClients.Any(s => s.PrefixRoute == PrefixRoute))
     {
         if (HttpContext.Request.Path.StartsWithSegments(PrefixRoute))
         {
-            @Content
+            if (AuthorizedOnly && HttpContext.User?.Identity?.IsAuthenticated != true)
+            {
+                //TriggerRedirect();
+            }
+            else
+            {
+                @Content
+            }
         }
     }
 }
 
-
-
-
 @code {
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
+
     [Parameter]
     public RenderFragment? Content { get; set; }
+
     [Parameter]
     public string? PrefixRoute { get; set; }
 
+    [Parameter]
+    public bool AuthorizedOnly  { get; set; }
+
+    // private void TriggerRedirect()
+    // {
+    //     var relative = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+    //     if (relative.StartsWith("Account/Login", StringComparison.OrdinalIgnoreCase))
+    //     {
+    //         return;
+    //     }
+
+    //     var loginUrl = $"Account/Login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}";
+
+    //     if (!HttpContext.Response.HasStarted)
+    //     {
+    //         HttpContext.Response.Redirect(loginUrl, permanent: false);
+    //     }
+    //     else
+    //     {
+    //         NavigationManager.NavigateTo(loginUrl, forceLoad: true);
+    //     }
+    // }
 }

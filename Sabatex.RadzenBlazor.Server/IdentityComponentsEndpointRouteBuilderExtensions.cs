@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +10,10 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Sabatex.Core.Identity;
+using Sabatex.Core.RadzenBlazor;
+using Sabatex.RadzenBlazor;
 using Sabatex.RadzenBlazor.Server;
+using System.CommandLine;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json;
@@ -97,7 +100,7 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
         accountGroup.MapGet("/ExternalLogin",
             async (HttpContext context,
                            [FromServices] SignInManager<ApplicationUser> signInManager,
-                           [FromServices]UserManager<ApplicationUser> userManager,
+                           [FromServices] UserManager<ApplicationUser> userManager,
                            [FromServices] IMemoryCache cache,
                            [FromServices] ILogger<IdentityAdapterServer> logger,
                            [FromQuery] string? returnUrl,
@@ -307,7 +310,64 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
         //        .AddEntityFrameworkStores<TDBContext>()
         //        .AddDefaultTokenProviders();
         //    services.AddScoped<ICommandLineOperations,TCmd>();
+        services.AddMemoryCache();
         services.AddScoped<IIdentityAdapter, IdentityAdapterServer>();
         return services;
+    }
+
+    public class SabatexBlazorOptions
+    {
+        /// <summary>
+        /// Шлях до сторінки логіна. За замовчуванням "/Account/Login".
+        /// </summary>
+        public string LoginPath { get; set; } = "/Account/Login";
+        public IEnumerable<WASMClient> WASMClient { get; set; }
+    }
+
+
+    /// <summary>
+    /// Додає middleware для захисту WASM-маршрутів, позначених як AuthorizedContent.
+    /// Анонімні користувачі будуть переадресовані на сторінку логіна.
+    /// </summary>
+    /// <param name="app">The application builder.</param>
+    /// <param name="loginPath">Шлях до сторінки логіна. За замовчуванням "/Account/Login".</param>
+    /// <returns>The application builder для подальшої конфігурації.</returns>
+    public static IApplicationBuilder UseSabatexBlazor(this IApplicationBuilder app, Action<SabatexBlazorOptions>? options)
+    { 
+        var opts = new SabatexBlazorOptions();
+        if (options != null)
+        {
+           
+            options(opts);
+            foreach (var wasm in opts.WASMClient)
+            {
+                WASMClient.WASMClients.Add(wasm);
+            }
+        }
+
+        return app.Use(async (context, next) =>
+        {
+            var path = context.Request.Path.Value ?? "";
+            
+            // Отримуємо всі WASM-клієнти, що вимагають авторизації
+            var protectedRoutes = WASMClient.WASMClients
+                .Where(c => c.AuthorizedContent)
+                .Select(c => c.PrefixRoute);
+
+            // Перевіряємо, чи запит до захищеного WASM-маршруту
+            if (protectedRoutes.Any(route => path.StartsWith(route, StringComparison.OrdinalIgnoreCase)))
+            {
+                // Якщо користувач не автентифікований — редирект на логін
+                if (!(context.User?.Identity?.IsAuthenticated ?? false))
+                {
+                    var returnUrl = Uri.EscapeDataString(context.Request.GetEncodedUrl());
+                    context.Response.Redirect($"{opts.LoginPath}?returnUrl={returnUrl}");
+                    return; // Зупиняємо pipeline
+                }
+            }
+
+            await next(); // Продовжуємо обробку
+        });
+    
     }
 }

@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http
     @if (IsWebAssembly)
     {
         @WASM
@@ -21,7 +21,7 @@
     {
         get 
         {
-            foreach (var WASMClient in Sabatex.Core.RadzenBlazor.WASMClient.WASMClients)
+            foreach (var WASMClient in RadzenBlazor.WASMClient.WASMClients)
             {
                 if (HttpContext.Request.Path.StartsWithSegments(WASMClient.PrefixRoute))
                 {

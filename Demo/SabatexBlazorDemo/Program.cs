@@ -10,6 +10,7 @@ using Sabatex.Core.RadzenBlazor;
 using Sabatex.RadzenBlazor;
 using Sabatex.RadzenBlazor.Server;
 using SabatexBlazorDemo.Components;
+using SabatexBlazorDemo.WASMClientB;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -105,13 +106,19 @@ var builder = WebApplication.CreateBuilder(args);
                 .SetDefaultCulture("uk-UA")
                 );
 
-            Sabatex.Core.RadzenBlazor.WASMClient.AddWASMClient(typeof(SabatexBlazorDemo.WASMClientA._Imports).Assembly, null);
-            Sabatex.Core.RadzenBlazor.WASMClient.AddWASMClient(typeof(SabatexBlazorDemo.WASMClientB._Imports).Assembly, null);
-            var additionalAssemblies = Sabatex.Core.RadzenBlazor.WASMClient.WASMClients.Select(s=>s.Assembly).ToList();
+            app.UseSabatexBlazor((options) => 
+            {
+                var clients = new List<WASMClient>();
+                clients.Add(new WASMClient(typeof(SabatexBlazorDemo.WASMClientA._Imports).Assembly,null,null));
+                clients.Add(new WASMClient(typeof(SabatexBlazorDemo.WASMClientB._Imports).Assembly,ClientBRoutes.RoutePrefix,null,true));
+                options.WASMClient = clients;
+            });            
+
+            var additionalAssemblies = WASMClient.WASMClients.Select(s=>s.Assembly).ToList();
             additionalAssemblies.Add(typeof(Sabatex.RadzenBlazor._Imports).Assembly);
             additionalAssemblies.Add(typeof(Sabatex.RadzenBlazor.Server.ApplicationUser).Assembly);
 
-app.MapRazorComponents<App>()
+            app.MapRazorComponents<App>()
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(additionalAssemblies.ToArray());
 

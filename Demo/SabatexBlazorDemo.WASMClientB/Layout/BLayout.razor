@@ -1,5 +1,4 @@
-﻿@inherits LayoutComponentBase
-@inject NavigationManager Navigation
+@inherits LayoutComponentBase
 
 <RadzenComponents />
 <RadzenLayout @ref="radzenLayout">
@@ -25,15 +24,14 @@
     <RadzenBody>
         @Body
     </RadzenBody>
-</RadzenLayout>
+</RadzenLayout> 
 
-<BlazorErrorUI />
+ <BlazorErrorUI /> 
+
+
 @code {
     RadzenLayout? radzenLayout;
     RadzenHeader? radzenHeader;
     bool sideBarExpanded = true;
-    void LogOut()
-    {
-        Navigation.NavigateTo("Account/logout", true);
-    }
+  
 }

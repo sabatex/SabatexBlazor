@@ -1,7 +1,7 @@
-﻿<Router AppAssembly="typeof(_Imports).Assembly"
-        AdditionalAssemblies="@Sabatex.Core.RadzenBlazor.WASMClient.WASMClients.Select(c => c.Assembly).ToArray()" NotFoundPage="typeof(Shared.Pages.NotFound)">
+<Router AppAssembly="typeof(_Imports).Assembly" AdditionalAssemblies="@(new [] {typeof(SabatexBlazorDemo.Shared.Pages.NotFound).Assembly})"
+        NotFoundPage="typeof(Shared.Pages.NotFound)">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.ALayout)">
             <NotAuthorized>
                 <RedirectToLogin />
             </NotAuthorized>

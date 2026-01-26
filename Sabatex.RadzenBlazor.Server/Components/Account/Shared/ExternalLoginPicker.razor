@@ -1,25 +1,47 @@
-﻿@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Extensions.Localization
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject IIdentityAdapter RedirectManager
 @inject IStringLocalizer<ExternalLoginPicker> Localizer
-@if (externalLogins.Length != 0)
+@inject IIdentityAdapter IdentityAdapter
+
+@if (externalProviders.Length > 0)
 {
-       <div class="border">
-        <h4 class="text-center">@Header</h4>
+     <div class="border">
+        <h4 class="text-center">@Localizer["Use another service to log in."]</h4>
         <hr />
   
      <form class="form-horizontal" action="Account/PerformExternalLogin" method="post">
         <div>
             <AntiforgeryToken />
             <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
-                <p class="d-flex justify-content-center">
-                @foreach (var provider in externalLogins)
+            <p class="d-flex justify-content-center">
+                @foreach (var provider in externalProviders)
                 {
-                        <button type="submit" class="btn btn-primary bi bi-google" style="margin-left:10px" name="provider" value="@provider.Name" title=@Localizer["Log in using your {0} account",@provider.DisplayName]>@provider.DisplayName</button>
-                }
+                    @switch(provider.Name)
+                    {
+                        case "Microsoft":
+                            <MicrosoftIdentityButton />
+                            break;
+                        case "Google":
+                            <GoogleIdentityButton />
+                            break;
+                        default:
+                       <button
+                           type="submit"
+                           class="btn btn-primary"
+                           style="margin-left:10px"
+                           name="provider"
+                           value="@provider.Name"
+                           title=@Localizer["Log in using your {0} account",@provider.DisplayName]>
+                            @provider.DisplayName
+                       </button>
+                       break;
+                    }
+ 
+                 }
             </p>
             </div>
     
@@ -28,17 +50,15 @@
 }
 
 @code {
-
-    private AuthenticationScheme[] externalLogins = [];
-
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
-    [Parameter]
-    public string? Header { get; set; }
+    private ExternalProvider[] externalProviders = Array.Empty<ExternalProvider>();
 
     protected override async Task OnInitializedAsync()
     {
-        externalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToArray();
+        externalProviders = (await IdentityAdapter
+      .GetExternalProvidersAsync())
+      .ToArray();
     }
 }

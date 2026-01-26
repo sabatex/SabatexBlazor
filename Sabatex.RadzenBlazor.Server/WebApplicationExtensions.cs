@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -109,7 +109,7 @@ public static class WebApplicationExtensions
     /// <returns>true if the request path starts with the prefix of any registered WASM client route; otherwise, false.</returns>
     public static bool IsRouteWASMClient(this HttpContext httpContext)
     {
-        foreach (var WASMClient in Sabatex.Core.RadzenBlazor.WASMClient.WASMClients)
+        foreach (var WASMClient in RadzenBlazor.WASMClient.WASMClients)
         {
             if (httpContext.Request.Path.StartsWithSegments(WASMClient.PrefixRoute))
             {
@@ -118,5 +118,8 @@ public static class WebApplicationExtensions
         }
         return false;
     }
+
+
+    
 
 }

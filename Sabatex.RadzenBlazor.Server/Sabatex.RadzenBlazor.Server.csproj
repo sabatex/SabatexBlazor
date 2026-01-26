@@ -35,6 +35,9 @@
     <PackageReference Include="System.CommandLine" />
     <PackageReference Include="Sabatex.Core" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Components\" />
+  </ItemGroup>
 
   <!-- Auto-assign Version from WASM library (runs EARLY in build pipeline) -->
   <Target Name="SetVersionFromWasm" BeforeTargets="BeforeBuild;CoreCompile;GetAssemblyVersion;GenerateNuspec;PrepareForBuild;ResolveReferences;PrepareForPublish;_GetOutputItemsFromPack">

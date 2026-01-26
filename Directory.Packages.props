@@ -22,7 +22,7 @@
     <PackageVersion Include="MailKit" Version="4.14.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="10.7.0" />
     <PackageVersion Include="Radzen.Blazor" Version="8.3.9" />
-    <PackageVersion Include="Sabatex.Core" Version="10.0.2-rc2" />
+    <PackageVersion Include="Sabatex.Core" Version="10.0.2-rc3" />
     <PackageVersion Include="System.CommandLine" Version="2.0.1" />
     <PackageVersion Include="System.Text.Encodings.Web" Version="10.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.0" />
