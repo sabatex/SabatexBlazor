@@ -13,7 +13,13 @@ namespace Sabatex.RadzenBlazor;
 /// <param name="AppleTouchIcon">The URL or path to the Apple touch icon, used when the app is added to the home screen on iOS devices.</param>
 /// <param name="Icon">The URL or path to the primary icon representing the app across platforms.</param>
 public record PWADescriptor(string Manifest, string AppleTouchIcon, string Icon);
-
+/// <summary>
+/// Represents a WebAssembly (WASM) client application, including its assembly, route prefix, and optional Progressive
+/// Web App (PWA) configuration.
+/// </summary>
+/// <remarks>Use the WASMClient class to register and manage WebAssembly client applications within the current
+/// environment. Each instance encapsulates the application's assembly, routing information, and optional PWA metadata.
+/// The static WASMClients collection maintains all registered clients for the application lifecycle.</remarks>
 public class WASMClient
 {
     /// <summary>

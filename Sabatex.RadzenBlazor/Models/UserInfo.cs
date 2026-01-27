@@ -7,6 +7,9 @@ namespace Sabatex.RadzenBlazor.Models;
 /// </summary>
 public class UserInfo : IEntityBase<Guid>
 {
+    /// <summary>
+    /// Represents the name of the administrator role used for access control or authorization checks.
+    /// </summary>
     public const string AdministratorRole = "Administrator";
     /// <summary>
     /// user id in database

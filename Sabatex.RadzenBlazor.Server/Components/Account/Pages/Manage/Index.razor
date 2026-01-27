@@ -36,10 +36,11 @@
     string? statusMessage;
 
     [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
+    private InputModel? Input { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        Input ??= new();
         userInfo = await IdentityAdapter.GetUserInfoAsync();
         fullName = userInfo.FullName;
         phoneNumber = userInfo.PhoneNumber;

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -26,7 +26,7 @@ namespace Sabatex.RadzenBlazor.Server;
 /// cref="CheckAccess"/> method to define access control logic.</remarks>
 /// <typeparam name="TItem">The type of entity managed by the controller. Must implement <see cref="IEntityBase{TKey}"/> and have a
 /// parameterless constructor.</typeparam>
-/// <typeparam name="TKey">The type of the unique identifier for the entity. This type is used to identify and
+/// <typeparam name="TKey">The type of the unique identifier for the entity. This type is used to identify and retrieve entities.</typeparam>
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
@@ -48,11 +48,12 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
 
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="BaseController"/> class with the specified database context and
+    /// Initializes a new instance of the <see cref="BaseController{TItem, TKey}"/> class with the specified database context and
     /// logger.
     /// </summary>
     /// <remarks>This constructor is intended to be used by derived controller classes to provide access to
-    /// database operations  and logging functionality. Ensure that valid instances of <paramref name="context"/> and
+    /// database operations and logging functionality. Ensure that valid instances of <paramref name="context"/> and
+    /// <paramref name="logger"/> are provided.</remarks>
     /// <param name="context">The <see cref="DbContext"/> instance used to interact with the database. Cannot be null.</param>
     /// <param name="logger">The <see cref="ILogger"/> instance used for logging operations. Cannot be null.</param>
     protected BaseController(DbContext context, ILogger logger)
@@ -103,8 +104,7 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
     /// <remarks>This method supports Dynamic LINQ-style querying, allowing clients to filter, sort, include related
     /// entities, and paginate the results. The query parameters are provided as a JSON string and must be properly
     /// formatted.</remarks>
-    /// <param name="json">A JSON-encoded string representing the query parameters. The string must include valid OData query options such
-    /// as filtering, ordering, inclusion of related entities, and pagination settings.</param>
+    /// <param name="queryParams">The query parameters including filter, sorting, pagination, and includes.</param>
     /// <returns>An <see cref="QueryResult{TItem}"/> containing the queried items and, if applicable, the total count of
     /// items matching the query.</returns>
     /// <exception cref="Exception">Thrown if the provided JSON string cannot be deserialized into valid query parameters.</exception>
@@ -293,17 +293,17 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
     /// </summary>
     /// <remarks>This method performs several checks before updating the item: <list type="bullet">
     /// <item><description>Validates the model state.</description></item> <item><description>Ensures the <paramref
-    /// name="id"/> matches the <see cref="TItem.Id"/> property of <paramref name="update"/>.</description></item>
+    /// name="id"/> matches the <see cref="IEntityBase{TKey}.Id"/> property of <paramref name="update"/>.</description></item>
     /// <item><description>Checks if the item exists in the database.</description></item> <item><description>Verifies
     /// access permissions using the <c>CheckAccess</c> method.</description></item> </list> If a concurrency conflict
     /// occurs during the update, the method will throw an exception unless the item no longer exists, in which case it
     /// returns <see cref="NotFoundResult"/>.</remarks>
     /// <param name="id">The unique identifier of the item to update.</param>
-    /// <param name="update">The updated values for the item. The <see cref="TItem.Id"/> property must match the <paramref name="id"/>
+    /// <param name="update">The updated values for the item. The <see cref="IEntityBase{TKey}.Id"/> property must match the <paramref name="id"/>
     /// parameter.</param>
     /// <returns>An <see cref="IActionResult"/> indicating the result of the operation: <list type="bullet">
     /// <item><description><see cref="BadRequestResult"/> if the model state is invalid or the <paramref name="id"/>
-    /// does not match the <see cref="TItem.Id"/> property of <paramref name="update"/>.</description></item>
+    /// does not match the <see cref="IEntityBase{TKey}.Id"/> property of <paramref name="update"/>.</description></item>
     /// <item><description><see cref="NotFoundResult"/> if the item with the specified <paramref name="id"/> does not
     /// exist.</description></item> <item><description><see cref="UnauthorizedResult"/> if the caller does not have
     /// access to update the item.</description></item> <item><description><see cref="OkObjectResult"/> containing the

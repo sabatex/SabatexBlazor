@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using Sabatex.Core.RadzenBlazor;
@@ -10,6 +10,13 @@ using System.Threading.Tasks;
 
 namespace Sabatex.RadzenBlazor
 {
+    /// <summary>
+    /// Provides extension methods for registering Sabatex Radzen Blazor services with an <see
+    /// cref="IServiceCollection"/>.
+    /// </summary>
+    /// <remarks>These methods enable the integration of Sabatex Radzen Blazor components, JavaScript interop,
+    /// application state management, and optional custom service implementations into a Blazor application's dependency
+    /// injection container.</remarks>
     public static class ServiceInitialize
     {
         /// <summary>
@@ -48,7 +55,7 @@ namespace Sabatex.RadzenBlazor
         /// <remarks>This method registers the default Sabatex Radzen Blazor services and adds a scoped
         /// service for the specified data adapter type <typeparamref name="TDataAdapter"/>.</remarks>
         /// <typeparam name="TDataAdapter">The type of the data adapter to register. Must implement <see
-        /// cref="ISabatexRadzenBlazorDataAdapter{TKey}"/>.</typeparam>
+        /// cref="ISabatexRadzenBlazorDataAdapter"/>.</typeparam>
         /// <typeparam name="TKey">The type of the key used by the data adapter.</typeparam>
         /// <param name="services">The <see cref="IServiceCollection"/> to which the services will be added.</param>
         /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>

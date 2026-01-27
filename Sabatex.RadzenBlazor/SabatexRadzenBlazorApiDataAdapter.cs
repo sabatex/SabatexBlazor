@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Radzen;
 using Radzen.Blazor.Rendering;
@@ -129,7 +129,10 @@ public class SabatexRadzenBlazorApiDataAdapter : ISabatexRadzenBlazorDataAdapter
 
         var response = await httpClient.PostAsJsonAsync(uri, queryParams);
         if (response.IsSuccessStatusCode)
-            return await ReadAsync<QueryResult<TItem>>(response);
+        {
+            var result = await ReadAsync<QueryResult<TItem>>(response);
+            return result ?? throw new DeserializeException();
+        }
 
         if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
@@ -231,7 +234,7 @@ public class SabatexRadzenBlazorApiDataAdapter : ISabatexRadzenBlazorDataAdapter
     /// <para>Sends a PUT request to <c>/api/{EntityName}/{id}</c> with <paramref name="item"/> in the request body.</para>
     /// <para><b>Success (HTTP 200-299):</b> Returns <see cref="SabatexValidationModel{TItem}"/> with the updated entity.</para>
     /// <para><b>Validation errors (HTTP 400):</b> Returns <see cref="SabatexValidationModel{TItem}"/> with validation errors dictionary.</para>
-    /// <para><b>Concurrency conflict (HTTP 409):</b> Thrown as <see cref="DbUpdateConcurrencyException"/> by the server (if <c>IVersionedEntity</c> is used).</para>
+    /// <para><b>Concurrency conflict (HTTP 409):</b> Thrown as Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException by the server (if <c>IVersionedEntity</c> is used).</para>
     /// <para><b>Example:</b></para>
     /// <code>
     /// person.Name = "Jane Doe";
@@ -327,24 +330,29 @@ public class SabatexRadzenBlazorApiDataAdapter : ISabatexRadzenBlazorDataAdapter
     /// <para>Supports error formats: <c>{"error": {"message": "..."}}</c> (JSON) or <c>&lt;error&gt;...&lt;/error&gt;</c> (XML).</para>
     /// </remarks>
     /// <exception cref="Exception">Thrown when the response indicates an error or cannot be deserialized.</exception>
-    async Task<T> ReadAsync<T>(HttpResponseMessage response)
+    async Task<T?> ReadAsync<T>(HttpResponseMessage response)
     {
         try
         {
             response.EnsureSuccessStatusCode();
-            using Stream stream = await response.Content.ReadAsStreamAsync();
-            return (stream.Length <= 0) ? default(T) : (await JsonSerializer.DeserializeAsync<T>(stream, new JsonSerializerOptions
+            using (var stream = await response.Content.ReadAsStreamAsync())
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                PropertyNameCaseInsensitive = true
-            }));
+                if (stream == null)
+                    return default(T);
+
+                return await JsonSerializer.DeserializeAsync<T>(stream, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    PropertyNameCaseInsensitive = true
+                });
+            }
         }
         catch
         {
             string text = await response.Content.ReadAsStringAsync();
             if (!string.IsNullOrEmpty(text))
             {
-                if (response.Content.Headers.ContentType.MediaType == "application/json")
+                if (response.Content.Headers.ContentType?.MediaType == "application/json")
                 {
                     JsonDocument jsonDocument;
                     try
@@ -363,12 +371,12 @@ public class SabatexRadzenBlazorApiDataAdapter : ISabatexRadzenBlazorDataAdapter
                 }
                 else
                 {
-                    XElement xElement2;
+                    XElement? xElement2;
                     try
                     {
                         XDocument xDocument = XDocument.Parse(text);
-                        XElement xElement = xDocument.Descendants().SingleOrDefault((XElement p) => p.Name.LocalName == "internalexception");
-                        xElement2 = ((xElement == null) ? xDocument.Descendants().SingleOrDefault((XElement p) => p.Name.LocalName == "error") : xElement);
+                        XElement? xElement = xDocument.Descendants().SingleOrDefault((XElement p) => p.Name.LocalName == "internalexception");
+                        xElement2 = (xElement == null) ? xDocument.Descendants().SingleOrDefault((XElement p) => p.Name.LocalName == "error") : xElement;
                     }
                     catch
                     {

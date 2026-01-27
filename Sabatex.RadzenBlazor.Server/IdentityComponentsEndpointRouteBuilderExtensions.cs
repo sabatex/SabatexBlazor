@@ -300,38 +300,49 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
         return accountGroup;
     }
 
-    
+    /// <summary>
+    /// Adds Sabatex Radzen Blazor Server services and related dependencies to the specified service collection.
+    /// </summary>
+    /// <remarks>This method registers the required services for using Sabatex Radzen Blazor Server in a
+    /// Blazor Server application, including memory caching and identity adapter services.</remarks>
+    /// <param name="services">The service collection to which the Sabatex Radzen Blazor Server services will be added. Cannot be null.</param>
+    /// <returns>The same instance of <see cref="IServiceCollection"/> that was provided, to support method chaining.</returns>
     public static IServiceCollection AddSabatexRadzenBlazorServer(this IServiceCollection services)
-    //    where TDBContext : IdentityDbContext
-    //    where TCmd : CommandLineOperations<TDBContext>
     {
-        //    services.AddDbContext<TDBContext>();
-        //    services.AddIdentity<ApplicationUser, IdentityRole>()
-        //        .AddEntityFrameworkStores<TDBContext>()
-        //        .AddDefaultTokenProviders();
-        //    services.AddScoped<ICommandLineOperations,TCmd>();
+        services.AddSabatexRadzenBlazor();
         services.AddMemoryCache();
         services.AddScoped<IIdentityAdapter, IdentityAdapterServer>();
         return services;
     }
 
+    /// <summary>
+    /// Provides configuration options for Sabatex Blazor applications.
+    /// </summary>
     public class SabatexBlazorOptions
     {
         /// <summary>
         /// Шлях до сторінки логіна. За замовчуванням "/Account/Login".
         /// </summary>
         public string LoginPath { get; set; } = "/Account/Login";
-        public IEnumerable<WASMClient> WASMClient { get; set; }
+        /// <summary>
+        /// Gets or sets the collection of WebAssembly clients associated with this instance.
+        /// </summary>
+        public IEnumerable<WASMClient> WASMClient { get; set; } = Enumerable.Empty<WASMClient>();
     }
 
-
     /// <summary>
-    /// Додає middleware для захисту WASM-маршрутів, позначених як AuthorizedContent.
-    /// Анонімні користувачі будуть переадресовані на сторінку логіна.
+    /// Adds Sabatex Blazor middleware to the application's request pipeline, enabling support for Blazor WebAssembly
+    /// clients with optional authentication and custom configuration.
     /// </summary>
-    /// <param name="app">The application builder.</param>
-    /// <param name="loginPath">Шлях до сторінки логіна. За замовчуванням "/Account/Login".</param>
-    /// <returns>The application builder для подальшої конфігурації.</returns>
+    /// <remarks>This middleware enforces authentication for Blazor WebAssembly client routes that require
+    /// authorization. Unauthenticated users attempting to access protected routes are redirected to the configured
+    /// login path. Configure the options parameter to register one or more WebAssembly clients and specify their
+    /// authorization requirements.</remarks>
+    /// <param name="app">The application builder to configure the middleware for the current request pipeline.</param>
+    /// <param name="options">An optional delegate to configure Sabatex Blazor options, such as registering WebAssembly clients and specifying
+    /// authentication requirements. If null, default options are used.</param>
+    /// <returns>The application builder instance with the Sabatex Blazor middleware configured. This enables further chaining of
+    /// middleware registrations.</returns>
     public static IApplicationBuilder UseSabatexBlazor(this IApplicationBuilder app, Action<SabatexBlazorOptions>? options)
     { 
         var opts = new SabatexBlazorOptions();

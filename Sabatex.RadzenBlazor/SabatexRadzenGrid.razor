@@ -1,4 +1,4 @@
-﻿@using Microsoft.JSInterop
+@using Microsoft.JSInterop
 @using Sabatex.Core
 @using Sabatex.Core.RadzenBlazor
 
@@ -247,7 +247,7 @@
     /// <code>
     /// CellRender="@(args => 
     /// {
-    ///     if (args.Column.Property == "Balance" && args.Data.Balance &lt; 0)
+    ///     if (args.Column.Property == "Balance" &amp;&amp; args.Data.Balance &lt; 0)
     ///         args.Attributes["style"] = "color: red; font-weight: bold;";
     /// })"
     /// </code>
@@ -340,7 +340,7 @@
     /// <summary>
     /// Gets the collection of items currently loaded in the grid.
     /// </summary>
-    public IEnumerable<TItem> Items => dataCollection.Value;
+    public IEnumerable<TItem> Items => dataCollection.Value ?? Enumerable.Empty<TItem>();
 
     /// <summary>
     /// Gets or sets whether the grid is read-only (all editing actions disabled).
@@ -681,7 +681,7 @@
         await grid.Reload();
     }
 
-    DataGridSettings _settings;
+    DataGridSettings?  _settings;
 
     /// <summary>
     /// Gets or sets the grid settings (column visibility, order, filters, etc.).
@@ -692,15 +692,13 @@
     /// </remarks>
     public DataGridSettings Settings
     {
-        get
-        {
-            return _settings;
-        }
+        get => _settings ??= new DataGridSettings();
         set
         {
-            if (_settings != value)
+            var safeValue = value ?? new DataGridSettings();
+            if (_settings != safeValue)
             {
-                _settings = value;
+                _settings = safeValue;
                 InvokeAsync(SaveStateAsync);
             }
         }
@@ -716,7 +714,7 @@
         var result = await JSRuntime.InvokeAsync<string>("window.localStorage.getItem", $"GridSettings{typeof(TItem).Name}");
         if (!string.IsNullOrEmpty(result))
         {
-            _settings = System.Text.Json.JsonSerializer.Deserialize<DataGridSettings>(result);
+            _settings = System.Text.Json.JsonSerializer.Deserialize<DataGridSettings>(result) ?? new DataGridSettings();
         }
     }
 
