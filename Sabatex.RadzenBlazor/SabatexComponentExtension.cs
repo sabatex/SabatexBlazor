@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Sabatex.Core.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,33 @@ namespace Sabatex.RadzenBlazor
         {
             return (await stateProvider.GetAuthenticationStateAsync())?.User.Identity?.Name ?? string.Empty;
         }
+        /// <summary>
+        /// Asynchronously retrieves the full name of the currently authenticated user from the authentication state
+        /// provider.
+        /// </summary>
+        /// <remarks>This method extracts the full name from a custom claim. If the user is not
+        /// authenticated or the claim is not present, the result is an empty string.</remarks>
+        /// <param name="stateProvider">The authentication state provider used to obtain the current user's authentication state. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the full name of the
+        /// authenticated user if available; otherwise, an empty string.</returns>
+        public static async Task<string?> GetUserFullNameAsync(this AuthenticationStateProvider stateProvider)
+        {
+            return (await stateProvider.GetAuthenticationStateAsync())?.User.FindFirst(CustomClaimTypes.FullName)?.Value;
+        }
+        /// <summary>
+        /// Asynchronously retrieves the email address claim value for the current authenticated user.
+        /// </summary>
+        /// <remarks>This method returns the value of the email claim (ClaimTypes.Email) from the current
+        /// user's claims principal. If the user is not authenticated or the email claim is not present, the result is
+        /// null.</remarks>
+        /// <param name="stateProvider">The authentication state provider used to obtain the current user's authentication state. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the email address of the
+        /// authenticated user if available; otherwise, null.</returns>
+        public static async Task<string?> GetUserEmailAsync(this AuthenticationStateProvider stateProvider)
+        {
+            return (await stateProvider.GetAuthenticationStateAsync())?.User.FindFirst(ClaimTypes.Email)?.Value;
+        }
+
         /// <summary>
         /// Asynchronously determines whether the current user is a member of the specified role.
         /// </summary>

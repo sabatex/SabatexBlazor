@@ -4,7 +4,7 @@
 
 @if (!string.IsNullOrEmpty(PrefixRoute))
 {
-    if (RadzenBlazor.WASMClient.WASMClients.Any(s => s.PrefixRoute == PrefixRoute))
+    if (RadzenBlazor.WASMClientAttribute.WASMClients.Any(s => s.PrefixRoute == PrefixRoute))
     {
         if (HttpContext.Request.Path.StartsWithSegments(PrefixRoute))
         {

@@ -11,6 +11,7 @@ using Sabatex.RadzenBlazor;
 using Sabatex.RadzenBlazor.Server;
 using SabatexBlazorDemo.Components;
 using SabatexBlazorDemo.WASMClientB;
+using System.Reflection;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +41,7 @@ var builder = WebApplication.CreateBuilder(args);
                     options.DefaultScheme = IdentityConstants.ApplicationScheme;
                     options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
                 })
-                .AddIsConfiguredMicrosoft(builder.Configuration)
+                .AddIsConfiguredMicrosoft(builder.Configuration) 
                 .AddIsConfiguredGoogle(builder.Configuration);
             builder.Services.AddAuthorization();
 
@@ -106,21 +107,18 @@ var builder = WebApplication.CreateBuilder(args);
                 .SetDefaultCulture("uk-UA")
                 );
 
-            app.UseSabatexBlazor((options) => 
-            {
-                var clients = new List<WASMClient>();
-                clients.Add(new WASMClient(typeof(SabatexBlazorDemo.WASMClientA._Imports).Assembly,null,null));
-                clients.Add(new WASMClient(typeof(SabatexBlazorDemo.WASMClientB._Imports).Assembly,ClientBRoutes.RoutePrefix,null,true));
-                options.WASMClient = clients;
-            });            
+            var additionalAssemblies = new Assembly[] {
+                typeof(SabatexBlazorDemo.WASMClientA._Imports).Assembly,
+                typeof(SabatexBlazorDemo.WASMClientB._Imports).Assembly,
+                typeof(Sabatex.RadzenBlazor._Imports).Assembly,
+                typeof(Sabatex.RadzenBlazor.Server.ApplicationUser).Assembly
+            };
 
-            var additionalAssemblies = WASMClient.WASMClients.Select(s=>s.Assembly).ToList();
-            additionalAssemblies.Add(typeof(Sabatex.RadzenBlazor._Imports).Assembly);
-            additionalAssemblies.Add(typeof(Sabatex.RadzenBlazor.Server.ApplicationUser).Assembly);
+            app.UseSabatexServerBlazor(additionalAssemblies);
 
             app.MapRazorComponents<App>()
                 .AddInteractiveWebAssemblyRenderMode()
-                .AddAdditionalAssemblies(additionalAssemblies.ToArray());
+                .AddAdditionalAssemblies(additionalAssemblies);
 
             // Add additional endpoints required by the Identity /Account Razor components.
             app.MapAdditionalIdentityEndpoints();

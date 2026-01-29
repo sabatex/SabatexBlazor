@@ -21,7 +21,7 @@
     {
         get 
         {
-            foreach (var WASMClient in RadzenBlazor.WASMClient.WASMClients)
+            foreach (var WASMClient in RadzenBlazor.WASMClientAttribute.WASMClients)
             {
                 if (HttpContext.Request.Path.StartsWithSegments(WASMClient.PrefixRoute))
                 {

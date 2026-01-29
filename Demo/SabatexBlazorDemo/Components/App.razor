@@ -1,48 +1,52 @@
 @using Sabatex.RadzenBlazor.Server
 @using System.Reflection
+@using SabatexBlazorDemo.WASMClientA
+@using SabatexBlazorDemo.WASMClientB
 
 <!DOCTYPE html>
 <html lang="@Lang">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <base href="/" />
-        <ResourcePreloader />
-        <link rel="stylesheet" href="@Assets["app.css"]" />
-        <link rel="stylesheet" href="@Assets["SabatexBlazorDemo.styles.css"]" />
-        <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
-        <link rel="icon" type="image/png" href="favicon.png" />
-        <RadzenTheme Theme="material" />
-        <SabatexPWAHeaderContent />
-        <ImportMap />
-        <HeadOutlet @rendermode="@PageRenderMode" />
-    </head>
-    <body>
-        @if (isRoute("/SabatexBlazorDemo_WASMClientA"))
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <ResourcePreloader />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["SabatexBlazorDemo.styles.css"]" />
+    <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <RadzenTheme Theme="material" />
+    <SabatexPWAHeaderContent />
+    <ImportMap />
+    <HeadOutlet @rendermode="@PageRenderMode" />
+</head>
+<body>
+    @if (isWASMClient)
+    {
+        <RoundLoadProgress />
+        @if (HttpContext.IsRouteStartWith(WASMClientA.RoutePrefix))
         {
-            <RoundLoadProgress />
-            <SabatexBlazorDemo.WASMClientA.ClientARoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
+            <WASMClientA  @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
         }
-        else if (isRoute(WASMClientB.ClientBRoutes.RoutePrefix))
+        else if (HttpContext.IsRouteStartWith(WASMClientB.RoutePrefix))
         {
-            <RoundLoadProgress />
-            <SabatexBlazorDemo.WASMClientB.ClientBRoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
+            <WASMClientB  @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
         }
-        else
-        {
-            <SSRRoutes />
-        }
+    }
+    else
+    {
+        <SSRRoutes />
+    }
 
-        <script src="_framework/blazor.web.js"></script>
-        <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
-        <script>
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function () {
-                    navigator.serviceWorker.register('/service-worker.js');
-                });
+    <script src="_framework/blazor.web.js"></script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/service-worker.js');
+           });
             }
-        </script>
-        <script>
+    </script>
+    <script>
           window.toggleSidebar = function (state) {
             const sidebar = document.querySelector('.sidebar');
             if (!sidebar) return;
@@ -54,41 +58,9 @@
                 sidebar.classList.add("side-bar-collapse");
             }
         }
-        </script>
-    </body>
+    </script>
+</body>
 </html>
-
- @* <SabatexApp Lang="en" Href="/" @rendermode="null">
-    <Head>
-        <link rel="stylesheet" href="@Assets["app.css"]" />
-        <link rel="stylesheet" href="@Assets["SabatexBlazorDemo.styles.css"]" />
-        <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
-        <link rel="icon" type="image/png" href="favicon.png" />
-    </Head>
-    <Body>
-        @if (isWASMClient)
-        { 
-            <WasmClientRoute PrefixRoute="/SabatexBlazorDemo_WASMClientA" AuthorizedOnly="true">
-                <Content>
-                    <SabatexBlazorDemo.WASMClientA.ClientARoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
-                </Content>
-            </WasmClientRoute>
-
-            <WasmClientRoute PrefixRoute="/SabatexBlazorDemo_WASMClientB" AuthorizedOnly="true">
-                <Content>
-                    <SabatexBlazorDemo.WASMClientB.ClientBRoutes @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
-                </Content>
-            </WasmClientRoute>
-
-         }
-        else
-        {
-            <SSRRoutes />
-        }
-    </Body>
-
-</SabatexApp> *@
-
 
 @code {
     [CascadingParameter]
@@ -96,28 +68,16 @@
 
     [Parameter] public string Lang { get; set; } = "en";
 
-    private IComponentRenderMode? PageRenderMode =>
-     isWASMClient ? new InteractiveWebAssemblyRenderMode(prerender: false) : null;
+    private IComponentRenderMode? PageRenderMode => isWASMClient ? new InteractiveWebAssemblyRenderMode(prerender: false) : null;
 
     private bool isWASMClient;
 
-
-    bool isRoute(string prefixRoute)
-    {
-        if (Sabatex.RadzenBlazor.WASMClient.WASMClients.Any(s => s.PrefixRoute == prefixRoute))
-        {
-            if (HttpContext.Request.Path.StartsWithSegments(prefixRoute))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    bool isRoute(string prefixRoute) => HttpContext.Request.Path.StartsWithSegments(prefixRoute);
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         isWASMClient = HttpContext.IsRouteWASMClient();
     }
-   
+
 }

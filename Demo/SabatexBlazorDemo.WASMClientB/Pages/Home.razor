@@ -1,7 +1,29 @@
-@attribute [Route(ClientBRoutes.RoutePrefix +"/")]
-
+@attribute [Route(WASMClientB.RoutePrefix +"/")]
+@inject AuthenticationStateProvider authenticationState
 <PageTitle>WASM Client B</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your demo WASM Client B app.
+User ID: @userId
+<br />
+User Name: @userName
+<br />
+Full Name: @fullName
+<br />
+Email: @email
+
+@code {
+    private string? userId;
+    private string? userName;
+    private string? fullName;
+    private string? email;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userId = await authenticationState.GetUserIdAsync();
+        userName = await authenticationState.GetUserNameAsync();
+        fullName = await authenticationState.GetUserFullNameAsync();
+        email = await authenticationState.GetUserEmailAsync();
+    }
+}

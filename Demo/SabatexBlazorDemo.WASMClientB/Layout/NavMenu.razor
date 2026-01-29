@@ -1,4 +1,4 @@
 @inject IStringLocalizer<NavMenu> L
 <RadzenPanelMenuItem Text=@L["Home"] Icon="home" Path="/" />
-<RadzenPanelMenuItem Text=@L["EditFormDemo"] Path="@ClientBRoutes.GetRoute("/editformdemo")" />
-<RadzenPanelMenuItem Text=@L["People"] Path="@ClientBRoutes.GetRoute("/people/list")" />
+<RadzenPanelMenuItem Text=@L["EditFormDemo"] Path="@WASMClientB.GetRoute("/editformdemo")" />
+<RadzenPanelMenuItem Text=@L["People"] Path="@WASMClientB.GetRoute("/people/list")" />

@@ -1,13 +1,13 @@
 @using Microsoft.AspNetCore.Http
-@foreach (var WASMClient in RadzenBlazor.WASMClient.WASMClients)
+@foreach (var WASMClient in RadzenBlazor.WASMClientAttribute.WASMClients)
 {
     if (HttpContext.Request.Path.StartsWithSegments(WASMClient.PrefixRoute))
     {
-        if (WASMClient.PWA != null)
+        if (WASMClient.Manifest != null)
         {
-            <link rel="icon" type="image/png" href="@WASMClient.PWA.Icon" />
-            <link rel="apple-touch-icon" sizes="512x512" href="@WASMClient.PWA.AppleTouchIcon" />
-            <link rel="manifest" href="@WASMClient.PWA.Manifest" />
+            <link rel="icon" type="image/png" href="@WASMClient.Icon" />
+            <link rel="apple-touch-icon" sizes="512x512" href="@WASMClient.AppleTouchIcon" />
+            <link rel="manifest" href="@WASMClient.Manifest" />
         }
     }
 }

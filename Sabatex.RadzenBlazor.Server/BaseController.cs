@@ -128,7 +128,9 @@ public abstract class BaseController<TItem,TKey> : ControllerBase where TItem : 
 
         if (queryParams.ForeginKey != null)
         {
-            query = query.Where($"it => it.{queryParams.ForeginKey.Name}.ToString() == \"{queryParams.ForeginKey.Id}\"");
+//            query = query.Where($"it => it.{queryParams.ForeginKey.Name}.ToString() == \"{queryParams.ForeginKey.Id}\"");
+            query = query.Where($"{queryParams.ForeginKey.Name} == @0", queryParams.ForeginKey.Id);
+
         }
 
         if (!String.IsNullOrEmpty(queryParams.Filter))

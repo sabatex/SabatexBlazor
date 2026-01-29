@@ -109,7 +109,7 @@ public static class WebApplicationExtensions
     /// <returns>true if the request path starts with the prefix of any registered WASM client route; otherwise, false.</returns>
     public static bool IsRouteWASMClient(this HttpContext httpContext)
     {
-        foreach (var WASMClient in RadzenBlazor.WASMClient.WASMClients)
+        foreach (var WASMClient in RadzenBlazor.WASMClientAttribute.WASMClients)
         {
             if (httpContext.Request.Path.StartsWithSegments(WASMClient.PrefixRoute))
             {
@@ -118,8 +118,14 @@ public static class WebApplicationExtensions
         }
         return false;
     }
-
-
+    /// <summary>
+    /// Determines whether the request path of the specified HTTP context starts with the given route segment.  
+    /// </summary>
+    /// <param name="httpContext">The HTTP context containing the request to evaluate. Cannot be null.</param>
+    /// <param name="routeStart">The route segment to compare against the start of the request path. Must not be null or empty.</param>
+    /// <returns>true if the request path starts with the specified route segment; otherwise, false.</returns>
+    public static bool IsRouteStartWith(this HttpContext httpContext, string routeStart)=>httpContext.Request.Path.StartsWithSegments(routeStart);
     
+
 
 }

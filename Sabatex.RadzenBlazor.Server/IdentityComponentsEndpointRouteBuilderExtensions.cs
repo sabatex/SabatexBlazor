@@ -327,7 +327,7 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
         /// <summary>
         /// Gets or sets the collection of WebAssembly clients associated with this instance.
         /// </summary>
-        public IEnumerable<WASMClient> WASMClient { get; set; } = Enumerable.Empty<WASMClient>();
+        public IEnumerable<WASMClientAttribute> WASMClient { get; set; } = Enumerable.Empty<WASMClientAttribute>();
     }
 
     /// <summary>
@@ -343,25 +343,52 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
     /// authentication requirements. If null, default options are used.</param>
     /// <returns>The application builder instance with the Sabatex Blazor middleware configured. This enables further chaining of
     /// middleware registrations.</returns>
-    public static IApplicationBuilder UseSabatexBlazor(this IApplicationBuilder app, Action<SabatexBlazorOptions>? options)
-    { 
-        var opts = new SabatexBlazorOptions();
-        if (options != null)
+    public static IApplicationBuilder UseSabatexServerBlazor(this IApplicationBuilder app, IEnumerable<Assembly> additionalAssemblies)
+    {
+        // search WASM clients in provided assemblies
+        foreach (var item in additionalAssemblies)
         {
-           
-            options(opts);
-            foreach (var wasm in opts.WASMClient)
+            var types = item.GetTypes().Where(t => Attribute.GetCustomAttribute(t, typeof(WASMClientAttribute)) is not null);
+            if (types.Any())
             {
-                WASMClient.WASMClients.Add(wasm);
+                foreach (var wasm in types)
+                {
+                    var w = Attribute.GetCustomAttribute(wasm, typeof(WASMClientAttribute));
+                    WASMClientAttribute.WASMClients.Add((WASMClientAttribute)w);
+                }
             }
+
         }
+
+        //var opts = new SabatexBlazorOptions();
+        //if (options != null)
+        //{
+
+        //    options(opts);
+        //    foreach (var wasm in opts.WASMClient)
+        //    {
+        //        WASMClientAttribute.WASMClients.Add(wasm);
+        //    }
+        //}
+
+        //var assamblies = AppDomain.CurrentDomain.GetAssemblies();
+        //foreach (var asm in assamblies)
+        //{
+        //    var types = asm.GetCustomAttributes<WASMClientAttribute>();
+        //    if (types.Any())
+        //    {
+        //        var a = 1;
+        //    }
+
+        //}
+
 
         return app.Use(async (context, next) =>
         {
             var path = context.Request.Path.Value ?? "";
             
             // Отримуємо всі WASM-клієнти, що вимагають авторизації
-            var protectedRoutes = WASMClient.WASMClients
+            var protectedRoutes = WASMClientAttribute.WASMClients
                 .Where(c => c.AuthorizedContent)
                 .Select(c => c.PrefixRoute);
 
@@ -372,7 +399,7 @@ public static class IdentityComponentsEndpointRouteBuilderExtensions
                 if (!(context.User?.Identity?.IsAuthenticated ?? false))
                 {
                     var returnUrl = Uri.EscapeDataString(context.Request.GetEncodedUrl());
-                    context.Response.Redirect($"{opts.LoginPath}?returnUrl={returnUrl}");
+                    context.Response.Redirect($"/Account/Login?returnUrl={returnUrl}");
                     return; // Зупиняємо pipeline
                 }
             }

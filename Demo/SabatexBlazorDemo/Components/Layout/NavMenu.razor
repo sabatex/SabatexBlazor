@@ -1,6 +1,6 @@
 @inject IStringLocalizer<NavMenu> L
 <NavMenuItem Href="/" Text=@L["Home"] Icon="house-door-fill" Exact="true" />
-@foreach (var WASMClient in Sabatex.RadzenBlazor.WASMClient.WASMClients)
+@foreach (var WASMClient in Sabatex.RadzenBlazor.WASMClientAttribute.WASMClients)
 {
     <NavMenuItem Href="@WASMClient.PrefixRoute" Text="@WASMClient.PrefixRoute" Icon="app-indicator" />
 }
