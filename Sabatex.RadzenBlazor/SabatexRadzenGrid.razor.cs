@@ -285,8 +285,8 @@ public partial class SabatexRadzenGrid<TKey,TItem>: SabatexRadzenBlazorBaseDataC
     /// Gets or sets the URL of the form to use for editing the associated item.
     /// </summary>
     [Parameter]
-    public string? EditFormUrl { get; set; }
-    #endregion Parameters
+    public string EditPageUrl { get; set; } = "edit";
+    #endregion
 
 
 
@@ -344,7 +344,7 @@ public partial class SabatexRadzenGrid<TKey,TItem>: SabatexRadzenBlazorBaseDataC
     /// <para>This is appended to the current route when navigating to the edit page.</para>
     /// <para><b>Example:</b> If current route is <c>/people</c>, clicking Edit navigates to <c>/people/edit/{id}</c>.</para>
     /// </remarks>
-    public virtual string EditPageName { get; set; } = "edit";
+    //public virtual string EditPageName { get; set; } = "edit";
 
     /// <summary>
     /// Gets whether any item is currently selected.
@@ -414,26 +414,7 @@ public partial class SabatexRadzenGrid<TKey,TItem>: SabatexRadzenBlazorBaseDataC
         }
     }
 
-    /// <summary>
-    /// Gets the URI for the edit page.
-    /// </summary>
-    /// <remarks>
-    /// <para>Constructed as: <c>{currentBasePath}/{<see cref="EditPageName"/>}</c></para>
-    /// <para><b>Example:</b> If current route is <c>/people</c> and <see cref="EditPageName"/> is "edit", returns <c>/people/edit</c>.</para>
-    /// </remarks>
-    protected virtual string EditPageUri
-    {
-        get
-        {
-            var url = NavigationManager.ToBaseRelativePath(NavigationManager.Uri).ToLower();
-            var index = url.LastIndexOf("/");
-            string baseRoute = string.Empty;
-            if (index != -1)
-                baseRoute = url.Substring(0, index + 1);
-            return $"{baseRoute}{EditPageName}";
-        }
-    }
-
+ 
     /// <summary>
     /// Navigates to the edit page with optional item ID.
     /// </summary>
@@ -447,6 +428,17 @@ public partial class SabatexRadzenGrid<TKey,TItem>: SabatexRadzenBlazorBaseDataC
     /// </remarks>
     private void NavigateToEditPage(string? id = null)
     {
+        if (EditPageUrl == null)
+            throw new NullReferenceException("The EditPageUrl is null");
+        var url = NavigationManager.ToBaseRelativePath(NavigationManager.Uri).ToLower();
+        var index = url.LastIndexOf("/");
+        string baseRoute = string.Empty;
+        if (index != -1)
+            baseRoute = url.Substring(0, index + 1);
+        var editPageUrl= EditPageUrl.LastIndexOf("/") == -1 ? $"{baseRoute}{EditPageUrl}" : EditPageUrl;
+
+
+
         string? idRoute = string.Empty;
         if (id != null)
             idRoute = $"/{id}";
@@ -458,7 +450,7 @@ public partial class SabatexRadzenGrid<TKey,TItem>: SabatexRadzenBlazorBaseDataC
         if (ForeginKey != null)
             queryParams.Add(ForeginKey.Name, ForeginKey.Id);
 
-        var uri = NavigationManager.GetUriWithQueryParameters($"{EditPageUri}{idRoute}", queryParams);
+        var uri = NavigationManager.GetUriWithQueryParameters($"{editPageUrl}{idRoute}", queryParams);
         NavigationManager.NavigateTo(uri);
     }
 

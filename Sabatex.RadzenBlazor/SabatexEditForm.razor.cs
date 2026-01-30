@@ -17,7 +17,7 @@ namespace Sabatex.RadzenBlazor;
 /// success or error conditions. The component is designed to be integrated into Blazor applications that utilize data
 /// adapters and notification services. It is typically used as a base for more specialized edit forms.</remarks>
 /// <typeparam name="TKey">The type of the primary key for the entity being edited.</typeparam>
-/// <typeparam name="TItem">The type of the entity being edited. Must implement IEntityBase<TKey> and have a parameterless constructor.</typeparam>
+/// <typeparam name="TItem">The type of the entity being edited. Must implement IEntityBase{TKey} and have a parameterless constructor.</typeparam>
 public partial class SabatexEditForm<TKey,TItem>: SabatexRadzenBlazorBaseDataComponent where TItem : class, IEntityBase<TKey>,new()
 {
     /// <summary>
