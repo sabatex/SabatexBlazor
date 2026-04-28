@@ -1,5 +1,6 @@
 <Project>
 	<PropertyGroup>
+		<Version>10.2.0</Version>
 		<!-- Centralized output path for all projects -->
 		<!-- Builds will be placed under E:\builds\<ProjectName>\<Configuration> -->
 		<OutputPath>E:\builds\SabatexBlazor\$(MSBuildProjectName)\bin\$(Configuration)\</OutputPath>

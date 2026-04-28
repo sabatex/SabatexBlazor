@@ -1,11 +1,9 @@
-﻿  <Project Sdk="Microsoft.NET.Sdk.Razor">
-	  <Import Project="..\Version.props" />
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <!-- Version will be auto-assigned from WASM library -->
-    <Version>$(SabatexVersion)</Version>
     <Copyright>Serhiy Lakas</Copyright>
     <Authors>Serhiy Lakas</Authors>
     <Title>Sabatex Radzen Blazor Server</Title>
@@ -22,7 +20,7 @@
     <ProjectReference Include="..\Sabatex.RadzenBlazor\Sabatex.RadzenBlazor.csproj" Condition="'$(Configuration)' == 'Debug'" />
     
     <!-- Release: NuGet package (version auto-synced from WASM) -->
-    <PackageReference Include="Sabatex.RadzenBlazor" Version="$(SabatexVersion)" Condition="'$(Configuration)' == 'Release'" />
+    <PackageReference Include="Sabatex.RadzenBlazor" Version="$(Version)" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 
   <!-- Other Dependencies -->
