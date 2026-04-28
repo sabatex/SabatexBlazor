@@ -1,11 +1,11 @@
-﻿    <Project Sdk="Microsoft.NET.Sdk.Razor">
-
+﻿  <Project Sdk="Microsoft.NET.Sdk.Razor">
+	  <Import Project="..\Version.props" />
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <!-- Version will be auto-assigned from WASM library -->
-    <Version></Version>
+    <Version>$(SabatexVersion)</Version>
     <Copyright>Serhiy Lakas</Copyright>
     <Authors>Serhiy Lakas</Authors>
     <Title>Sabatex Radzen Blazor Server</Title>
@@ -22,7 +22,7 @@
     <ProjectReference Include="..\Sabatex.RadzenBlazor\Sabatex.RadzenBlazor.csproj" Condition="'$(Configuration)' == 'Debug'" />
     
     <!-- Release: NuGet package (version auto-synced from WASM) -->
-    <PackageReference Include="Sabatex.RadzenBlazor" Version="$(Version)" Condition="'$(Configuration)' == 'Release'" />
+    <PackageReference Include="Sabatex.RadzenBlazor" Version="$(SabatexVersion)" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 
   <!-- Other Dependencies -->
@@ -30,34 +30,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="10.0.1" />
-    <PackageReference Include="MailKit" Version="4.14.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="10.7.1" />
     <PackageReference Include="System.CommandLine" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Components\" />
   </ItemGroup>
-
-  <!-- Auto-assign Version from WASM library (runs EARLY in build pipeline) -->
-  <Target Name="SetVersionFromWasm" BeforeTargets="BeforeBuild;CoreCompile;GetAssemblyVersion;GenerateNuspec;PrepareForBuild;ResolveReferences;PrepareForPublish;_GetOutputItemsFromPack">
-    <PropertyGroup>
-      <WasmProjectPath>$(MSBuildThisFileDirectory)..\Sabatex.RadzenBlazor\Sabatex.RadzenBlazor.csproj</WasmProjectPath>
-    </PropertyGroup>
-
-    <!-- Read WASM library version -->
-    <XmlPeek XmlInputPath="$(WasmProjectPath)" Query="/Project/PropertyGroup/Version/text()">
-      <Output TaskParameter="Result" PropertyName="WasmLibraryVersion" />
-    </XmlPeek>
-
-    <!-- Assign WASM version to Server library -->
-    <PropertyGroup>
-      <Version>$(WasmLibraryVersion)</Version>
-      <PackageVersion>$(WasmLibraryVersion)</PackageVersion>
-      <FileVersion>$(WasmLibraryVersion)</FileVersion>
-      <InformationalVersion>$(WasmLibraryVersion)</InformationalVersion>
-    </PropertyGroup>
-
-    <Message Importance="high" Text="✅ Server library version auto-assigned from WASM: $(Version)" />
-  </Target>
-
 </Project>

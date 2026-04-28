@@ -1,8 +1,7 @@
-using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MimeKit;
+
 
 
 namespace Sabatex.RadzenBlazor.Server;
@@ -31,36 +30,36 @@ public sealed class IdentityEmailSender : Sabatex.Core.Identity.IEmailSender<App
     }
     async Task SendEmailAsync(string email, string subject, string message)
     {
-        var MailServer = Configuration.GetSection("MailServer");
-        if (!MailServer.Exists())
-        {
-            _logger.LogError("MailServer not configured");
-            return;
-        }
+        //var MailServer = Configuration.GetSection("MailServer");
+        //if (!MailServer.Exists())
+        //{
+        //    _logger.LogError("MailServer not configured");
+        //    return;
+        //}
 
 
-        var pass = MailServer.GetValue<string>("Pass");
-        var login = MailServer.GetValue<string>("Login");
-        var port = MailServer.GetValue<int>("Port");
-        var host = MailServer.GetValue<string>("SMTPHost");
+        //var pass = MailServer.GetValue<string>("Pass");
+        //var login = MailServer.GetValue<string>("Login");
+        //var port = MailServer.GetValue<int>("Port");
+        //var host = MailServer.GetValue<string>("SMTPHost");
 
 
-        var mailMessage = new MimeMessage();
-        mailMessage.From.Add(new MailboxAddress("Identity site", login));
-        mailMessage.To.Add(new MailboxAddress("",email));
-        mailMessage.Subject = subject;
-        mailMessage.Body = new TextPart("plain") { Text = message };
+        //var mailMessage = new MimeMessage();
+        //mailMessage.From.Add(new MailboxAddress("Identity site", login));
+        //mailMessage.To.Add(new MailboxAddress("",email));
+        //mailMessage.Subject = subject;
+        //mailMessage.Body = new TextPart("plain") { Text = message };
 
 
 
-        using (var smtpClient = new SmtpClient())
-        {
-            await smtpClient.ConnectAsync(host, port,true);
-            _logger.LogTrace($"Connect for send email  to {host}:{port}");
-            await smtpClient.AuthenticateAsync(login, pass);
-            await smtpClient.SendAsync(mailMessage);
-            await smtpClient.DisconnectAsync(true);
-        };
+        //using (var smtpClient = new SmtpClient())
+        //{
+        //    await smtpClient.ConnectAsync(host, port,true);
+        //    _logger.LogTrace($"Connect for send email  to {host}:{port}");
+        //    await smtpClient.AuthenticateAsync(login, pass);
+        //    await smtpClient.SendAsync(mailMessage);
+        //    await smtpClient.DisconnectAsync(true);
+        //};
 
         //using (var mail = new MailMessage(login, email, subject, message))
         //{
