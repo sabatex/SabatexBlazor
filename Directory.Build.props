@@ -2,8 +2,8 @@
 	<PropertyGroup>
 		<Version>10.2.2</Version>
 		<!-- Centralized output path for all projects -->
-		<!-- Builds will be placed under E:\builds\<ProjectName>\<Configuration> -->
-		<OutputPath>E:\builds\SabatexBlazor\$(MSBuildProjectName)\bin\$(Configuration)\</OutputPath>
-		<BaseIntermediateOutputPath>E:\builds\SabatexBlazor\$(MSBuildProjectName)\obj\$(Configuration)\</BaseIntermediateOutputPath>
+		<!-- Builds will be placed under C:\Users\serhi\.buids\<ProjectName>\<Configuration> -->
+		<OutputPath>C:\Users\serhi\.buids\SabatexBlazor\$(MSBuildProjectName)\bin\$(Configuration)\</OutputPath>
+		<BaseIntermediateOutputPath>C:\Users\serhi\.buids\SabatexBlazor\$(MSBuildProjectName)\obj\$(Configuration)\</BaseIntermediateOutputPath>
 	</PropertyGroup>
 </Project>
